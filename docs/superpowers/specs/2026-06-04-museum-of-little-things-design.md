@@ -239,6 +239,7 @@ tags: ["TypeScript", "Next.js"]
 links:
   github: "https://github.com/..."
   live: "https://..."
+  source: "https://..."
 status: "live"
 featured: true
 featuredOrder: 1
@@ -246,6 +247,7 @@ publishedAt: "2024-03-01"
 iframeUrl: "https://..."
 iframeHeight: 800
 iframeMobileNote: "Best viewed on desktop"
+curatorNote: "A collection of things built with care."  # optional, used on home Moment 2
 ---
 
 Case study narrative here as MDX.
@@ -274,7 +276,8 @@ type BaseProject = {
   featured: boolean
   featuredOrder?: number
   publishedAt: string
-  body: string  // compiled MDX
+  curatorNote?: string  // shown on home Moment 2 — use the featured project with lowest featuredOrder
+  body: MDXContent  // compiled React component from Velite — rendered via <project.body />
 }
 
 type IframeProject = BaseProject & {
@@ -574,4 +577,4 @@ export default withVanillaExtract({
 - Domain name
 - Nav brand: "Museum of Little Things" vs initials
 - Boids shape: what do they form?
-- Curator sentence: hardcoded default vs sourced from a featured project field
+- Curator sentence: `curatorNote` optional field on projects — home Moment 2 uses the `curatorNote` of the featured project with the lowest `featuredOrder`. Falls back to a hardcoded default if unset.
