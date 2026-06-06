@@ -29,7 +29,7 @@ export function Hero() {
       <motion.div
         className={styles.scrollIndicator}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 0.4 }}
         transition={{ ...tokens.standard, delay: 2.6 }}
       />
     </section>

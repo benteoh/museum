@@ -30,7 +30,14 @@ export function BoidsCanvasWrapper() {
   }, [loadProgress])
 
   return (
-    <motion.div style={{ opacity: finalOpacity }}>
+    <motion.div
+      style={{
+        opacity: finalOpacity,
+        position: 'fixed',
+        inset: 0,
+        pointerEvents: 'none',
+      }}
+    >
       <BoidsCanvas />
     </motion.div>
   )

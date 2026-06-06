@@ -32,21 +32,20 @@ export const title = style({
 })
 
 const pulse = keyframes({
-  '0%': { opacity: 0.4, transform: 'scaleY(1)' },
-  '50%': { opacity: 0.2, transform: 'scaleY(1.3)' },
-  '100%': { opacity: 0.4, transform: 'scaleY(1)' },
+  '0%': { transform: 'translateX(-50%) scaleY(1)' },
+  '50%': { transform: 'translateX(-50%) scaleY(1.3)' },
+  '100%': { transform: 'translateX(-50%) scaleY(1)' },
 })
 
 export const scrollIndicator = style({
   position: 'absolute',
   bottom: vars.space.px12,
   left: '50%',
-  transform: 'translateX(-50%)',
   zIndex: 2,
   width: '1px',
   height: '48px',
   backgroundColor: vars.color.accent,
-  opacity: 0.4,
   transformOrigin: 'top center',
   animation: `${pulse} 2000ms cubic-bezier(0.16, 1, 0.3, 1) infinite`,
+  // opacity is controlled by Framer Motion animate in Hero.tsx
 })
