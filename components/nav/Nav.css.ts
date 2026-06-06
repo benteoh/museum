@@ -60,8 +60,10 @@ export const link = style({
     transform: 'scaleX(0)',
     transition: `transform 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
-  ':hover::after': {
-    transform: 'scaleX(1)',
+  selectors: {
+    '&:hover::after': {
+      transform: 'scaleX(1)',
+    },
   },
 })
 
