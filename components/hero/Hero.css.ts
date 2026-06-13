@@ -22,13 +22,32 @@ export const title = style({
   bottom: vars.space.px24,
   left: vars.space.px24,
   zIndex: 2,
-  fontFamily: vars.font.display,
-  fontSize: 'clamp(3rem, 8vw, 7rem)',
-  fontWeight: 300,
-  color: vars.color.textPrimary,
-  lineHeight: 1.05,
-  textShadow: '0 0 40px rgba(13, 15, 20, 0.4)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: vars.space.px3,
   margin: 0,
+  maxWidth: 'min(90vw, 60rem)',
+  fontFamily: vars.font.display,
+  textShadow: '0 0 40px rgba(13, 15, 20, 0.4)',
+})
+
+// Light, letter-spaced kicker line that sets up the main statement.
+export const titleKicker = style({
+  fontSize: 'clamp(1rem, 2vw, 1.6rem)',
+  fontWeight: 400,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: vars.color.accentDim,
+  paddingLeft: '0.12em',
+})
+
+// The headline — heavier weight and tight tracking give it weight and presence.
+export const titleMain = style({
+  fontSize: 'clamp(3.5rem, 9vw, 8.5rem)',
+  fontWeight: 500,
+  lineHeight: 0.95,
+  letterSpacing: '-0.03em',
+  color: vars.color.textPrimary,
 })
 
 const pulse = keyframes({
@@ -46,6 +65,6 @@ export const scrollIndicator = style({
   height: '48px',
   backgroundColor: vars.color.accent,
   transformOrigin: 'top center',
-  animation: `${pulse} 2000ms cubic-bezier(0.16, 1, 0.3, 1) infinite`,
+  animation: `${pulse} 2000ms ${vars.ease.out} infinite`,
   // opacity is controlled by Framer Motion animate in Hero.tsx
 })

@@ -37,7 +37,7 @@ export const mobileLink = style({
   fontSize: '2.5rem',
   fontWeight: 300,
   color: vars.color.textPrimary,
-  transition: `color 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  transition: `color 150ms ${vars.ease.out}`,
   ':hover': {
     color: vars.color.accent,
   },

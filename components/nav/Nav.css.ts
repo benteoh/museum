@@ -12,8 +12,8 @@ export const nav = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: `${vars.space.px4} ${vars.space.px6}`,
-  transition: `background-color 500ms cubic-bezier(0.16, 1, 0.3, 1),
-               backdrop-filter 500ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  transition: `background-color 500ms ${vars.ease.out},
+               backdrop-filter 500ms ${vars.ease.out}`,
 })
 
 export const navScrolled = style({
@@ -44,7 +44,7 @@ export const link = style({
   fontFamily: vars.font.body,
   fontSize: '0.875rem',
   color: vars.color.textSecondary,
-  transition: `color 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  transition: `color 150ms ${vars.ease.out}`,
   ':hover': {
     color: vars.color.textPrimary,
   },
@@ -58,7 +58,7 @@ export const link = style({
     backgroundColor: vars.color.accent,
     transformOrigin: 'left',
     transform: 'scaleX(0)',
-    transition: `transform 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+    transition: `transform 150ms ${vars.ease.out}`,
   },
   selectors: {
     '&:hover::after': {
@@ -86,5 +86,5 @@ export const hamburgerLine = style({
   width: '20px',
   height: '1px',
   backgroundColor: vars.color.textPrimary,
-  transition: `background-color 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  transition: `background-color 150ms ${vars.ease.out}`,
 })

@@ -1,16 +1,18 @@
 // components/hero/Hero.tsx
 'use client'
 
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import * as styles from './Hero.css'
 import { tokens } from '@/lib/motion'
+import { useHeroScroll } from '@/hooks/useHeroScroll'
+
+// Entry choreography — title leads, scroll cue follows after the canvas settles.
+const TITLE_DELAY = 1.5
+const INDICATOR_DELAY = 2.6
+const INDICATOR_OPACITY = 0.4
 
 export function Hero() {
-  const { scrollY } = useScroll()
-  const vh = typeof window !== 'undefined' ? window.innerHeight : 800
-
-  const titleOpacity = useTransform(scrollY, [0, vh * 0.2], [1, 0])
-  const titleScale = useTransform(scrollY, [0, vh * 0.2], [1, 0.97])
+  const { opacity, scale } = useHeroScroll()
 
   return (
     <section className={styles.section}>
@@ -18,19 +20,20 @@ export function Hero() {
 
       <motion.h1
         className={styles.title}
-        style={{ opacity: titleOpacity, scale: titleScale }}
+        style={{ opacity, scale }}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ ...tokens.cinematic, delay: 1.5 }}
+        transition={{ ...tokens.cinematic, delay: TITLE_DELAY }}
       >
-        Museum of Little Things
+        <span className={styles.titleKicker}>Museum of</span>
+        <span className={styles.titleMain}>Little Things</span>
       </motion.h1>
 
       <motion.div
         className={styles.scrollIndicator}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ ...tokens.standard, delay: 2.6 }}
+        animate={{ opacity: INDICATOR_OPACITY }}
+        transition={{ ...tokens.standard, delay: INDICATOR_DELAY }}
       />
     </section>
   )

@@ -5,12 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import * as styles from './MobileOverlay.css'
 import { tokens } from '@/lib/motion'
-
-const navLinks = [
-  { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
-  { href: '/thoughts', label: 'Thoughts' },
-]
+import { NAV_LINKS } from '@/lib/navigation'
 
 type Props = {
   isOpen: boolean
@@ -37,7 +32,7 @@ export function MobileOverlay({ isOpen, onClose }: Props) {
             ×
           </button>
           <nav className={styles.linkList} onClick={(e) => e.stopPropagation()}>
-            {navLinks.map((link, i) => (
+            {NAV_LINKS.map((link, i) => (
               <motion.div
                 key={link.href}
                 initial={{ opacity: 0, y: 20 }}

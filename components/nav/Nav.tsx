@@ -1,28 +1,18 @@
 // components/nav/Nav.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import * as styles from './Nav.css'
 import { MobileOverlay } from './MobileOverlay'
 import { tokens } from '@/lib/motion'
-
-const navLinks = [
-  { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
-  { href: '/thoughts', label: 'Thoughts' },
-]
+import { NAV_LINKS } from '@/lib/navigation'
+import { useScrolled } from '@/hooks/useScrolled'
 
 export function Nav() {
-  const [scrolled, setScrolled] = useState(false)
+  const scrolled = useScrolled()
   const [mobileOpen, setMobileOpen] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   return (
     <>
@@ -37,7 +27,7 @@ export function Nav() {
         </Link>
 
         <div className={styles.links}>
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href} className={styles.link}>
               {link.label}
             </Link>

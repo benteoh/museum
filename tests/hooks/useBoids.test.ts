@@ -1,5 +1,5 @@
 // tests/hooks/useBoids.test.ts
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { createBoid, applyBoidRules, updateBoids } from '@/hooks/useBoids'
 
 describe('createBoid', () => {
@@ -28,7 +28,7 @@ describe('applyBoidRules', () => {
   })
 
   it('applies separation when cursor is within disruption radius', () => {
-    const boid = { x: 100, y: 100, vx: 0, vy: 0, opacity: 0.2 }
+    const boid = { x: 100, y: 100, vx: 0, vy: 0, opacity: 0.2, group: 0, wanderAngle: 0 }
     const others = [{ ...boid }]
     const cursor = { x: 110, y: 110 } // within 80px radius
     const result = applyBoidRules(boid, others, cursor)
@@ -45,7 +45,7 @@ describe('updateBoids', () => {
   })
 
   it('wraps boids that go off-screen', () => {
-    const boid = { x: 850, y: 300, vx: 2, vy: 0, opacity: 0.2 }
+    const boid = { x: 850, y: 300, vx: 2, vy: 0, opacity: 0.2, group: 0, wanderAngle: 0 }
     const updated = updateBoids([boid], { x: -1, y: -1 }, 800, 600)
     expect(updated[0].x).toBeLessThan(800)
   })

@@ -19,6 +19,10 @@ export const vars = createGlobalTheme(':root', {
     body: 'var(--font-instrument-sans)',
     mono: 'var(--font-jetbrains-mono)',
   },
+  ease: {
+    // Signature easing — mirrors the [0.16, 1, 0.3, 1] tuple used by Framer tokens in lib/motion.ts
+    out: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  },
   space: {
     px1: '4px',
     px2: '8px',

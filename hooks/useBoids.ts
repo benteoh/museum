@@ -3,11 +3,28 @@
 
 import { useRef, useCallback } from 'react'
 
-const PERCEPTION_RADIUS = 80
-const SEPARATION_RADIUS = 30
-const DISRUPTION_RADIUS = 80
-const MAX_SPEED = 2
-const MAX_FORCE = 0.05
+// Spatial perception
+const PERCEPTION_RADIUS = 90
+const SEPARATION_RADIUS = 24
+const DISRUPTION_RADIUS = 110
+const CHASE_RADIUS = 150
+const FLEE_RADIUS = 120
+
+// Motion limits
+const MAX_SPEED = 2.8
+const MAX_FORCE = 0.09
+
+// Rock-paper-scissors groups: group g chases (g+1), flees (g-1)
+export const GROUPS = 3
+
+// Steering weights
+const W_COHESION = 0.0008
+const W_SEPARATION = 0.06
+const W_ALIGNMENT = 0.05 // moderate — strong alignment makes whole flock go uniform
+const W_CHASE = 0.05
+const W_FLEE = 0.1 // flee > chase so prey scatter and the chase never resolves
+const W_WANDER = 0.045
+const WANDER_JITTER = 0.5
 
 export type Boid = {
   x: number
@@ -15,11 +32,13 @@ export type Boid = {
   vx: number
   vy: number
   opacity: number
+  group: number
+  wanderAngle: number
 }
 
 export type CursorPos = { x: number; y: number }
 
-export function createBoid(width: number, height: number): Boid {
+export function createBoid(width: number, height: number, group?: number): Boid {
   const angle = Math.random() * Math.PI * 2
   const speed = 0.5 + Math.random() * 1.5
   return {
@@ -28,6 +47,8 @@ export function createBoid(width: number, height: number): Boid {
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
     opacity: 0.2,
+    group: group ?? Math.floor(Math.random() * GROUPS),
+    wanderAngle: Math.random() * Math.PI * 2,
   }
 }
 
@@ -43,16 +64,24 @@ export function applyBoidRules(
   boid: Boid,
   all: Boid[],
   cursor: CursorPos
-): { dx: number; dy: number; opacity: number } {
+): { dx: number; dy: number; opacity: number; wanderAngle: number } {
+  const group = boid.group ?? 0
+  const preyGroup = (group + 1) % GROUPS
+  const predatorGroup = (group + GROUPS - 1) % GROUPS
+
   let cohX = 0, cohY = 0, cohCount = 0
   let sepX = 0, sepY = 0
   let aliVx = 0, aliVy = 0, aliCount = 0
+  let fleeX = 0, fleeY = 0
+  let preyX = 0, preyY = 0, nearestPrey = Infinity
 
   for (const other of all) {
     if (other === boid) continue
+    const otherGroup = other.group ?? 0
     const d = dist(boid.x, boid.y, other.x, other.y)
 
-    if (d < PERCEPTION_RADIUS) {
+    // Flocking only with same group
+    if (otherGroup === group && d < PERCEPTION_RADIUS) {
       cohX += other.x
       cohY += other.y
       cohCount++
@@ -62,32 +91,63 @@ export function applyBoidRules(
       aliCount++
     }
 
+    // Separation from everyone nearby, regardless of group (physical space)
     if (d < SEPARATION_RADIUS && d > 0) {
       sepX += (boid.x - other.x) / d
       sepY += (boid.y - other.y) / d
+    }
+
+    // Chase nearest prey
+    if (otherGroup === preyGroup && d < CHASE_RADIUS && d < nearestPrey) {
+      nearestPrey = d
+      preyX = other.x
+      preyY = other.y
+    }
+
+    // Flee from predators, weighted by closeness
+    if (otherGroup === predatorGroup && d < FLEE_RADIUS && d > 0) {
+      const w = (1 - d / FLEE_RADIUS) / d
+      fleeX += (boid.x - other.x) * w
+      fleeY += (boid.y - other.y) * w
     }
   }
 
   let dx = 0
   let dy = 0
 
-  // Cohesion
+  // Cohesion (same group)
   if (cohCount > 0) {
-    const targetX = cohX / cohCount - boid.x
-    const targetY = cohY / cohCount - boid.y
-    dx += targetX * 0.0005
-    dy += targetY * 0.0005
+    dx += (cohX / cohCount - boid.x) * W_COHESION
+    dy += (cohY / cohCount - boid.y) * W_COHESION
   }
 
-  // Separation
-  dx += sepX * 0.05
-  dy += sepY * 0.05
+  // Separation (all)
+  dx += sepX * W_SEPARATION
+  dy += sepY * W_SEPARATION
 
-  // Alignment
+  // Alignment (same group)
   if (aliCount > 0) {
-    dx += (aliVx / aliCount - boid.vx) * 0.05
-    dy += (aliVy / aliCount - boid.vy) * 0.05
+    dx += (aliVx / aliCount - boid.vx) * W_ALIGNMENT
+    dy += (aliVy / aliCount - boid.vy) * W_ALIGNMENT
   }
+
+  // Chase prey
+  if (nearestPrey < Infinity) {
+    const cd = dist(boid.x, boid.y, preyX, preyY)
+    if (cd > 0) {
+      dx += ((preyX - boid.x) / cd) * W_CHASE
+      dy += ((preyY - boid.y) / cd) * W_CHASE
+    }
+  }
+
+  // Flee predators
+  dx += fleeX * W_FLEE
+  dy += fleeY * W_FLEE
+
+  // Wander — random-walk steering that breaks up uniform directional drift
+  const wanderAngle = (boid.wanderAngle ?? 0) + (Math.random() - 0.5) * WANDER_JITTER
+  dx += Math.cos(wanderAngle) * W_WANDER
+  dy += Math.sin(wanderAngle) * W_WANDER
 
   // Cursor disruption
   const cursorDist = dist(boid.x, boid.y, cursor.x, cursor.y)
@@ -106,7 +166,7 @@ export function applyBoidRules(
   dx = clamp(dx, -MAX_FORCE, MAX_FORCE)
   dy = clamp(dy, -MAX_FORCE, MAX_FORCE)
 
-  return { dx, dy, opacity: targetOpacity }
+  return { dx, dy, opacity: targetOpacity, wanderAngle }
 }
 
 export function updateBoids(
@@ -116,7 +176,7 @@ export function updateBoids(
   height: number
 ): Boid[] {
   return boids.map((boid) => {
-    const { dx, dy, opacity } = applyBoidRules(boid, boids, cursor)
+    const { dx, dy, opacity, wanderAngle } = applyBoidRules(boid, boids, cursor)
 
     let vx = boid.vx + dx
     let vy = boid.vy + dy
@@ -140,7 +200,7 @@ export function updateBoids(
     // Lerp opacity toward target
     const newOpacity = boid.opacity + (opacity - boid.opacity) * 0.05
 
-    return { x, y, vx, vy, opacity: newOpacity }
+    return { x, y, vx, vy, opacity: newOpacity, group: boid.group ?? 0, wanderAngle }
   })
 }
 
@@ -148,7 +208,9 @@ export function useBoids(count: number) {
   const boidsRef = useRef<Boid[]>([])
 
   const init = useCallback((width: number, height: number) => {
-    boidsRef.current = Array.from({ length: count }, () => createBoid(width, height))
+    boidsRef.current = Array.from({ length: count }, (_, i) =>
+      createBoid(width, height, i % GROUPS)
+    )
   }, [count])
 
   const tick = useCallback((cursor: CursorPos, width: number, height: number) => {

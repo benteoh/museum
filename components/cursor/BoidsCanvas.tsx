@@ -6,8 +6,11 @@ import { useBoids } from '@/hooks/useBoids'
 import { useCursorUpdater } from '@/hooks/useCursor'
 import * as styles from './BoidsCanvas.css'
 
-const BOID_COUNT = 40
+const BOID_COUNT = 120
 const BOID_RADIUS = 3
+
+// Per-group RGB — one hue per rock-paper-scissors group
+const GROUP_COLORS = ['184, 212, 232', '232, 196, 184', '196, 232, 200']
 
 export function BoidsCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -62,7 +65,7 @@ export function BoidsCanvas() {
       for (const boid of boids) {
         ctx.beginPath()
         ctx.arc(boid.x, boid.y, BOID_RADIUS, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(184, 212, 232, ${boid.opacity})`
+        ctx.fillStyle = `rgba(${GROUP_COLORS[boid.group] ?? GROUP_COLORS[0]}, ${boid.opacity})`
         ctx.fill()
       }
 
