@@ -9,7 +9,7 @@ const projects = defineCollection({
     title: s.string(),
     slug: s.string(),
     description: s.string(),
-    heroImage: s.string(),
+    heroImage: s.string().optional(),
     heroColour: s.string().optional(),
     tags: s.array(s.string()),
     links: s

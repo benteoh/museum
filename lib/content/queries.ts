@@ -1,5 +1,18 @@
 // lib/content/queries.ts
 import type { Project } from './types'
+import type { ProjectCardData } from '@/components/projects/ProjectCard'
+
+export function toCardData(p: Project): ProjectCardData {
+  return {
+    slug: p.slug,
+    title: p.title,
+    description: p.description,
+    heroImage: p.heroImage,
+    heroColour: p.heroColour,
+    tags: p.tags,
+    status: p.status,
+  }
+}
 
 export function getAllProjects(projects: Project[]): Project[] {
   return [...projects].sort(

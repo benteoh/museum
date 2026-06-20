@@ -2,6 +2,12 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/tokens.css'
 
+export const cardLink = style({
+  display: 'block',
+  textDecoration: 'none',
+  color: 'inherit',
+})
+
 export const card = style({
   display: 'flex',
   flexDirection: 'column',
@@ -19,9 +25,8 @@ export const card = style({
 export const panel = style({
   position: 'relative',
   aspectRatio: '16 / 10',
-  // heroColour is supplied inline; the overlay gives every panel depth.
-  backgroundImage:
-    'radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.12), transparent 60%), linear-gradient(160deg, rgba(255,255,255,0.06), rgba(0,0,0,0.35))',
+  overflow: 'hidden',
+  backgroundColor: vars.color.surface,
 })
 
 export const badge = style({

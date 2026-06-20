@@ -1,6 +1,5 @@
 # Museum of Little Things — Day 2: Project Showcase Design
 
-**Version 1.0 | Validated 2026-06-14**
 
 Builds on `2026-06-04-museum-of-little-things-design.md` (v2.1). That document remains
 the source of truth for colour/typography/motion tokens, spacing, and atmosphere. This
@@ -123,6 +122,46 @@ this corrected type.
 ## 4. Sub-project B — Home Exhibition Gallery (the hook)
 
 Depends on A (preview primitive). Implements spec v2.1 §5.1 Moments 2, 3–N, N+1.
+
+### 4.0 The room — spatial intent
+
+Before the mechanics, the feeling. Build to this.
+
+You step through a wide threshold into a long, low-lit hall. The walls are the colour of
+the canvas at night — a near-black with a cold blue undertone (`--bg`, `#0D0F14`) — so the
+room has no visible edges; it reads as depth rather than surface. There is no clutter, no
+signage shouting for attention. The air is still. A scatter of pale motes drifts where your
+attention goes (the boids cursor) — dust caught in a projector beam, settling when you hold
+still.
+
+You do not walk the hall. The hall moves for you. As you lean forward (scroll), the room
+**glides past horizontally**, smooth and weighted, the way a heavy turntable comes to rest —
+fast to start, slow to settle (`cubic-bezier(0.16, 1, 0.3, 1)`, on a `stiffness 60 / damping
+20` spring). The threshold itself is generous: the first exhibit sits a full **128px** in from
+the entrance, so you arrive into the room before the work begins, never crowded at the door.
+
+The works hang in **vitrines** — tall glass cases, `70vh` from plinth to lintel, each
+`clamp(320px, 40vw, 560px)` wide, spaced a calm **64px** apart so no two compete. The glass
+is real: a faint frost (`backdrop-filter: blur(4px)`), a hairline of pale-blue light along its
+edge (`rgba(184, 212, 232, 0.08)`). Behind each pane the work is **alive** — a slow loop, a
+breathing tint — never a frozen photograph. A small brass-plate label rides the lower glass:
+the title in Space Grotesk, a status light, the materials listed in mono type like a
+specimen card.
+
+Depth does the curation. Cases are set on a `1200px` perspective, so a vitrine **turns to face
+you** as it reaches centre stage (`rotateY -8°→0°→8°`) and eases back as it leaves — like
+plinths rotating on a slow carousel. The piece at centre is the one being shown: it lifts
+fractionally and gains weight (`scale 1.02`, its shadow deepening), while its neighbours wait
+in soft three-quarter view. Lean closer to a case (hover) and the glass **thins** — the frost
+clears, the work brightens, the case rises 4px toward you, an invitation. Choose it, and you
+cross from the gallery into the work itself (the live detail page).
+
+The hall is not endless. After the last vitrine the room opens into quiet again, and a single
+line of light invites you to see the full collection. You leave the way a good exhibition
+leaves you: unhurried, and certain everything you saw was placed on purpose.
+
+**The standard to hold:** restraint over spectacle, depth over decoration, weight in every
+motion, and nothing on the wall that hasn't earned its light.
 
 ### 4.1 `useGallery`
 

@@ -1,0 +1,38 @@
+---
+type: iframe
+title: Skyhive
+slug: skyhive
+description: A procedural floating-voxel-island archive — one island generated and preserved every day.
+heroColour: "#2F4A6B"
+tags:
+  - Three.js
+  - TypeScript
+  - Procedural Generation
+  - Voxel
+links:
+  github: https://github.com/benteoh/Skyhive
+status: live
+featured: true
+featuredOrder: 2
+publishedAt: "2026-05-25"
+curatorNote: One island a day, kept forever — a small world that grows on its own.
+---
+
+Skyhive generates one floating voxel island per day and archives it forever. The
+seed increases by one each day; the generation method keeps improving, so the
+islands tell the story of their own pipeline getting better over time.
+
+## How it works
+
+Islands are built by a sequential, composable pipeline — base height, falloff,
+detail noise, terracing, voxelisation, surface material, foliage — each step a
+small unit you can reorder or extend. Every island's biome, terrain, and features
+are derived deterministically from its seed, so the same number always yields the
+same world.
+
+## The craft
+
+A Three.js voxel renderer with hex-grid navigation on the front, a Fastify archive
+on the back, and a binary `.vox` format tuned to keep each island small. The
+interesting constraint: the tag system is append-only, because reordering it would
+silently rewrite the history of every island ever generated.
