@@ -1,6 +1,6 @@
 // tests/hooks/useBoids.test.ts
 import { describe, it, expect } from 'vitest'
-import { createBoid, applyBoidRules, updateBoids } from '@/hooks/useBoids'
+import { createBoid, applyBoidRules, updateBoids, type Boid } from '@/hooks/useBoids'
 
 describe('createBoid', () => {
   it('creates a boid within given bounds', () => {
@@ -48,5 +48,23 @@ describe('updateBoids', () => {
     const boid = { x: 850, y: 300, vx: 2, vy: 0, opacity: 0.2, group: 0, wanderAngle: 0 }
     const updated = updateBoids([boid], { x: -1, y: -1 }, 800, 600)
     expect(updated[0].x).toBeLessThan(800)
+  })
+})
+
+describe('updateBoids — velocity opacity', () => {
+  it('gives a fast-moving boid higher opacity than a still boid', () => {
+    const stillBoid: Boid = { x: 100, y: 100, vx: 0,   vy: 0, opacity: 0.2, group: 0, wanderAngle: 0 }
+    const fastBoid:  Boid = { x: 700, y: 500, vx: 2.5, vy: 0, opacity: 0.2, group: 0, wanderAngle: 0 }
+    const updated = updateBoids([stillBoid, fastBoid], { x: -1, y: -1 }, 800, 600)
+    expect(updated[1].opacity).toBeGreaterThan(updated[0].opacity)
+  })
+})
+
+describe('updateBoids — idle formation', () => {
+  it('steers a boid toward its formation target when targets are provided', () => {
+    const boid: Boid = { x: 0, y: 0, vx: 0, vy: 0, opacity: 0.2, group: 0, wanderAngle: 0 }
+    const target = { x: 400, y: 300 }
+    const updated = updateBoids([boid], { x: -1, y: -1 }, 800, 600, [target])
+    expect(updated[0].x).toBeGreaterThan(0)
   })
 })

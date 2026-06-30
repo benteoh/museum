@@ -13,6 +13,7 @@ const FLEE_RADIUS = 120
 // Motion limits
 const MAX_SPEED = 2.8
 const MAX_FORCE = 0.09
+const W_FORMATION = 0.002
 
 // Rock-paper-scissors groups: group g chases (g+1), flees (g-1)
 export const GROUPS = 3
@@ -64,7 +65,7 @@ export function applyBoidRules(
   boid: Boid,
   all: Boid[],
   cursor: CursorPos
-): { dx: number; dy: number; opacity: number; wanderAngle: number } {
+): { dx: number; dy: number; wanderAngle: number } {
   const group = boid.group ?? 0
   const preyGroup = (group + 1) % GROUPS
   const predatorGroup = (group + GROUPS - 1) % GROUPS
@@ -149,39 +150,47 @@ export function applyBoidRules(
   dx += Math.cos(wanderAngle) * W_WANDER
   dy += Math.sin(wanderAngle) * W_WANDER
 
-  // Cursor disruption
+  // Cursor disruption — force only, opacity is now speed-derived in updateBoids
   const cursorDist = dist(boid.x, boid.y, cursor.x, cursor.y)
-  let targetOpacity = 0.2
-
   if (cursor.x >= 0 && cursor.y >= 0 && cursorDist < DISRUPTION_RADIUS) {
     const force = (1 - cursorDist / DISRUPTION_RADIUS) * 0.3
     if (cursorDist > 0) {
       dx += ((boid.x - cursor.x) / cursorDist) * force
       dy += ((boid.y - cursor.y) / cursorDist) * force
     }
-    targetOpacity = 0.6
   }
 
   // Clamp forces
   dx = clamp(dx, -MAX_FORCE, MAX_FORCE)
   dy = clamp(dy, -MAX_FORCE, MAX_FORCE)
 
-  return { dx, dy, opacity: targetOpacity, wanderAngle }
+  return { dx, dy, wanderAngle }
 }
 
 export function updateBoids(
   boids: Boid[],
   cursor: CursorPos,
   width: number,
-  height: number
+  height: number,
+  formationTargets?: Array<{ x: number; y: number }>
 ): Boid[] {
-  return boids.map((boid) => {
-    const { dx, dy, opacity, wanderAngle } = applyBoidRules(boid, boids, cursor)
+  return boids.map((boid, i) => {
+    const { dx: ruleDx, dy: ruleDy, wanderAngle } = applyBoidRules(boid, boids, cursor)
+
+    let dx = ruleDx
+    let dy = ruleDy
+
+    if (formationTargets) {
+      const target = formationTargets[i % formationTargets.length]
+      if (target) {
+        dx += (target.x - boid.x) * W_FORMATION
+        dy += (target.y - boid.y) * W_FORMATION
+      }
+    }
 
     let vx = boid.vx + dx
     let vy = boid.vy + dy
 
-    // Clamp to max speed
     const speed = Math.sqrt(vx ** 2 + vy ** 2)
     if (speed > MAX_SPEED) {
       vx = (vx / speed) * MAX_SPEED
@@ -191,14 +200,13 @@ export function updateBoids(
     let x = boid.x + vx
     let y = boid.y + vy
 
-    // Wrap around edges
     if (x < 0) x += width
     if (x > width) x -= width
     if (y < 0) y += height
     if (y > height) y -= height
 
-    // Lerp opacity toward target
-    const newOpacity = boid.opacity + (opacity - boid.opacity) * 0.05
+    const targetOpacity = 0.2 + (speed / MAX_SPEED) * 0.4
+    const newOpacity = boid.opacity + (targetOpacity - boid.opacity) * 0.05
 
     return { x, y, vx, vy, opacity: newOpacity, group: boid.group ?? 0, wanderAngle }
   })
@@ -213,8 +221,13 @@ export function useBoids(count: number) {
     )
   }, [count])
 
-  const tick = useCallback((cursor: CursorPos, width: number, height: number) => {
-    boidsRef.current = updateBoids(boidsRef.current, cursor, width, height)
+  const tick = useCallback((
+    cursor: CursorPos,
+    width: number,
+    height: number,
+    formationTargets?: Array<{ x: number; y: number }>
+  ) => {
+    boidsRef.current = updateBoids(boidsRef.current, cursor, width, height, formationTargets)
     return boidsRef.current
   }, [])
 
