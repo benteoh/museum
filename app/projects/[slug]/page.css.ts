@@ -93,11 +93,15 @@ export const footer = style({
   marginTop: vars.space.px12,
   paddingTop: vars.space.px8,
   borderTop: `1px solid ${vars.color.border}`,
+})
+
+export const footerMeta = style({
   display: 'flex',
   flexWrap: 'wrap',
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: vars.space.px4,
+  marginBottom: vars.space.px8,
 })
 
 export const footerTags = style({
@@ -117,4 +121,25 @@ export const date = style({
   fontFamily: vars.font.mono,
   fontSize: '0.75rem',
   color: vars.color.textSecondary,
+})
+
+export const related = style({
+  marginTop: vars.space.px8,
+  paddingTop: vars.space.px8,
+  borderTop: `1px solid ${vars.color.border}`,
+})
+
+export const relatedHeading = style({
+  fontFamily: vars.font.mono,
+  fontSize: '0.6875rem',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: vars.color.textSecondary,
+  marginBottom: vars.space.px6,
+})
+
+export const relatedGrid = style({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+  gap: vars.space.px6,
 })

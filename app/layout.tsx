@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, Instrument_Sans, JetBrains_Mono } from 'next/font/google'
 import { Nav } from '@/components/nav/Nav'
 import { BoidsCanvasWrapper } from '@/components/cursor/BoidsCanvasWrapper'
+import { PageTransition } from '@/components/page-transition/PageTransition'
 import '@/styles/global.css'
 import '@/styles/typography.css'
 
@@ -36,9 +37,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${spaceGrotesk.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <style>{`
+          ::view-transition-old(panel-hero) { animation: none; }
+          ::view-transition-new(panel-hero) { animation: vta-expand-in 500ms cubic-bezier(0.16, 1, 0.3, 1); }
+          @keyframes vta-expand-in {
+            from { transform: scale(0.95); opacity: 0; }
+            to   { transform: scale(1);    opacity: 1; }
+          }
+        `}</style>
         <BoidsCanvasWrapper />
         <Nav />
-        <main>{children}</main>
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   )

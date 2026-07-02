@@ -7,6 +7,7 @@ import {
   getProjectBySlug,
   getAllTags,
   getCuratorNote,
+  getRelatedProjects,
 } from '@/lib/content/queries'
 
 const mockProjects: Project[] = [
@@ -107,5 +108,41 @@ describe('getCuratorNote', () => {
     const projectsWithoutNote = mockProjects.map(p => ({ ...p, curatorNote: undefined }))
     const result = getCuratorNote(projectsWithoutNote)
     expect(result).toBe('A collection of things built with care.')
+  })
+})
+
+describe('getRelatedProjects', () => {
+  it('returns projects sharing at least one tag, excluding the source', () => {
+    // alpha has TypeScript+React, beta has Next.js+TypeScript — one shared tag
+    const result = getRelatedProjects(mockProjects, 'alpha')
+    expect(result.map(p => p.slug)).toContain('beta')
+    expect(result.map(p => p.slug)).not.toContain('alpha')
+  })
+
+  it('ranks by shared-tag count descending', () => {
+    // beta shares TypeScript with alpha; gamma shares nothing — beta should come first
+    const result = getRelatedProjects(mockProjects, 'alpha', 3)
+    expect(result[0].slug).toBe('beta')
+  })
+
+  it('excludes projects with no shared tags', () => {
+    // gamma has only Rust — no overlap with alpha (TypeScript, React)
+    const result = getRelatedProjects(mockProjects, 'alpha')
+    expect(result.map(p => p.slug)).not.toContain('gamma')
+  })
+
+  it('respects the limit', () => {
+    const result = getRelatedProjects(mockProjects, 'alpha', 1)
+    expect(result).toHaveLength(1)
+  })
+
+  it('returns empty array for an unknown slug', () => {
+    const result = getRelatedProjects(mockProjects, 'does-not-exist')
+    expect(result).toHaveLength(0)
+  })
+
+  it('returns empty array when no projects share tags', () => {
+    const result = getRelatedProjects(mockProjects, 'gamma')
+    expect(result).toHaveLength(0)
   })
 })

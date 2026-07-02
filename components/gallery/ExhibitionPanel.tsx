@@ -23,7 +23,7 @@ export function ExhibitionPanel({ project, index, activeIndex }: Props) {
   const isActive = offset === 0
 
   return (
-    <Link href={`/projects/${project.slug}`} className={styles.link}>
+    <Link href={`/projects/${project.slug}`} className={styles.link} style={{ viewTransitionName: `panel-${project.slug}` } as React.CSSProperties}>
       <motion.article
         className={styles.panel}
         animate={{ rotateY, scale: isActive ? 1.02 : 1 }}

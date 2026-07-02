@@ -39,3 +39,18 @@ export function getCuratorNote(projects: Project[]): string {
   const featured = getFeaturedProjects(projects)
   return featured[0]?.curatorNote ?? 'A collection of things built with care.'
 }
+
+/** Up to `limit` other projects that share at least one tag with `slug`, by shared-tag count. */
+export function getRelatedProjects(projects: Project[], slug: string, limit = 2): Project[] {
+  const source = projects.find((p) => p.slug === slug)
+  if (!source) return []
+  const sourceTagSet = new Set(source.tags)
+
+  return projects
+    .filter((p) => p.slug !== slug)
+    .map((p) => ({ project: p, shared: p.tags.filter((t) => sourceTagSet.has(t)).length }))
+    .filter(({ shared }) => shared > 0)
+    .sort((a, b) => b.shared - a.shared)
+    .slice(0, limit)
+    .map(({ project }) => project)
+}
