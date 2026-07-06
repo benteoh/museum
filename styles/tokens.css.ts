@@ -3,20 +3,29 @@ import { createGlobalTheme } from '@vanilla-extract/css'
 
 export const vars = createGlobalTheme(':root', {
   color: {
-    bg: '#0D0F14',
-    surface: '#151820',
-    border: '#1E2330',
-    accent: '#B8D4E8',
-    accentDim: '#6A9AB8',
-    textPrimary: '#E8EDF2',
-    textSecondary: '#6B7280',
-    monoTag: '#3D5A73',
-    statusLive: '#4ADE80',
-    statusWip: '#F59E0B',
+    // Paper world (bright atelier)
+    bg: '#E7DCC1',
+    surface: '#F3ECD8',
+    border: '#C7B693',
+    inkFaint: '#9C8C6B',
+    accent: '#8C4F32',
+    accentDim: '#A97B5D',
+    textPrimary: '#382C19',
+    textSecondary: '#6B5C42',
+    monoTag: '#7A5F38',
+    statusLive: '#5F7E52',
+    statusWip: '#B08A2E',
+    sheetShadow: 'rgba(56, 44, 25, 0.18)',
+    // Marble-dusk world — reserved for detail pages (Phase 5)
+    duskBg: '#171310',
+    duskSurface: '#221C15',
+    duskText: '#E6DCC4',
+    duskTorch: '#D89B54',
   },
   font: {
-    display: 'var(--font-space-grotesk)',
-    body: 'var(--font-instrument-sans)',
+    display: 'var(--font-cinzel)',
+    body: 'var(--font-eb-garamond)',
+    hand: 'var(--font-caveat)',
     mono: 'var(--font-jetbrains-mono)',
   },
   ease: {
