@@ -1,0 +1,647 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Visual Brief v2 Documentation",
+        "description": "Rewrite visual-brief.md with locked dual-world palette, Renaissance type system, and material targets",
+        "details": "Overwrite `docs/superpowers/specs/visual-brief.md` with the complete v2 visual brief containing: (1) Aesthetic-to-Constraint table with mood/sensory/constraint mappings; (2) Dual-world palette: paper world tokens (bg #E7DCC1, surface #F3ECD8, border #C7B693, inkFaint #9C8C6B, textPrimary #382C19, textSecondary #6B5C42, accent #8C4F32, accentDim #A97B5D, monoTag #7A5F38, statusLive #5F7E52, statusWip #B08A2E, sheetShadow rgba(56,44,25,0.18)) and marble-dusk reserved tokens (duskBg #171310, duskSurface #221C15, duskText #E6DCC4, duskTorch #D89B54); (3) Type system: Cinzel (400/700 display), EB Garamond (400/500 + italic body), Caveat (400 annotations), JetBrains Mono (400 code); (4) Material targets for Phase 7 R3F; (5) Camera personality, performance floor, audio, and mobile stance. Do NOT commit this file per user preference (spec docs stay uncommitted until explicitly approved). The exact content is provided in the reference plan at `docs/superpowers/plans/2026-07-02-living-codex-phase0-1.md` Task 1.",
+        "testStrategy": "Manual verification: file exists at the path with complete content matching the locked design spec. No build/test required (doc-only). Verify file is NOT staged for commit.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create complete v2 visual brief markdown content",
+            "description": "Write the complete v2 visual brief with all sections: Aesthetic-to-Constraint table, dual-world palette (paper + marble-dusk), Renaissance type system, material targets, camera personality, performance floor, audio, and mobile stance",
+            "dependencies": [],
+            "details": "Generate the full markdown content for the visual brief v2 as specified in the reference plan (docs/superpowers/plans/2026-07-02-living-codex-phase0-1.md Task 1, lines 56-133). Include: (1) Header with version 2.0, date 2026-07-02, and status superseding v1; (2) Aesthetic-to-Constraint table with 5 mood rows (Quiet, Archival, Heavy, Luxurious, Drawn) mapping sensory targets to constraints; (3) Dual-world palette section with paper world tokens (bg #E7DCC1, surface #F3ECD8, border #C7B693, inkFaint #9C8C6B, textPrimary #382C19, textSecondary #6B5C42, accent #8C4F32, accentDim #A97B5D, monoTag #7A5F38, statusLive #5F7E52, statusWip #B08A2E, sheetShadow rgba(56,44,25,0.18)) and marble-dusk reserved tokens (duskBg #171310, duskSurface #221C15, duskText #E6DCC4, duskTorch #D89B54) with role descriptions; (4) Type system table (Cinzel 400/700 display, EB Garamond 400/500+italic body, Caveat 400 annotations, JetBrains Mono 400 code); (5) Material targets for Phase 7 R3F (aged paper, Greek marble, torch light); (6) Camera personality, performance floor, audio, and mobile stance sections as specified in the reference content.",
+            "status": "pending",
+            "testStrategy": "Visual inspection: verify the generated markdown content includes all required sections with exact hex values and structure matching lines 56-133 of the reference plan. No build/test required for content generation."
+          },
+          {
+            "id": 2,
+            "title": "Overwrite visual-brief.md with v2 content",
+            "description": "Replace the entire contents of docs/superpowers/specs/visual-brief.md with the newly generated v2 visual brief content",
+            "dependencies": [
+              1
+            ],
+            "details": "Use the Write tool to overwrite the existing file at docs/superpowers/specs/visual-brief.md (currently contains v1.0 from 2026-06-30 with night-gallery specs) with the complete v2 visual brief content generated in subtask 1. The file path is /home/benbe/Projects/museum/docs/superpowers/specs/visual-brief.md. This replaces the dark night-gallery aesthetic specifications (grain shader, frosted glass, studio HDRI) with the Living Codex parchment aesthetic (paper noise, torn edges, manuscript sheets, Renaissance type, dual-world palette). The new version is dated 2026-07-02 and explicitly supersedes v1.",
+            "status": "pending",
+            "testStrategy": "File existence verification: confirm docs/superpowers/specs/visual-brief.md exists and contains the v2 content with version 2.0 header, 2026-07-02 date, and Living Codex art direction statement. Verify all sections are present (Aesthetic-to-Constraint, Dual-World Palette, Type System, Material Targets, Camera, Performance, Audio, Mobile)."
+          },
+          {
+            "id": 3,
+            "title": "Verify dual-world palette tokens are documented correctly",
+            "description": "Read the updated visual-brief.md and verify all paper-world and marble-dusk tokens are present with correct hex values and role descriptions",
+            "dependencies": [
+              2
+            ],
+            "details": "Use the Read tool to read docs/superpowers/specs/visual-brief.md and verify the Dual-World Palette section contains: (1) Paper world table with 12 tokens (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow) each with correct hex value (e.g., bg #E7DCC1, surface #F3ECD8, textPrimary #382C19, sheetShadow rgba(56,44,25,0.18)) and role description (e.g., 'Parchment ground', 'Fresh sheet', 'Iron-gall ink'); (2) Marble-dusk world table with 4 reserved tokens (duskBg #171310, duskSurface #221C15, duskText #E6DCC4, duskTorch #D89B54) with role descriptions (e.g., 'Torch-lit hall', 'Warm marble white'). These exact values will be copied verbatim into styles/tokens.css.ts in Task 2 of the parent plan.",
+            "status": "pending",
+            "testStrategy": "Manual verification: read the file and confirm all 16 color tokens (12 paper + 4 dusk) are present in the Dual-World Palette section with exact hex values matching the specification. Cross-reference with lines 74-99 of the reference plan to ensure no tokens are missing or have incorrect values."
+          },
+          {
+            "id": 4,
+            "title": "Verify Renaissance type system is documented correctly",
+            "description": "Read the updated visual-brief.md and verify the Type System section specifies Cinzel (display, 400/700), EB Garamond (body, 400/500 + italic), Caveat (annotations, 400), and JetBrains Mono (code, 400) with rationales",
+            "dependencies": [
+              2
+            ],
+            "details": "Use the Read tool to read docs/superpowers/specs/visual-brief.md and verify the Type System section contains a table with 4 rows: (1) Display/headings: Cinzel, weights 400/700, rationale 'Based on Trajan's Column inscriptions — the marble voice'; (2) Body: EB Garamond, weights 400/500 + italic, rationale 'Renaissance bookface — the manuscript voice'; (3) Annotations/tags: Caveat, weight 400, rationale 'Hand-italic marginalia, used sparingly'; (4) Code: JetBrains Mono, weight 400, rationale 'Unchanged — code is code'. These exact font choices and weights will be implemented in app/layout.tsx via next/font/google in Task 2 of the parent plan.",
+            "status": "pending",
+            "testStrategy": "Manual verification: read the file and confirm the Type System section contains all 4 font specifications with correct weights and rationales. Cross-reference with lines 101-109 of the reference plan to ensure the table structure and content match exactly."
+          },
+          {
+            "id": 5,
+            "title": "Confirm file is NOT staged for commit",
+            "description": "Verify that docs/superpowers/specs/visual-brief.md remains uncommitted per user preference (spec docs stay uncommitted until explicitly approved)",
+            "dependencies": [
+              2
+            ],
+            "details": "Use the Bash tool to run 'git status --short docs/superpowers/specs/visual-brief.md' to check the file status. The file should show as untracked (status '??') or modified but unstaged (status ' M'). It must NOT show as staged for commit (status 'M ' or 'A '). According to the global constraints in the reference plan (line 14), spec and design docs stay uncommitted until the user explicitly says to commit them, while code commits are normal and frequent. This is a critical user preference that must be respected. If the file is accidentally staged, use 'git restore --staged docs/superpowers/specs/visual-brief.md' to unstage it.",
+            "status": "pending",
+            "testStrategy": "Git status verification: run 'git status --short docs/superpowers/specs/visual-brief.md' and confirm output is either '?? docs/superpowers/specs/visual-brief.md' (untracked) or ' M docs/superpowers/specs/visual-brief.md' (modified, unstaged). Any other status (M , A , MM, etc.) indicates the file is staged, which violates the user preference."
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Token & Type System Rebrand",
+        "description": "Replace night-gallery tokens with parchment palette, swap fonts to Cinzel/EB Garamond/Caveat, add WCAG contrast test",
+        "details": "Before writing code, read `node_modules/next/dist/docs/` (use Glob for font-related guides) to verify `next/font/google` API is current in Next.js 16.2.7. Modify `styles/tokens.css.ts`: replace all color values with paper-world palette (bg, surface, border, accent, accentDim, textPrimary, textSecondary, monoTag, statusLive, statusWip), add new tokens (inkFaint, sheetShadow), add reserved marble-dusk tokens (duskBg, duskSurface, duskText, duskTorch), update font vars to use --font-cinzel (display), --font-eb-garamond (body), --font-caveat (hand), --font-jetbrains-mono (mono). Modify `app/layout.tsx`: import Cinzel (weights 400/700), EB_Garamond (weights 400/500, styles normal+italic), Caveat (weight 400), JetBrains_Mono; create font constants with correct variables; update <html> className. Modify `styles/typography.css.ts`: change h1-h6 fontWeight from 300 to 400 (Cinzel has no 300 weight), add letterSpacing 0.02em. Create `tests/tokens/contrast.test.ts` to compute WCAG contrast ratios for text/background pairs, asserting textSecondary on bg is ≥4.5:1 AA (currently ~4.76:1, close to floor). Use a WCAG contrast formula or library. Run `pnpm test` (expect PASS), `pnpm build` (expect success), `pnpm dev` to visually verify parchment bg, dark ink text, Cinzel headings.",
+        "testStrategy": "Automated contrast test must pass (textSecondary/bg ≥ 4.5:1). All existing test suites pass. Build succeeds. Visual check: parchment background, iron-gall text, Cinzel headings visible in browser at /.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Verify Next.js font API compatibility",
+            "description": "Read Next.js documentation to confirm next/font/google API is compatible with version 16.2.7",
+            "dependencies": [],
+            "details": "Use Glob to search node_modules/next/dist/docs/ for font-related documentation. Read relevant files to verify that the next/font/google import and font configuration API (weights, subsets, variable, display properties) matches current Next.js 16.2.7. Confirm that Cinzel, EB_Garamond, Caveat, and JetBrains_Mono are supported Google Fonts that can be imported. Document any API changes or deprecations that affect the implementation.",
+            "status": "pending",
+            "testStrategy": "Read documentation files and confirm API matches current Next.js version. No automated tests required for this research task."
+          },
+          {
+            "id": 2,
+            "title": "Update color tokens in styles/tokens.css.ts",
+            "description": "Replace night-gallery color palette with parchment paper-world palette and add new token definitions",
+            "dependencies": [
+              1
+            ],
+            "details": "Modify styles/tokens.css.ts (lines 5-16). Replace existing color values: bg: '#0D0F14' → '#F3ECD8' (warm parchment), surface: '#151820' → '#F8F1E3', border: '#1E2330' → '#D4C5A9', accent: '#B8D4E8' → '#5B8C7A' (verdigris), accentDim: '#6A9AB8' → '#7FA693', textPrimary: '#E8EDF2' → '#2B2419' (iron-gall ink), textSecondary: '#6B7280' → '#5C5247', monoTag: '#3D5A73' → '#6B6356', statusLive: '#4ADE80' → '#5B8C7A', statusWip: '#F59E0B' → '#D4A574' (ochre). Add new tokens: inkFaint: '#8B8173', sheetShadow: 'rgba(43, 36, 25, 0.08)'. Add reserved marble-dusk tokens (commented with note 'Reserved for future dark mode'): duskBg: '#1A1614', duskSurface: '#231E1C', duskText: '#E8DCC8', duskTorch: '#C89B5F'.",
+            "status": "pending",
+            "testStrategy": "Run pnpm build to verify CSS compilation succeeds. Visual check in browser that background is warm parchment color and text is dark."
+          },
+          {
+            "id": 3,
+            "title": "Update font tokens and import new Google Fonts",
+            "description": "Replace Space Grotesk and Instrument Sans with Cinzel, EB Garamond, and Caveat in layout.tsx and tokens.css.ts",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Modify app/layout.tsx (lines 3, 10-26, 37). Remove Space_Grotesk and Instrument_Sans imports. Import Cinzel (weights 400/700), EB_Garamond (weights 400/500, styles ['normal', 'italic']), Caveat (weight 400), keep JetBrains_Mono. Create font constants: cinzel = Cinzel({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-cinzel', display: 'swap' }), ebGaramond = EB_Garamond({ subsets: ['latin'], weight: ['400', '500'], style: ['normal', 'italic'], variable: '--font-eb-garamond', display: 'swap' }), caveat = Caveat({ subsets: ['latin'], weight: '400', variable: '--font-caveat', display: 'swap' }). Update <html> className to include all four font variables. Modify styles/tokens.css.ts (lines 17-21): update font.display to 'var(--font-cinzel)', font.body to 'var(--font-eb-garamond)', add font.hand: 'var(--font-caveat)', keep font.mono: 'var(--font-jetbrains-mono)'.",
+            "status": "pending",
+            "testStrategy": "Run pnpm build to verify font loading succeeds. Visual check in browser that headings use Cinzel serif font and body text uses EB Garamond."
+          },
+          {
+            "id": 4,
+            "title": "Update typography styles for new font weights",
+            "description": "Change heading font weight from 300 to 400 and add letter spacing in typography.css.ts",
+            "dependencies": [
+              3
+            ],
+            "details": "Modify styles/typography.css.ts (line 7). Change fontWeight from 300 to 400 because Cinzel does not include a 300 weight. Add letterSpacing: '0.02em' to the h1-h6 globalStyle to improve readability with the new serif display font. This gives the Cinzel headings slightly more breathing room between characters, which is appropriate for the classical museum aesthetic.",
+            "status": "pending",
+            "testStrategy": "Run pnpm build to verify CSS compilation. Visual verification that headings render correctly with weight 400 and subtle letter spacing."
+          },
+          {
+            "id": 5,
+            "title": "Create WCAG contrast ratio test",
+            "description": "Write automated test to verify textSecondary on bg meets WCAG AA standard (≥4.5:1 contrast ratio)",
+            "dependencies": [
+              2
+            ],
+            "details": "Create tests/tokens/contrast.test.ts. Import vitest describe/it/expect. Define WCAG contrast formula: relativeLuminance(rgb) = for each channel: if c ≤ 0.03928 then c/12.92 else ((c+0.055)/1.055)^2.4, then L = 0.2126*R + 0.7152*G + 0.0722*B. contrastRatio(L1, L2) = (max(L1,L2) + 0.05) / (min(L1,L2) + 0.05). Parse hex colors from tokens (textSecondary '#5C5247' and bg '#F3ECD8') to RGB, compute contrast ratio, assert ≥4.5 (WCAG AA). Expected ratio is ~4.76:1 per brief. Test should also verify textPrimary '#2B2419' on bg (expected ~13:1, well above threshold). Create a test directory tests/tokens/ to organize this test alongside the existing test structure.",
+            "status": "pending",
+            "testStrategy": "Run pnpm test and verify contrast.test.ts passes with both textSecondary/bg (≥4.5:1) and textPrimary/bg assertions. This automated test becomes part of the continuous integration suite."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Procedural Parchment Ground Texture",
+        "description": "Add SVG fractalNoise paper-fibre layer and reading-desk vignette to body background",
+        "details": "Modify `styles/global.css.ts`. Above the `globalStyle('body', ...)` call, define a const `paperNoise` with a data-URI SVG containing a fractalNoise filter (baseFrequency 0.8, numOctaves 2, stitchTiles stitch) and a feColorMatrix that produces ~5% alpha warm fibre tint (rgba values roughly 0.30, 0.24, 0.13, 0.05 per the visual brief constraint of alpha ≤0.06 to preserve text contrast). Extend the body rule to set `backgroundImage: ${paperNoise}, radial-gradient(ellipse at 50% 40%, rgba(243,236,216,0.55) 0%, rgba(56,44,25,0.08) 100%)` — this layers the noise over a warm desk vignette. Keep all existing body properties (backgroundColor vars.color.bg, color, fontFamily, lineHeight, etc.). The exact SVG/gradient strings are in the reference plan Task 3. Verify in `pnpm dev` at zoom 100%: subtle grain visible, brighter centre, darker edges, text still legible. Run `pnpm build` to confirm vanilla-extract accepts the data-URI.",
+        "testStrategy": "Visual verification in browser: visible-but-subtle grain on parchment, warm vignette (bright centre, darker edges). Body text must remain comfortably legible per the brief. Build must succeed.",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define paperNoise SVG data-URI constant",
+            "description": "Create the SVG fractalNoise data-URI string with proper filter parameters and color matrix for warm paper fibers",
+            "dependencies": [],
+            "details": "In `styles/global.css.ts`, above the `globalStyle('body', ...)` call (line 15), define a const `paperNoise` containing the data-URI SVG string. The SVG must be 240x240px with a `<filter id='n'>` containing: (1) `<feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/>` for tiled procedural noise, and (2) `<feColorMatrix type='matrix' values='0 0 0 0 0.30 0 0 0 0 0.24 0 0 0 0 0.13 0 0 0 0.05 0'/>` to produce warm fibre tint (roughly rgba(77, 61, 33, 0.05)) within the alpha ≤0.06 constraint from the visual brief. Apply the filter to a 240x240 rect. Wrap in `url(\"data:image/svg+xml;utf8,...\")` format. Add comment: '// Procedural paper fibre — SVG fractalNoise, tiled. Alpha kept ≤0.06 per the visual brief so text contrast is unaffected.'",
+            "status": "pending",
+            "testStrategy": "Verify const declaration compiles without TypeScript errors. Confirm data-URI string is properly escaped for vanilla-extract consumption (no syntax errors when building)."
+          },
+          {
+            "id": 2,
+            "title": "Add reading-desk vignette gradient definition",
+            "description": "Define the radial gradient that creates the warm desk lighting effect (bright center, darker edges)",
+            "dependencies": [
+              1
+            ],
+            "details": "In the same file, create a second const or inline string for the reading-desk vignette: `radial-gradient(ellipse at 50% 40%, rgba(243, 236, 216, 0.55) 0%, rgba(56, 44, 25, 0.08) 100%)`. This creates an elliptical gradient positioned slightly above center (40% vertical) with a warm parchment-toned highlight (rgba(243,236,216,0.55)) fading to a darker brown edge (rgba(56,44,25,0.08)). The gradient will layer beneath the noise to simulate overhead desk lighting on aged paper.",
+            "status": "pending",
+            "testStrategy": "Verify gradient string syntax is valid CSS. Confirm colors match the specified rgba values from the reference plan (Task 3 in 2026-07-02-living-codex-phase0-1.md)."
+          },
+          {
+            "id": 3,
+            "title": "Extend body globalStyle with backgroundImage layers",
+            "description": "Modify the existing body rule to add the layered background (noise over vignette) while preserving all current properties",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Update the `globalStyle('body', { ... })` call at line 15 in `styles/global.css.ts`. Keep all existing properties (backgroundColor: vars.color.bg, color: vars.color.textPrimary, fontFamily: vars.font.body, lineHeight: '1.6', overflowX: 'hidden', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale'). Add a new `backgroundImage` property set to `${paperNoise}, radial-gradient(ellipse at 50% 40%, rgba(243, 236, 216, 0.55) 0%, rgba(56, 44, 25, 0.08) 100%)`. CSS layers backgrounds left-to-right, so paperNoise renders on top of the vignette. The backgroundColor (vars.color.bg, will be #E7DCC1 after Task 2) shows through as the base parchment tone.",
+            "status": "pending",
+            "testStrategy": "Run `pnpm dev` and visually verify in browser at / that: (1) subtle grain/noise is visible over the background, (2) warm vignette effect is present (brighter center, darker edges), (3) all existing body styles still apply (correct font, text color, smooth scrolling). Confirm no CSS syntax errors in browser console."
+          },
+          {
+            "id": 4,
+            "title": "Visual verification at 100% zoom for text legibility",
+            "description": "Test the parchment texture at default browser zoom to ensure text contrast meets the visual brief constraint",
+            "dependencies": [
+              3
+            ],
+            "details": "In `pnpm dev` environment, navigate to / (home page) and at least one other text-heavy route (e.g., /projects or a project detail page). Set browser zoom to exactly 100%. Verify: (1) Paper noise grain is visible but subtle—should look like real paper fibers, not distracting visual noise. (2) Warm vignette creates a 'reading desk' effect with brighter center and naturally darker edges. (3) All body text (vars.color.textPrimary, will be #382C19 iron-gall after Task 2) remains comfortably legible against the textured background. The alpha ≤0.06 constraint in the noise filter ensures the texture doesn't compromise readability. (4) No jarring tiling seams in the noise pattern (stitchTiles='stitch' ensures seamless repeat). Check both light and dark text areas.",
+            "status": "pending",
+            "testStrategy": "Manual visual inspection in Chrome/Firefox at 100% zoom. Text must meet WCAG AA contrast requirements (will be validated in Task 2's automated test). Noise should be perceptible but not obtrusive. Take a screenshot if needed to compare before/after."
+          },
+          {
+            "id": 5,
+            "title": "Production build verification with vanilla-extract",
+            "description": "Confirm that vanilla-extract build pipeline accepts the SVG data-URI and outputs valid CSS",
+            "dependencies": [
+              3
+            ],
+            "details": "Run `pnpm build` to execute the full production build. vanilla-extract will compile `styles/global.css.ts` and extract CSS. Verify: (1) Build completes without errors (no vanilla-extract compilation failures, no CSS syntax errors). (2) Check the build output (`.next/` directory or wherever compiled CSS lives) to confirm the data-URI SVG and gradient are properly inlined into the generated CSS—no broken escaping or mangled strings. (3) Optionally run `pnpm start` or deploy to preview environment to confirm production build renders the texture correctly in a real serving scenario (not just dev server). The data-URI format with utf8 encoding and proper quote escaping should pass through vanilla-extract cleanly.",
+            "status": "pending",
+            "testStrategy": "Build must succeed with zero errors. Inspect generated CSS files to verify backgroundImage property contains both the data-URI (starting with url(\"data:image/svg+xml;utf8,<svg...\")) and the gradient. If build fails, check for quote escaping issues in the SVG string or vanilla-extract compatibility with data-URIs."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Torn-Edge & Foxing Math Module",
+        "description": "Create pure tornEdge.ts with seeded PRNG, hash, torn-paper path, and foxing-spot functions; write unit tests",
+        "details": "Create `components/paper/tornEdge.ts` (pure module, no React/DOM). Implement: (1) `mulberry32(seed: number): () => number` — deterministic PRNG using the mulberry32 algorithm, returns values in [0, 1); (2) `hashSeed(s: string): number` — FNV-1a hash converting a string (e.g. project slug) to an unsigned 32-bit integer seed; (3) `tornEdgePath(opts: {width, height, seed, roughness?, segments?}): string` — generates a closed SVG path (`M ... Z`) tracing the box perimeter with jittered points (roughness default 0.015, segments default 18). Points are clamped to [-roughness, size+roughness]. With width/height=1 the path is suitable for objectBoundingBox clipPath units. The path traces 4 edges (top L→R, right T→B, bottom R→L, left B→T), each with `segments` points, using the PRNG for perpendicular jitter. (4) `foxingSpots(opts: {width, height, seed, count?}): Array<{x, y, r, opacity}>` — uses the same PRNG to generate a deterministic scatter of faint radial age-spot coordinates and radii for \"foxing\" overlays (typically count 3-6, opacity ~0.03-0.08, r ~0.02-0.05 of the box). This function was explicitly listed as a free procedural asset in the design doc's appendix but missing from the original plan. Create `tests/components/paper/tornEdge.test.ts` with Vitest suites testing: mulberry32 determinism and [0,1) range, hashSeed determinism and uint32 output, tornEdgePath determinism, seed-variance, closed-path format, coordinate bounds, point count, and foxingSpots determinism/bounds. Run `pnpm test tests/components/paper/tornEdge.test.ts` to verify PASS.",
+        "testStrategy": "Unit tests must pass: PRNG determinism, hash consistency, path format (starts M, ends Z), coordinates within roughness bounds, correct point count per edge, foxing spots within unit box. All math is pure and DOM-free.",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create paper directory and mulberry32 PRNG function",
+            "description": "Create the components/paper directory structure and implement the mulberry32 deterministic PRNG function that returns values in [0, 1)",
+            "dependencies": [],
+            "details": "Create `components/paper/tornEdge.ts` as a new TypeScript module. Implement the `mulberry32(seed: number): () => number` function using the mulberry32 algorithm. The function should take a 32-bit unsigned integer seed and return a closure that generates deterministic pseudo-random numbers in the range [0, 1) when called. This PRNG will be used by all other functions in the module to ensure deterministic, seed-based randomness for torn edges and foxing spots. The implementation should follow the standard mulberry32 algorithm with proper state management inside the closure.",
+            "status": "pending",
+            "testStrategy": "Manual verification that the function exists and returns a callable PRNG. Full testing will be done in subtask 5 with unit tests for determinism and range validation."
+          },
+          {
+            "id": 2,
+            "title": "Implement hashSeed FNV-1a hash function",
+            "description": "Add the hashSeed function that converts string slugs to unsigned 32-bit integer seeds using FNV-1a hashing algorithm",
+            "dependencies": [
+              1
+            ],
+            "details": "In `components/paper/tornEdge.ts`, implement `hashSeed(s: string): number` using the FNV-1a hash algorithm. The function should convert any string (e.g., a project slug like 'museum-of-little-things') into a deterministic unsigned 32-bit integer seed suitable for passing to mulberry32. Use FNV-1a constants: offset basis 2166136261, prime 16777619. Process each character code, applying XOR and multiplication, then convert the final result to unsigned 32-bit integer using `>>> 0`. This allows the same string to always produce the same seed, ensuring visual consistency across renders.",
+            "status": "pending",
+            "testStrategy": "Manual verification that the function exists and returns consistent uint32 values. Full testing in subtask 5 will verify determinism and output range."
+          },
+          {
+            "id": 3,
+            "title": "Implement tornEdgePath SVG path generator",
+            "description": "Create the tornEdgePath function that generates a closed SVG path with jittered perimeter points for torn-paper effect",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "In `components/paper/tornEdge.ts`, implement `tornEdgePath(opts: {width: number, height: number, seed: number, roughness?: number, segments?: number}): string`. Default roughness to 0.015, segments to 18. Use mulberry32(seed) to create a PRNG. Generate a closed SVG path string starting with 'M' and ending with 'Z' that traces the box perimeter (top L→R, right T→B, bottom R→L, left B→T). For each of the 4 edges, create `segments` points with perpendicular jitter controlled by roughness. Clamp all points to [-roughness, size+roughness] range. When width/height = 1, the path works in objectBoundingBox units for SVG clipPath. Return the complete path string suitable for use in SVG path d attribute.",
+            "status": "pending",
+            "testStrategy": "Manual verification that function generates valid SVG path strings. Full testing in subtask 5 will verify determinism, path format (M...Z), coordinate bounds, and point count."
+          },
+          {
+            "id": 4,
+            "title": "Implement foxingSpots scatter generator",
+            "description": "Add the foxingSpots function to generate deterministic age-spot coordinates for paper texture overlays",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "In `components/paper/tornEdge.ts`, implement `foxingSpots(opts: {width: number, height: number, seed: number, count?: number}): Array<{x: number, y: number, r: number, opacity: number}>`. Default count to a random value between 3-6 (seeded). Use mulberry32(seed) to create a PRNG. Generate `count` spots with: x and y positions within [0, width] and [0, height]; radius r between ~0.02-0.05 of the box dimensions; opacity between ~0.03-0.08 for subtle foxing effect. All values must be deterministic based on seed. These spots will be rendered as radial gradients to create aged-paper texture overlays. The function provides procedural asset generation as specified in the design doc appendix.",
+            "status": "pending",
+            "testStrategy": "Manual verification that function returns array of spot objects with correct properties. Full testing in subtask 5 will verify determinism, bounds checking, and count range."
+          },
+          {
+            "id": 5,
+            "title": "Write comprehensive unit tests for tornEdge module",
+            "description": "Create Vitest test suite covering all tornEdge functions with determinism, bounds, format, and output validation tests",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Create `tests/components/paper/tornEdge.test.ts` following the existing test pattern from `tests/components/projects/previews/boidsMath.test.ts`. Import functions from '@/components/paper/tornEdge'. Write test suites for: (1) mulberry32 - test that same seed produces same sequence, output is always in [0, 1), different seeds produce different sequences; (2) hashSeed - test determinism (same string → same number), output is uint32 (0 to 2^32-1), different strings produce different hashes; (3) tornEdgePath - test determinism per seed, seed variance, path format (starts with M, ends with Z, is a closed path), coordinate bounds respect roughness parameter, point count = 4*segments; (4) foxingSpots - test determinism per seed, spot count in expected range, x/y within width/height, r and opacity in expected ranges. Run `pnpm test tests/components/paper/tornEdge.test.ts` to verify all tests PASS.",
+            "status": "pending",
+            "testStrategy": "Execute `pnpm test tests/components/paper/tornEdge.test.ts` and verify all test suites pass. All functions must demonstrate determinism (same inputs → same outputs), correct output types, and values within specified bounds. Tests must be pure and DOM-free, matching the vitest.config.ts setup."
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "TornSheet Clip Component with Foxing Overlay",
+        "description": "Create TornSheet.tsx wrapper that clips children to torn-edge path via SVG clipPath, renders paper-lip shadow and foxing overlay",
+        "details": "Create `components/paper/TornSheet.tsx` (client component). Props: `{ seed: string; className?: string; children: React.ReactNode }`. Use `useId()` to generate a unique clipPath ID, sanitize it for SVG. Use `useMemo` to call `tornEdgePath({ width: 1, height: 1, seed: hashSeed(seed) })` and `foxingSpots({ width: 1, height: 1, seed: hashSeed(seed) + 1 })` (offset the seed slightly so foxing differs from the edge). Return a div with `style={{ clipPath: url(#clipId) }}` containing: (1) an inline <svg aria-hidden> with <defs><clipPath id={clipId} clipPathUnits=\"objectBoundingBox\"><path d={tornPath} /></clipPath></defs>; (2) a positioned \"paper lip\" inset shadow (via a pseudo-element or a layered div with a radial gradient along the clip edge, styled to suggest depth, using vars.color.sheetShadow or a similar token); (3) the foxing overlay: absolutely positioned radial-gradient circles at the foxing coordinates with low opacity (~0.04-0.06), tinted with vars.color.inkFaint or a similar aged-parchment tone; (4) the children. Create `components/paper/TornSheet.css.ts` with vanilla-extract styles for root (relative, 100% width/height), defs (absolute, 0 size), lip shadow layer, and foxing layer. Create `tests/components/paper/TornSheet.test.tsx` with RTL tests verifying: children render, clipPath exists with objectBoundingBox units, style.clipPath references the ID, same seed produces same path, foxing spots render as expected. Run `pnpm test tests/components/paper/TornSheet.test.tsx` to verify PASS.",
+        "testStrategy": "RTL tests: children appear in document, clipPath element exists with correct units, clipped element references clipPath ID, deterministic path per seed, foxing spots rendered. Visual check in Storybook or via the specimen page (Task 7): torn edges visible, subtle paper-lip shadow suggests depth, faint age spots visible on close inspection.",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create TornSheet component structure and clipPath logic",
+            "description": "Create the core TornSheet.tsx client component with useId for unique clipPath IDs and useMemo for deterministic path generation",
+            "dependencies": [],
+            "details": "Create `components/paper/TornSheet.tsx` as a client component with 'use client' directive. Define props interface `{ seed: string; className?: string; children: React.ReactNode }`. Use React.useId() to generate a unique clipPath ID and sanitize it by removing colons (replace ':' with '_') to ensure SVG compatibility. Use useMemo to call `tornEdgePath({ width: 1, height: 1, seed: hashSeed(seed) })` and `foxingSpots({ width: 1, height: 1, seed: hashSeed(seed) + 1 })`, importing these functions from `./tornEdge`. The component returns a div with inline style `{{ clipPath: 'url(#' + sanitizedId + ')' }}` and will contain the children plus SVG defs (to be added in next subtask).",
+            "status": "pending",
+            "testStrategy": "Manual verification that component compiles and can be imported. Full testing will happen in subtask 4 after styles and foxing are integrated."
+          },
+          {
+            "id": 2,
+            "title": "Add inline SVG clipPath definition to TornSheet",
+            "description": "Implement the inline SVG with clipPath definition using objectBoundingBox units for the torn-edge clipping",
+            "dependencies": [
+              1
+            ],
+            "details": "Within the TornSheet component's returned div, add an inline `<svg>` element with `aria-hidden=\"true\"` and `style={{ position: 'absolute', width: 0, height: 0 }}`. Inside the SVG, add `<defs><clipPath id={sanitizedId} clipPathUnits=\"objectBoundingBox\"><path d={tornPath} /></clipPath></defs>`. The clipPathUnits=\"objectBoundingBox\" ensures the path (normalized to 0-1 range) scales with the container. The tornPath comes from the useMemo hook defined in subtask 1.",
+            "status": "pending",
+            "testStrategy": "Verify in browser DevTools that the SVG clipPath element exists in DOM with correct id and clipPathUnits attribute, and that the parent div references it via style.clipPath."
+          },
+          {
+            "id": 3,
+            "title": "Create vanilla-extract styles for TornSheet layers",
+            "description": "Create TornSheet.css.ts with vanilla-extract styles for root container, paper-lip shadow layer, and foxing overlay layer",
+            "dependencies": [
+              1
+            ],
+            "details": "Create `components/paper/TornSheet.css.ts`. Import `style` from '@vanilla-extract/css' and `vars` from '@/styles/tokens.css'. Define `export const root = style({ position: 'relative', width: '100%', height: '100%' })` for the main container. Define `export const svgDefs = style({ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' })` for the hidden SVG. Define `export const paperLip = style({ position: 'absolute', inset: 0, pointerEvents: 'none', boxShadow: 'inset 0 0 12px 2px rgba(56, 44, 25, 0.18)' })` to create the subtle depth shadow along clipped edges using the sheetShadow color from the paper-world palette (will reference vars.color.sheetShadow once tokens are updated). Define `export const foxingLayer = style({ position: 'absolute', inset: 0, pointerEvents: 'none' })` for the container that will hold foxing spot divs.",
+            "status": "pending",
+            "testStrategy": "Run pnpm build to verify vanilla-extract compilation succeeds with no errors. Styles will be visually verified in subtask 5."
+          },
+          {
+            "id": 4,
+            "title": "Implement foxing spots overlay rendering",
+            "description": "Add foxing spots as absolutely positioned radial-gradient elements within the TornSheet component",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "In TornSheet.tsx, after the inline SVG and before the children, add a div with className={styles.foxingLayer}. Inside this div, map over the foxingSpots array (from useMemo) and render a div for each spot with key={i}, inline style setting position: 'absolute', left: `${spot.x * 100}%`, top: `${spot.y * 100}%`, width: `${spot.radius * 200}%` (diameter in percentage), height: `${spot.radius * 200}%`, transform: 'translate(-50%, -50%)', borderRadius: '50%', background: 'radial-gradient(circle, rgba(156, 140, 107, 0.06) 0%, transparent 70%)', pointerEvents: 'none'. The color rgba(156,140,107,0.06) corresponds to inkFaint at ~6% opacity per the visual brief constraint for aged-parchment foxing. After the foxing layer, add the paper-lip shadow div with className={styles.paperLip}, then finally render {children}.",
+            "status": "pending",
+            "testStrategy": "Visual inspection in browser: subtle brownish spots should appear at deterministic positions matching the seed, with low opacity not obscuring text. Verify same seed produces same pattern."
+          },
+          {
+            "id": 5,
+            "title": "Write comprehensive Vitest tests for TornSheet component",
+            "description": "Create TornSheet.test.tsx with React Testing Library tests covering clipPath generation, determinism, and foxing rendering",
+            "dependencies": [
+              4
+            ],
+            "details": "Create `tests/components/paper/TornSheet.test.tsx`. Import describe, it, expect from 'vitest', render, screen from '@testing-library/react', and TornSheet from '@/components/paper/TornSheet'. Write test suite with: (1) 'renders children' - render TornSheet with test child text, verify screen.getByText finds it; (2) 'creates SVG clipPath with objectBoundingBox units' - render component, query for clipPath element, verify clipPathUnits=\"objectBoundingBox\" and path d attribute is non-empty; (3) 'applies clipPath to container via inline style' - render, get container element, verify style.clipPath matches pattern 'url(#...)'; (4) 'same seed produces same torn path' - render two instances with same seed='test-seed', extract both clipPath path d values, expect them to be identical; (5) 'different seeds produce different paths' - render with seed='a' and seed='b', extract path d values, expect them to differ; (6) 'renders foxing spots' - render component, query container for child divs with radial-gradient background (use getAllByRole or container.querySelectorAll), verify at least one foxing spot exists. Run `pnpm test tests/components/paper/TornSheet.test.tsx` and verify all tests PASS.",
+            "status": "pending",
+            "testStrategy": "Command: `pnpm test tests/components/paper/TornSheet.test.tsx`. All tests must pass with no errors or warnings. Tests confirm clipPath generation, determinism, and foxing overlay rendering work as specified."
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Scatter Math & Manuscript ExhibitionPanel",
+        "description": "Create scatter.ts for desk-scatter transforms, re-skin ExhibitionPanel with TornSheet and manuscript styling",
+        "details": "Create `components/paper/scatter.ts` (pure module). Export `sheetScatter(index: number): {rotate: number, dx: number, dy: number}`. Use `mulberry32((index+1)*7919)` to get a seeded PRNG per index. Return rotate in ±3.5°, dx in ±12px, dy in ±16px — deterministic \"strewn on a desk\" transforms. Create `tests/components/paper/scatter.test.ts` verifying determinism per index, variance across indices, and bounds for the first 50 indices. Run test to verify PASS. Rewrite `components/gallery/ExhibitionPanel.css.ts`: replace the old glass-vitrine styles with manuscript-sheet styles using vars.color.surface (sheet bg), vars.color.inkFaint (border), vars.color.textPrimary/monoTag (text/tags), vars.font.display (title), vars.font.hand (tags), vars.color.sheetShadow (drop-shadow, not box-shadow, to follow torn clip). Define link (drop-shadow filter with hover lift), sheetWrap (clamp width 320px-560px, height 70vh), sheet (flex column, surface bg), plate (flex-1 preview area), colophon (caption strip with border-top, padding, gap). Rewrite `components/gallery/ExhibitionPanel.tsx`: import TornSheet, sheetScatter. Replace the old rotateY vitrine tilt with the 2D scatter. On motion.article, animate `{ rotate: isActive ? scatter.rotate*0.3 : scatter.rotate, x: scatter.dx, y: scatter.dy, scale: isActive ? 1.03 : 1 }`. Wrap the sheet content in <TornSheet seed={project.slug}>. The sheet div contains: (1) a `plate` div with <ProjectPreview> (unchanged props); (2) a `colophon` div with the title (h3) and tags (meta spans). ExhibitionPanelSkeleton uses the same structure with <Skeleton>. GalleryTrack.tsx is UNTOUCHED (props unchanged). Run `pnpm test` (expect PASS for all suites including existing galleryMath, resolvePreview, useBoids), `pnpm build` (expect success), `pnpm dev` visual check: home gallery shows torn-edged sheets on parchment with individual rotation/offset, active sheet straightens slightly and scales up.",
+        "testStrategy": "Unit tests for scatter (determinism, bounds). All existing test suites pass. Build succeeds. Visual verification: home gallery (/) shows manuscript sheets with torn edges, desk scatter (slight rotation/offset per sheet), active sheet animates (straightens, scales). Foxing spots visible on sheets. Dark canvas previews acceptable (Phase 2 will re-skin them to ink).",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          4,
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create scatter.ts module with sheetScatter function",
+            "description": "Implement the pure scatter math module that generates deterministic 2D transforms for desk-scatter effect using seeded PRNG",
+            "dependencies": [],
+            "details": "Create `components/paper/scatter.ts` as a pure module. Implement `mulberry32(seed: number)` PRNG function that returns a deterministic random generator. Export `sheetScatter(index: number): {rotate: number, dx: number, dy: number}` function that uses `mulberry32((index+1)*7919)` to get a seeded PRNG per index. Generate rotate in range ±3.5°, dx in range ±12px, dy in range ±16px. The transforms must be deterministic (same index always produces same output) to create a stable \"strewn on a desk\" visual effect. Pattern follows the existing `boidsMath.ts` pure module structure.",
+            "status": "pending",
+            "testStrategy": "Unit tests verify: (1) determinism - same index produces identical output across calls, (2) variance - different indices produce different transforms, (3) bounds - all values stay within specified ranges for first 50 indices"
+          },
+          {
+            "id": 2,
+            "title": "Write scatter.test.ts with determinism and bounds verification",
+            "description": "Create comprehensive unit tests for the scatter module following the project's vitest testing patterns",
+            "dependencies": [
+              1
+            ],
+            "details": "Create `tests/components/paper/scatter.test.ts` following the pattern of `tests/components/projects/previews/boidsMath.test.ts`. Write test suites using vitest (describe/it/expect) that verify: (1) `sheetScatter` is deterministic - calling with same index multiple times returns identical rotate/dx/dy values; (2) variance across indices - different indices (0-49) produce different transform values; (3) bounds checking - for indices 0-49, verify rotate is within [-3.5, 3.5], dx within [-12, 12], dy within [-16, 16]. Run `pnpm test` to verify all tests PASS including existing suites (galleryMath, resolvePreview, useBoids, boidsMath).",
+            "status": "pending",
+            "testStrategy": "Run `pnpm test` - all test suites including scatter.test.ts must pass"
+          },
+          {
+            "id": 3,
+            "title": "Rewrite ExhibitionPanel.css.ts with manuscript-sheet styles",
+            "description": "Replace glass-vitrine styling with manuscript-sheet aesthetic using paper-world color tokens and torn-edge shadow effects",
+            "dependencies": [],
+            "details": "Rewrite `components/gallery/ExhibitionPanel.css.ts` to replace the old glass-vitrine aesthetic. Import `vars` from `@/styles/tokens.css`. Update `link` style: add `filter: drop-shadow(...)` using `vars.color.sheetShadow` (rgba(56,44,25,0.18)) with hover lift effect (adjust shadow on hover). Create `sheetWrap` style: width clamp(320px, 40vw, 560px), height 70vh. Create `sheet` style: flex column layout, background `vars.color.surface`, no border-radius (torn edges come from TornSheet clip). Create `plate` style: flex-1 for preview area. Create `colophon` style: caption strip with border-top using `vars.color.inkFaint`, padding and gap from `vars.space.*`. Update `title` to use `vars.font.display`, `vars.color.textPrimary`. Update `meta` to use `vars.font.hand` for tags, `vars.color.monoTag`. Remove old `panel` and `glass` styles completely.",
+            "status": "pending",
+            "testStrategy": "Visual verification after component integration - sheets display with manuscript aesthetic, torn edges, proper spacing"
+          },
+          {
+            "id": 4,
+            "title": "Rewrite ExhibitionPanel.tsx with TornSheet and 2D scatter animations",
+            "description": "Replace rotateY vitrine tilt with 2D desk-scatter transforms, integrate TornSheet wrapper, restructure DOM with plate/colophon layout",
+            "dependencies": [
+              1,
+              3
+            ],
+            "details": "Rewrite `components/gallery/ExhibitionPanel.tsx`. Import `TornSheet` from `@/components/paper/TornSheet` and `sheetScatter` from `@/components/paper/scatter`. In `ExhibitionPanel` component: compute `scatter = sheetScatter(index)` at component top. Replace the `rotateY` calculation with 2D transforms - remove old `rotateY` and `MAX_TILT` logic. Update `motion.article` animate prop to: `{ rotate: isActive ? scatter.rotate*0.3 : scatter.rotate, x: scatter.dx, y: scatter.dy, scale: isActive ? 1.03 : 1 }` (active sheet straightens to 30% rotation and scales up). Restructure DOM: wrap content in `<TornSheet seed={project.slug}>`, create a `sheet` div containing (1) `plate` div with `<ProjectPreview>` (unchanged props), (2) `colophon` div with title (h3) and tags (meta spans). Update `ExhibitionPanelSkeleton` to match structure with `<Skeleton>`. Ensure `GalleryTrack.tsx` passes same props (project, index, activeIndex) - no changes needed there.",
+            "status": "pending",
+            "testStrategy": "Visual check: home gallery shows torn-edged sheets with desk scatter (rotation/offset), active sheet animates (straightens, scales). Build succeeds."
+          },
+          {
+            "id": 5,
+            "title": "Run full test suite, build, and visual verification",
+            "description": "Execute complete validation: unit tests, production build, and visual verification of manuscript gallery on home page",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Run `pnpm test` to verify ALL test suites pass: existing tests (galleryMath, resolvePreview, useBoids, boidsMath) plus new scatter.test.ts. Run `pnpm build` to verify production build succeeds with no errors. Run `pnpm dev` and navigate to home page (`/`) for visual verification: (1) gallery displays manuscript sheets with torn edges from TornSheet component, (2) each sheet has individual desk-scatter transform (slight rotation and x/y offset), (3) active sheet (center) animates smoothly - straightens rotation to 30% and scales to 1.03, (4) foxing spots visible on sheets from TornSheet overlay, (5) manuscript color palette applied (parchment surface, ink colors, proper typography). Verify no console errors and smooth animations.",
+            "status": "pending",
+            "testStrategy": "All tests pass (pnpm test), build succeeds (pnpm build), visual check confirms manuscript aesthetic with torn sheets, desk scatter, and smooth active-sheet animation"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Dual-World Codex Specimen Page",
+        "description": "Create unlinked dev-only route rendering both palettes, full type system, and live TornSheet demo",
+        "details": "Create `app/dev/tokens/page.tsx` (server component, no data dependencies). Render two side-by-side sections: (1) Paper World: swatch grid showing all paper-world color tokens (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow) as colored divs with hex labels, type specimens at a few sizes (h1-h3, p, code) using vars.font.* to showcase Cinzel/Garamond/Caveat/Mono, and a live <TornSheet seed=\"specimen-demo\"><div>Sample sheet content with foxing</div></TornSheet> demo; (2) Marble-Dusk World (reserved): swatch grid for duskBg, duskSurface, duskText, duskTorch with labels, type specimens in the dusk palette (textPrimary → duskText, bg → duskBg). Style everything inline or via a local `page.css.ts` using vars.* exclusively (no hardcoded colors). This page is NEVER linked from Nav or any other page — it's a dev-only QA specimen for the site owner/implementer to verify both palettes render correctly before Phase 5 activates the dusk world. The marble-dusk tokens are reserved-but-unused until Phase 5; this page surfaces any palette/type problems in the dusk world now instead of during Phase 5. Next's static export will pre-render the route at build time even though it's unlinked, which is acceptable (it won't leak as a discoverable page unless someone guesses the URL).",
+        "testStrategy": "Manual verification in `pnpm dev`: navigate to /dev/tokens. Verify: (1) both paper and dusk palettes render side-by-side with correct hex values; (2) type specimens show correct fonts at various sizes; (3) live TornSheet demo displays torn edges and foxing overlay. Confirm page is NOT linked from Nav. Build succeeds (page is statically exported but unlinked).",
+        "priority": "low",
+        "dependencies": [
+          2,
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create app/dev/tokens directory and page structure",
+            "description": "Set up the unlinked dev-only route at app/dev/tokens/page.tsx with basic server component structure and two-column layout scaffolding",
+            "dependencies": [],
+            "details": "Create directory app/dev/tokens/ and add page.tsx as a server component (no 'use client' directive, no data dependencies). Set up basic structure with two side-by-side sections using flexbox or grid layout: (1) Paper World section and (2) Marble-Dusk World section. Each section should have a header and placeholder content. This establishes the foundation for the specimen page that will showcase both color palettes side-by-side.",
+            "status": "pending",
+            "testStrategy": "Manual verification: navigate to /dev/tokens in browser after running pnpm dev. Confirm page renders with two distinct sections labeled 'Paper World' and 'Marble-Dusk World'. Build must succeed (pnpm build) - Next.js static export will pre-render the route even though it's unlinked."
+          },
+          {
+            "id": 2,
+            "title": "Build paper-world swatch grid with all color tokens",
+            "description": "Render complete paper-world color palette as a swatch grid showing all 12 tokens (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow) with hex labels",
+            "dependencies": [
+              1
+            ],
+            "details": "In the Paper World section of app/dev/tokens/page.tsx, create a grid of color swatches. For each paper-world token from vars.color.* (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow), render a colored div with the token value as background and display the hex code below it. Use inline styles or create page.css.ts with vanilla-extract style() calls, referencing vars.color.* exclusively. Layout should be a responsive grid (e.g., 3-4 columns) with adequate spacing between swatches.",
+            "status": "pending",
+            "testStrategy": "Visual verification in browser: all 12 paper-world tokens render as colored squares with accurate hex labels beneath. Cross-reference hex values against styles/tokens.css.ts to ensure they match exactly. No hardcoded colors should appear - all must use vars.color.* references."
+          },
+          {
+            "id": 3,
+            "title": "Add type specimens showcasing Renaissance font system",
+            "description": "Create type specimens at multiple sizes (h1, h2, h3, p, code) using vars.font.* to demonstrate Cinzel/Garamond/Caveat/Mono across the paper-world palette",
+            "dependencies": [
+              2
+            ],
+            "details": "Below the paper-world swatch grid, add type specimens showcasing the Renaissance font system. Create examples for: h1/h2/h3 headings (vars.font.display - Cinzel) with sample text, paragraph text (vars.font.body - EB Garamond) at body size, hand-italic annotations (vars.font.hand - Caveat) for tag/annotation samples, and code blocks (vars.font.mono - JetBrains Mono). Use actual HTML heading/p/code elements styled with vars.font.* and vars.color.textPrimary/textSecondary. Include labels identifying which font is being shown at each specimen.",
+            "status": "pending",
+            "testStrategy": "Visual check in browser: verify Cinzel displays in headings, EB Garamond in body text, Caveat in hand-written samples, and JetBrains Mono in code blocks. Text should be rendered in appropriate paper-world colors (textPrimary for main text, textSecondary for faded). Inspect computed styles to confirm correct font-family values."
+          },
+          {
+            "id": 4,
+            "title": "Integrate live TornSheet demo with foxing visualization",
+            "description": "Add a live <TornSheet> component demo in the paper-world section showing torn edges and a foxing overlay pattern to visualize the aged-paper effect",
+            "dependencies": [
+              3
+            ],
+            "details": "Import TornSheet from @/components/paper/TornSheet (created in Task 5). Below type specimens, render <TornSheet seed=\"specimen-demo\"><div className={demoSheetStyle}>Sample sheet content with foxing</div></TornSheet>. Style the inner div with vars.color.surface background, padding, and min-height to make the torn edges visible. Add a foxing overlay using either CSS (::before pseudo-element with radial-gradient spots) or inline SVG to create 3-5 age spots/stains (brown/sepia tones at low opacity ~0.1-0.15). The foxing pattern references the 'aged paper' material from the visual brief and demonstrates how sheets will look with archival authenticity.",
+            "status": "pending",
+            "testStrategy": "Visual verification: TornSheet renders with jagged torn edges (not straight), the demo content is clipped to the torn boundary, and subtle brown/sepia foxing spots are visible on the sheet surface. Verify the seed produces deterministic results by refreshing - torn edge pattern should not change."
+          },
+          {
+            "id": 5,
+            "title": "Build marble-dusk swatch grid and type specimens",
+            "description": "Create the Marble-Dusk World section with swatch grid for reserved tokens (duskBg, duskSurface, duskText, duskTorch) and type specimens styled in the dusk palette",
+            "dependencies": [
+              4
+            ],
+            "details": "In the Marble-Dusk World section, create a swatch grid showing the 4 reserved dusk tokens (vars.color.duskBg, duskSurface, duskText, duskTorch) with hex labels, following the same pattern as paper-world swatches. Below swatches, add type specimens using the same font system but styled with dusk palette colors: set background to duskBg, text to duskText, and accents to duskTorch. Include a note/label stating 'Reserved for Phase 5 - Detail Pages' to clarify these tokens are not yet active in the live site. This section ensures the dusk palette renders correctly even though it won't be used until Phase 5, surfacing any palette issues early.",
+            "status": "pending",
+            "testStrategy": "Manual verification at /dev/tokens: (1) all 4 dusk tokens render with correct hex values matching tokens.css.ts; (2) type specimens display on dark duskBg with light duskText (confirm readable contrast); (3) duskTorch accent color is visible and distinct from duskText; (4) 'Reserved for Phase 5' label appears. Build succeeds and page is never linked from Nav or other routes."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Night-Gallery Colour Literal Sweep",
+        "description": "Replace all hardcoded old-palette hex/rgba literals with vars.color.* tokens across app/, components/, styles/",
+        "details": "Use Grep tool to search app/, components/, styles/, hooks/, lib/ for old night-gallery color literals: #0D0F14, #151820, #1E2330, #B8D4E8, #6A9AB8, #3D5A73, #E8EDF2, and rgba patterns like rgba(13,15,20, rgba(184,212,232, rgba(21,24,32. List every hit with file:line. For each hit, replace with the equivalent vars.color.* token per the mapping: #0D0F14 → vars.color.bg (or vars.color.sheetShadow for shadows), #151820 → vars.color.surface, #1E2330 → vars.color.border, #B8D4E8 → vars.color.accent (or vars.color.accentDim for dimmer uses), #6A9AB8 → vars.color.accentDim, #3D5A73 → vars.color.monoTag, #E8EDF2 → vars.color.textPrimary. TWO DOCUMENTED EXCEPTIONS (defer to later phases, leave as-is, note in commit message): (1) hooks/useBoids.ts and components/cursor/BoidsCanvas.tsx particle color literals (boids re-skin to ink is Phase 3); (2) canvas preview components (components/projects/previews/*Preview.tsx) — the ink re-draw is Phase 2. For DefaultPreview.tsx, ONLY change reduced-motion/background fallbacks if they reference the old surface color: replace with the literal '#F3ECD8' (canvas can't read vars, use a comment pointing at vars.color.surface). Known files to check: components/gallery/GalleryTrack.css.ts, components/projects/previews/DefaultPreview.tsx, app/projects/[slug]/page.css.ts, components/project-detail/IframeWrapper.css.ts, components/nav/Nav.css.ts, components/hero/Hero.css.ts, components/projects/ProjectCard.css.ts, components/gallery/ExhibitionPanel.css.ts. After replacements, run `pnpm test` (expect PASS), `pnpm build` (expect success), `pnpm dev` full-site visual pass: check /, /projects, and /projects/[slug] for no leftover dark-navy patches, text legible on parchment everywhere, status badges readable. Detail pages render in paper world for now (marble-dusk is Phase 5).",
+        "testStrategy": "All test suites pass. Build succeeds. Visual verification: /, /projects, and at least one detail page (/projects/skyhive or similar) show no old dark-navy colors, all text legible on parchment, status badges (verdigris/ochre) readable. Grep for old literals should return only the two documented exceptions (boids, canvas previews) with comments explaining deferral.",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          3,
+          6
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Audit and document all old-palette color literals",
+            "description": "Use Grep to comprehensively search app/, components/, styles/ for all old night-gallery color literals and create a complete file:line inventory",
+            "dependencies": [],
+            "details": "Run Grep searches for hex patterns (#0D0F14, #151820, #1E2330, #B8D4E8, #6A9AB8, #3D5A73, #E8EDF2) and rgba patterns (rgba(13,15,20, rgba(184,212,232, rgba(21,24,32). Document every hit with file:line reference. Exclude documented exceptions: hooks/useBoids.ts, components/cursor/BoidsCanvas.tsx, components/projects/previews/*Preview.tsx (except DefaultPreview.tsx reduced-motion fallback), docs/**, content/**, public/**. Expected files to fix: components/projects/ProjectCard.css.ts:41, components/hero/Hero.css.ts:31, components/nav/Nav.css.ts:20, components/gallery/ExhibitionPanel.css.ts:17,20,34,35,40,41, components/projects/previews/DefaultPreview.tsx:19,29,51,54. Create a mapping table showing old literal → new vars.color.* token for each occurrence.",
+            "status": "pending",
+            "testStrategy": "Visual review of grep output to ensure all application code files are covered and documented exceptions are properly excluded. Verify mapping table matches the Phase 0.1 specification."
+          },
+          {
+            "id": 2,
+            "title": "Replace rgba shadow literals in ProjectCard and Hero",
+            "description": "Update badge backdrop in ProjectCard.css.ts and text shadow in Hero.css.ts to use vars.color tokens",
+            "dependencies": [
+              1
+            ],
+            "details": "In components/projects/ProjectCard.css.ts:41, replace 'rgba(13, 15, 20, 0.55)' with a vars.color.sheetShadow token or construct from vars.color.bg if needed (note: new palette uses rgba(56,44,25,0.18) for sheetShadow). In components/hero/Hero.css.ts:31, replace '0 0 40px rgba(13, 15, 20, 0.4)' text shadow with equivalent using vars.color.sheetShadow or similar. Since the new palette's sheetShadow is lighter (0.18 alpha), assess if the shadow intensities need adjustment to maintain visual hierarchy on parchment background.",
+            "status": "pending",
+            "testStrategy": "Build succeeds. Visual check at /: hero title text shadow remains visible against parchment, project card badges have readable backdrop blur effect with new palette."
+          },
+          {
+            "id": 3,
+            "title": "Replace surface rgba in Nav.css.ts scrolled state",
+            "description": "Update Nav.css.ts navScrolled background to use vars.color.surface with appropriate alpha",
+            "dependencies": [
+              1
+            ],
+            "details": "In components/nav/Nav.css.ts:20, replace 'rgba(21, 24, 32, 0.95)' with vars.color.surface token. The new surface color is #F3ECD8 (parchment), so construct the rgba using the RGB values (243,236,216,0.95) or define a new token if needed. Ensure backdrop-filter blur (line 21) complements the new translucent parchment nav background.",
+            "status": "pending",
+            "testStrategy": "Scroll behavior test: scroll past hero on /, nav background should appear as translucent parchment (warm tone) with blur, text remains legible, brand and links visible."
+          },
+          {
+            "id": 4,
+            "title": "Replace all rgba literals in ExhibitionPanel.css.ts",
+            "description": "Update shadow and glass overlay rgba values in ExhibitionPanel to use vars.color tokens",
+            "dependencies": [
+              1
+            ],
+            "details": "In components/gallery/ExhibitionPanel.css.ts, replace: line 17 '0 8px 24px rgba(13, 15, 20, 0.6)' → use vars.color.sheetShadow with adjusted alpha, line 20 '0 12px 32px rgba(13, 15, 20, 0.8)' → stronger sheetShadow variant, line 34 'rgba(13, 15, 20, 0.15)' → glass background using vars.color.bg or sheetShadow, line 35 '1px solid rgba(184, 212, 232, 0.08)' → vars.color.accent with low alpha, line 40 'rgba(13, 15, 20, 0.06)' → hover glass background, line 41 'rgba(184, 212, 232, 0.14)' → hover border color using vars.color.accent. Since new palette is warm parchment-based, these overlays need to shift from cold blue-black to warm brown-based shadows.",
+            "status": "pending",
+            "testStrategy": "Visual check at /: gallery panels show warm-toned shadows and glass overlays, no cold blue tints. Hover state transitions smoothly. Panel text legible over previews."
+          },
+          {
+            "id": 5,
+            "title": "Update DefaultPreview.tsx fallback color and run full validation",
+            "description": "Replace DefaultPreview.tsx surface fallback with literal '#F3ECD8' and run comprehensive test suite and visual verification",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "In components/projects/previews/DefaultPreview.tsx:19, replace 'heroColour ?? \"#151820\"' with 'heroColour ?? \"#F3ECD8\"' (use literal because canvas cannot read CSS vars). Add a comment: '// Fallback to vars.color.surface (#F3ECD8) — canvas cannot read CSS custom properties'. Also update lines 29, 51 where colour is used for fillStyle, and line 54 where colour + '30' creates the dot overlay (ensure hex concatenation works with new 6-char hex). Run `pnpm test` (expect all pass), `pnpm build` (expect success), then `pnpm dev` for full-site visual pass: verify / (home), /projects (index), and at least one /projects/[slug] detail page show no leftover dark-navy patches, all text legible on parchment, status badges (verdigris/ochre) readable, no visual regressions. Grep for old literals again to confirm only documented exceptions remain.",
+            "status": "pending",
+            "testStrategy": "Automated: `pnpm test` all pass, `pnpm build` succeeds. Visual: /, /projects, /projects/skyhive or similar detail page render correctly in paper-world palette (parchment bg, iron-gall text, warm tones). No dark-navy remnants. Final grep for old hex/rgba patterns returns only documented exceptions (boids, canvas previews, docs, content, public assets)."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2026-07-05T21:59:01.091Z",
+      "updated": "2026-07-05T21:59:01.091Z",
+      "description": "Tasks for master context"
+    }
+  },
+  "roadmap-phase2-7": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Phase 2 — Ink Previews",
+        "description": "Re-skin the preview registry as self-drawing SVG/canvas line diagrams per project, with mirror-writing annotations and force arrows.",
+        "details": "STUB EPIC — not scoped for implementation. Builds on components/projects/previews/ and boidsMath. Needs its own plan/PRD before work starts. See docs/superpowers/specs/2026-07-02-living-codex-design.md Phase 2.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Phase 3 — Paper Physics & Ink Boids",
+        "description": "Cursor lift/flutter springs on gallery sheets; boids re-skin to ink particles with a flight-study-bird idle glyph.",
+        "details": "STUB EPIC — not scoped for implementation. Builds on useBoids, spec 03/04, and the scatter/TornSheet work from Phase 0-1 (master tag, Task 6 — Scatter Math & Manuscript ExhibitionPanel). Open question to resolve first: does a flight-study bird outline hold at 120 particles? Fallback is the Vitruvian circle-in-square. See docs/superpowers/specs/2026-07-02-living-codex-design.md Phase 3.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Phase 4 — The Tear Transition",
+        "description": "Procedural tear-mask animation + View Transition from the parchment home into the marble-dusk detail page; this is where the palette shift is sold.",
+        "details": "STUB EPIC — not scoped for implementation. Builds on components/page-transition/ and spec 06 (exit transitions). UNDECIDED renderer fork — see docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Implementation options — Tear, Overture & click-to-blow': (a) extend the DOM/SVG torn-edge path from Phase 0-1 (components/paper/tornEdge.ts) with the View Transition API, cheapest, no new deps; or (b) a real GPU fold/curl shader plane (R3F + drei shaderMaterial, or PixiJS/raw WebGL2 if Phase 7 isn't happening) using gl_FrontFacing to show paper on the front and marble on the back mid-fold — the technique the Nov 2025 Codrops case study actually uses. If (b) is chosen, the DOM/SVG path from (a) becomes the prefers-reduced-motion / low-end-hardware fallback, not a separate build. Also undecided if chosen: scroll choreography (GSAP+ScrollTrigger vs Theatre.js vs native CSS scroll-timeline vs Framer Motion's own scroll hooks), shader authoring (raw GLSL vs TSL), and marble/paper texture source (procedural noise vs baked PBR from Poly Haven, already the spec's committed asset source). See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'The Tear — signature transition' for the experience description.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Phase 5 — The Exhibit (detail page rebuild)",
+        "description": "Rebuild project detail pages: aedicula marble frame, ink-dissolve veil reveal, marginalia layout, embedTheme handshake, 'step inside' control.",
+        "details": "STUB EPIC — not scoped for implementation. Builds on components/project-detail/IframeWrapper. This is where the reserved marble-dusk tokens (duskBg/duskSurface/duskText/duskTorch) finally get used — cross-check against the Codex specimen page (Phase 0-1 master tag, Task 7 — Dual-World Codex Specimen Page) before wiring them in. See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Project pages — The Exhibit'.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Phase 6 — Atmosphere (post-processing + audio)",
+        "description": "Re-tune post-processing (paper-fibre grain, warm vignette, sepia grade) and wire up optional ambient audio.",
+        "details": "STUB EPIC — not scoped for implementation. Builds on spec 05 (grain/vignette shader) and spec 07 (audio: paper-and-stone loop, volume 0.15, default off, localStorage('museum-muted')). See docs/superpowers/specs/2026-07-02-living-codex-design.md Phase 6.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Phase 7 — Marble Hall (optional R3F)",
+        "description": "Full React Three Fiber marble hall scene: warm HDRI, marble PBR materials from the v2 brief's material table.",
+        "details": "STUB EPIC — optional, not scoped for implementation. Builds on spec 08 (R3F gallery). Material targets already locked in the v2 visual brief (Phase 0-1 Task 1): aged paper roughness 0.75-0.85, Greek marble roughness 0.15-0.25/transmission 0.1-0.2. HDRI preset still an open question. LINKED DECISION: whether this phase happens at all should be decided together with the Tear's (this tag, Task 3) renderer fork — if the Tear adopts R3F + drei shaderMaterial, this phase reuses the same renderer/scene graph; if the Tear stays DOM/SVG or goes PixiJS/raw WebGL2, this phase would need its own renderer setup from scratch. See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Implementation options — Tear, Overture & click-to-blow' and Phase 7.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "The Overture — Landing Entrance (proposed, unscheduled)",
+        "description": "Layered manuscript-over-backdrop intro on first load; scroll separates the sheets and converges them into one, handing off into the home gallery.",
+        "details": "STUB EPIC — proposed idea, not yet scheduled into the Phase 0-7 sequence and not scoped for implementation. See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'The Overture — landing entrance' for full description. DECIDED: backdrop is a wooden desk/table (not marble) — overture stays entirely in the paper world, no dusk palette spent early. DECIDED: the converged manuscript does not dissolve away — it becomes the seed for the project gallery itself, so this and Home — The Workbench read as one continuous scroll. NEW: a 'click-to-blow' gesture — clicking anywhere puffs air at the desk, scattering/fluttering the papers via the same mass/spring physics as the rest of the brief. UNDECIDED tech, see docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Implementation options — Tear, Overture & click-to-blow': scroll convergence choreography (GSAP+ScrollTrigger vs Theatre.js vs native CSS scroll-timeline vs Framer Motion's own scroll hooks, optionally Lenis for a shared velocity store) and click-to-blow physics (hand-rolled velocity integrator matching useBoids.ts vs matter.js/planck.js vs @react-three/rapier vs prototyping the gesture in Spline vs GSAP's paid physics plugins). Depends on Phase 0-1's scatter.ts/tornEdge.ts (master tag, Tasks 4 & 6) and benefits from Phase 3's physics groundwork (this tag, Task 2) before it reads well. Remaining open questions: is click-to-blow one-shot (kicks off the scroll sequence) or repeatable/ambient; its mobile/tap equivalent; an explicit exception to the brief's 900ms/no-simultaneous-animation constraint for this scroll-linked sequence; the mobile scroll adaptation.",
+        "testStrategy": "",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2026-07-05T22:00:10.190Z",
+      "updated": "2026-07-05T23:18:43.661Z",
+      "description": "Stub epics for Living Codex phases 2-7 — placeholders only, not scoped for implementation yet. Each gets its own PRD/plan when its turn comes."
+    }
+  }
+}

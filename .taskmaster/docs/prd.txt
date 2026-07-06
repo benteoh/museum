@@ -1,0 +1,77 @@
+<context>
+# Overview
+Museum of Little Things is re-skinning from its dark "night-gallery" theme to "The Living Codex" — a da Vinci manuscript + Greek marble aesthetic. Phase 0-1 covers the ground-layer rebrand: a v2 visual brief, a dual-world (parchment / marble-dusk) token palette, a Renaissance type system (Cinzel/EB Garamond/Caveat), procedural paper texture, a deterministic torn-edge sheet component, and the home gallery re-laid as strewn manuscript sheets. Later phases (ink previews, paper physics, the tear transition, exhibit detail pages, atmosphere, R3F marble hall) build on this ground layer but are out of scope for implementation now — they are captured here only as placeholder epics so the whole roadmap is visible in one tool.
+
+All colour flows through vanilla-extract tokens in `styles/tokens.css.ts`, so the rebrand is mostly a token-value swap; existing components re-skin automatically. New pure-math modules (`tornEdge.ts`, `scatter.ts`) generate deterministic torn-paper clip paths and sheet-scatter transforms; a `TornSheet` component applies them via SVG `clipPath` with `objectBoundingBox` units.
+
+# Core Features
+- **v2 Visual Brief** — rewritten `docs/superpowers/specs/visual-brief.md` with the locked dual-world palette, type system, and material targets. Doc only, stays uncommitted per user preference.
+- **Token & Type Rebrand** — `styles/tokens.css.ts` gets the parchment palette (bg/surface/border/ink/accent/status tokens) plus the reserved marble-dusk tokens; `app/layout.tsx` swaps in Cinzel/EB Garamond/Caveat/JetBrains Mono via `next/font/google`; `styles/typography.css.ts` adjusts heading weight for Cinzel (no 300 weight).
+- **Token contrast guard** — an automated WCAG contrast-ratio test over the new text/background token pairs. `textSecondary` on `bg` computes to ~4.76:1, barely over the 4.5:1 AA floor for normal text, so this needs a regression test, not a one-time eyeball check, or a future token tweak silently breaks legibility.
+- **Parchment Ground Texture** — `styles/global.css.ts` gets a procedural SVG fractalNoise paper-fibre layer plus a reading-desk vignette, alpha capped so contrast is unaffected.
+- **Torn-Edge Math** — `components/paper/tornEdge.ts`: a seeded PRNG (`mulberry32`), a string→seed hash (`hashSeed`, FNV-1a), and `tornEdgePath` producing a deterministic closed SVG path for a torn-paper outline, all pure and unit-tested.
+- **Foxing (age-spot) math** — a small companion pure function, seeded from the same PRNG, that returns a deterministic scatter of faint radial "foxing" spots (age/damp stains) per sheet. This is explicitly listed as a free procedural asset in the locked design doc's asset appendix but was never wired into a task — it's a real gap, and it reuses infrastructure Task 4 already builds, so the marginal cost is small.
+- **TornSheet Component** — `components/paper/TornSheet.tsx` clips children to the torn-edge path via a referenced SVG `clipPath`, deterministic per seed string (e.g. project slug). Includes a subtle inset "paper lip" shadow along the clip edge so the tear reads as a physical cut with depth, not a flat vector cutout, and (see Foxing above) renders the seeded foxing spots as a low-opacity overlay inside the clip.
+- **Scatter Math + Manuscript ExhibitionPanel** — `components/paper/scatter.ts` gives each gallery sheet a deterministic "strewn on a desk" rotation/offset by index; `ExhibitionPanel` swaps its glass-vitrine look for a manuscript sheet (torn edge, colophon caption strip, ink-annotation tags), replacing the old `rotateY` vitrine tilt.
+- **Dual-world Codex specimen page** — a small, unlinked `app/dev/tokens/page.tsx` that renders both the paper-world and marble-dusk swatches side by side, the full type system at a few sizes, and a live `TornSheet` demo. The marble-dusk tokens are reserved-but-unused until Phase 5; this page is the only place they're visible before then, so palette/type problems in the dusk world surface now instead of during Phase 5 integration. Never linked from nav; harmless to include in the static export.
+- **Old-Palette Colour Sweep** — every remaining hardcoded night-gallery hex/rgba literal in `app/`, `components/`, `styles/`, `hooks/`, `lib/` replaced with the equivalent `vars.color.*` token, with two documented exceptions (boids particle colour, canvas preview fallback fills) deferred to their own later phases.
+
+# User Experience
+No new user-facing flows in this slice — it's a re-skin of the existing home gallery and global chrome. The one dev-facing addition (the Codex specimen page) is for the site owner/implementer only, not visitors.
+
+# Placeholder roadmap (later phases, not implemented now)
+These exist only as stub epics for visibility; each will get its own detailed plan/PRD when its turn comes:
+- **Phase 2 — Ink previews:** self-drawing SVG/canvas line diagrams per project, mirror-writing annotations, force arrows.
+- **Phase 3 — Paper physics:** cursor lift/flutter springs on sheets; boids re-skin to ink particles with a flight-study-bird idle glyph (validate 120-particle legibility; fallback Vitruvian circle-in-square).
+- **Phase 4 — The Tear:** procedural tear-mask transition + View Transition into the marble-dusk detail page; this is where the palette shift is sold.
+- **Phase 5 — The Exhibit:** detail-page rebuild — aedicula frame, ink-dissolve veil reveal, marginalia layout, `embedTheme` handshake, "step inside" control.
+- **Phase 6 — Atmosphere:** re-tuned post-processing (paper-fibre grain, warm vignette, sepia grade), optional ambient audio.
+- **Phase 7 — Marble hall (optional):** full R3F scene, warm HDRI, marble PBR materials.
+</context>
+<PRD>
+# Technical Architecture
+- Next.js 16.2.7 (webpack, static export), React 19, vanilla-extract for styling tokens, framer-motion 12 for motion, Velite for MDX content, Vitest + Testing Library (jsdom) for tests, pnpm workspace.
+- Colour and font tokens live in `styles/tokens.css.ts` (`createGlobalTheme`) — the single source of truth every component consumes; no hardcoded hex is allowed outside that file (two documented, temporary exceptions for canvas-only code).
+- Torn-edge and scatter math are pure, seeded, DOM-free modules (`components/paper/tornEdge.ts`, `components/paper/scatter.ts`) so they're unit-testable without rendering; `TornSheet.tsx` is the only place that touches the DOM/SVG for clipping.
+- Fonts load via `next/font/google` with CSS variables, matching the existing pattern in `app/layout.tsx`; must re-verify against `node_modules/next/dist/docs/` since this Next version diverges from training-data defaults.
+- Foxing-spot data reuses `mulberry32` from `tornEdge.ts` rather than introducing a second PRNG — one seeded-randomness primitive for the whole paper module.
+- The Codex specimen page is a plain server-rendered route with no data dependencies, styled entirely from `vars.*`, so it can never drift from the tokens it's meant to QA.
+
+# Development Roadmap
+## Phase 0-1 (this PRD, fully scoped)
+1. Visual Brief v2 — doc rewrite only, uncommitted.
+2. Token & Type Rebrand — tokens.css.ts, layout.tsx font swap, typography.css.ts heading fix, plus a token-contrast regression test.
+3. Parchment Ground Texture — global.css.ts noise + vignette.
+4. Torn-Edge Math — tornEdge.ts (PRNG, hash, path) plus a foxing-spot function, both pure and tested.
+5. TornSheet Component — clip-path wrapper, paper-lip inset shadow, foxing overlay, tested.
+6. Scatter Math + Manuscript ExhibitionPanel — scatter.ts, ExhibitionPanel re-skin, tested.
+7. Dual-world Codex specimen page — dev-only route rendering both palettes, type system, and a TornSheet demo.
+8. Old-Palette Colour Sweep — grep-and-replace every remaining night-gallery literal for tokens, with two documented deferrals.
+
+## Later phases (stub epics only, no tasks generated beyond a single placeholder each)
+Phase 2 ink previews, Phase 3 paper physics, Phase 4 the tear, Phase 5 the exhibit, Phase 6 atmosphere, Phase 7 marble hall — as described above.
+
+# Logical Dependency Chain
+- Visual Brief v2 produces the exact hex/type values Token & Type Rebrand needs — must land first, even though it's doc-only.
+- Token & Type Rebrand must land before Parchment Ground Texture (needs `vars.color.bg`) and before anything else that reads `vars.*`.
+- Torn-Edge Math is a standalone pure module with no dependency on tokens — can be built in parallel with Token & Type Rebrand, but its consumers (TornSheet, the specimen page) need tokens for styling.
+- TornSheet Component depends on Torn-Edge Math (path/seed functions) and, for its lip shadow / foxing tint, on Token & Type Rebrand.
+- Scatter Math + Manuscript ExhibitionPanel depends on TornSheet Component, Torn-Edge Math's `mulberry32`, and tokens.
+- The Codex specimen page depends on Token & Type Rebrand (both palettes must exist) and TornSheet Component (for its live demo) — build it last among the component work so it can showcase everything else.
+- Old-Palette Colour Sweep must run last — it depends on every token being final so the grep-and-replace mapping doesn't need a second pass.
+- Get to something visible fast: after Token & Type Rebrand + Parchment Ground Texture land, the site already reads as "parchment, not night-gallery" even before torn edges exist — that's the earliest visible milestone.
+
+# Risks and Mitigations
+- **Font API drift:** this Next.js version may differ from training data for `next/font/google` — mitigated by reading `node_modules/next/dist/docs/` before writing the font swap (already a global constraint).
+- **Contrast regression:** `textSecondary` on `bg` sits close to the AA floor (~4.76:1) — mitigated by the token contrast guard test, which fails the build if a future palette tweak drops below 4.5:1.
+- **Torn-edge/foxing visual noise:** procedural jitter and foxing alpha must stay subtle (roughness ≤0.015 of the unit box; foxing alpha low) or sheets look damaged rather than aged — verify visually in `pnpm dev`, not just via unit test bounds.
+- **Scope creep into later phases:** ink previews, physics, and the tear transition are explicitly out of scope; the stub epics exist only for roadmap visibility and must not gain implementation tasks in this PRD's generation pass.
+- **Static export and the specimen page:** Next's static export pre-renders every route regardless of `NODE_ENV`, so "dev-only" here means "unlinked," not "absent from the build" — acceptable for a personal site, but must not leak dusk-world tokens as a linked/discoverable page.
+
+# Appendix
+- Reference plan: `docs/superpowers/plans/2026-07-02-living-codex-phase0-1.md` — contains exact code snippets, file-by-file diffs, and commit messages for every Phase 0-1 task; treat it as the implementation source of truth alongside this PRD.
+- Reference design spec: `docs/superpowers/specs/2026-07-02-living-codex-design.md` — locked art-direction decisions and the full phase roadmap (0-7).
+- Palette (paper world): bg `#E7DCC1`, surface `#F3ECD8`, border `#C7B693`, inkFaint `#9C8C6B`, textPrimary `#382C19`, textSecondary `#6B5C42`, accent `#8C4F32`, accentDim `#A97B5D`, monoTag `#7A5F38`, statusLive `#5F7E52`, statusWip `#B08A2E`, sheetShadow `rgba(56,44,25,0.18)`.
+- Palette (marble-dusk world, reserved): duskBg `#171310`, duskSurface `#221C15`, duskText `#E6DCC4`, duskTorch `#D89B54`.
+- Type: Cinzel (400/700, display), EB Garamond (400/500 + italic, body), Caveat (400, hand/annotations), JetBrains Mono (400, code, unchanged).
+</PRD>
