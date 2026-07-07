@@ -38,7 +38,7 @@ export const badge = style({
   gap: vars.space.px1,
   padding: `${vars.space.px1} ${vars.space.px2}`,
   borderRadius: '999px',
-  backgroundColor: 'rgba(13, 15, 20, 0.55)',
+  backgroundColor: vars.color.sheetShadow,
   backdropFilter: 'blur(6px)',
   fontFamily: vars.font.mono,
   fontSize: '0.6875rem',

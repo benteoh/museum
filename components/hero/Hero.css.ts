@@ -28,7 +28,7 @@ export const title = style({
   margin: 0,
   maxWidth: 'min(90vw, 60rem)',
   fontFamily: vars.font.display,
-  textShadow: '0 0 40px rgba(13, 15, 20, 0.4)',
+  textShadow: `0 0 40px ${vars.color.sheetShadow}`,
 })
 
 // Light, letter-spaced kicker line that sets up the main statement.

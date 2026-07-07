@@ -29,6 +29,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vanilla-extract/vite-plugin": "^5.2.4",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/ui": "^4.1.8",
     "eslint": "^9",
