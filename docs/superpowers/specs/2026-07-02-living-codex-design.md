@@ -103,6 +103,21 @@ New optional frontmatter flag `embedTheme: true` → the museum appends `?museum
 
 ---
 
+## The craft bar (applies to every phase)
+
+Standards that separate an award-level experience from a competent re-skin. Distilled from the Learning notes (`../Brain/Learning/Software Engineering/` — Motion Design Principles in 3D, Physics Feel and Interaction Design, Performance Budget Discipline, Material Language). Every phase plan is measured against these; they are acceptance criteria, not aspirations.
+
+1. **The entrance is a designed moment.** Nothing pops in. The home gallery's sheets *settle* onto the desk (staggered springs); later phases must choreograph their own first two seconds with the same care.
+2. **Anticipation and follow-through, always.** Primary motion gets a small counter-movement before it starts and secondary elements (shadows, children, particles) that stop *after* it stops. One uniform transform on a card is the tell of a template, not a world.
+3. **Weight = ~80–120ms.** Satisfying responses have a tiny delay that reads as mass, not lag. Springs stay inside the brief's locked range (stiffness 40–70, damping 18–24) unless a phase plan argues an exception.
+4. **Stable at any scroll position.** The user controls timing. Jump-scrolled instantly, paused halfway, interrupted mid-animation — every scroll-linked scene must be legible and unbroken at any point. Test the extremes explicitly.
+5. **The performance floor is executable, not prose.** One tested module (`lib/deviceTier.ts`, Phase 0-1) decides `full | reduced | static`; every animation consumer reads it. No component invents its own capability sniff.
+6. **Measured, never vibed.** Before a phase ships: a DevTools trace of its heaviest interaction at 4× CPU throttle, checked against the 60fps desktop / 30fps mid-range floor. Findings recorded; regressions filed as tasks, not accepted silently.
+7. **Nothing pristine.** Aged materials read as real because of imperfection — foxing, jitter, torn edges, per-tag rotation. Every new surface asks: what's its patina?
+8. **Staging: one subject per frame.** At any moment there is exactly one thing the viewer is meant to look at. If vignette, grain, scatter and an active sheet compete, something gets cut.
+
+---
+
 ## Phases (each shippable)
 
 | Phase | What | Builds on |
