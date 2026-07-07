@@ -1,21 +1,31 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
-import { Space_Grotesk, Instrument_Sans, JetBrains_Mono } from 'next/font/google'
+import { Cinzel, EB_Garamond, Caveat, JetBrains_Mono } from 'next/font/google'
 import { Nav } from '@/components/nav/Nav'
 import { BoidsCanvasWrapper } from '@/components/cursor/BoidsCanvasWrapper'
 import { PageTransition } from '@/components/page-transition/PageTransition'
 import '@/styles/global.css'
 import '@/styles/typography.css'
 
-const spaceGrotesk = Space_Grotesk({
+const cinzel = Cinzel({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  weight: ['400', '700'],
+  variable: '--font-cinzel',
   display: 'swap',
 })
 
-const instrumentSans = Instrument_Sans({
+const ebGaramond = EB_Garamond({
   subsets: ['latin'],
-  variable: '--font-instrument-sans',
+  weight: ['400', '500'],
+  style: ['normal', 'italic'],
+  variable: '--font-eb-garamond',
+  display: 'swap',
+})
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-caveat',
   display: 'swap',
 })
 
@@ -34,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
+      className={`${cinzel.variable} ${ebGaramond.variable} ${caveat.variable} ${jetbrainsMono.variable}`}
     >
       <body>
         <style>{`

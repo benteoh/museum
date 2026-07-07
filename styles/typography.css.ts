@@ -4,8 +4,9 @@ import { vars } from './tokens.css'
 
 globalStyle('h1, h2, h3, h4, h5, h6', {
   fontFamily: vars.font.display,
-  fontWeight: 300,
+  fontWeight: 400,
   lineHeight: 1.2,
+  letterSpacing: '0.02em',
   color: vars.color.textPrimary,
 })
 
