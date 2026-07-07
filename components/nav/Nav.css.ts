@@ -17,7 +17,7 @@ export const nav = style({
 })
 
 export const navScrolled = style({
-  backgroundColor: `rgba(21, 24, 32, 0.95)`,
+  backgroundColor: vars.color.surface,
   backdropFilter: 'blur(12px)',
 })
 

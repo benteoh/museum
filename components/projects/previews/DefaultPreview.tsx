@@ -16,7 +16,8 @@ export function DefaultPreview({ heroColour }: { heroColour?: string }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const colour = heroColour ?? '#151820'
+    // Canvas fill can't consume vars — literal mirrors vars.color.surface.
+    const colour = heroColour ?? '#F3ECD8'
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const resize = () => {
