@@ -2,52 +2,52 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/tokens.css'
 
+// drop-shadow (not box-shadow) so the shadow follows the torn clip outline.
 export const link = style({
   flex: '0 0 auto',
   display: 'block',
+  filter: `drop-shadow(0 10px 18px ${vars.color.sheetShadow})`,
+  transition: `filter 500ms ${vars.ease.out}`,
+  ':hover': {
+    filter: `drop-shadow(0 16px 28px ${vars.color.sheetShadow})`,
+  },
 })
 
-export const panel = style({
-  position: 'relative',
+export const sheetWrap = style({
   width: 'clamp(320px, 40vw, 560px)',
   height: '70vh',
-  borderRadius: '12px',
-  overflow: 'hidden',
-  backgroundColor: vars.color.surface,
-  boxShadow: '0 8px 24px rgba(13, 15, 20, 0.6)',
-  transition: `box-shadow 500ms ${vars.ease.out}`,
-  ':hover': {
-    boxShadow: '0 12px 32px rgba(13, 15, 20, 0.8)',
-  },
 })
 
-// Vitrine glass overlay.
-export const glass = style({
-  position: 'absolute',
-  inset: 0,
+// The manuscript sheet itself — clipped by TornSheet.
+export const sheet = style({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-end',
-  gap: vars.space.px2,
-  padding: vars.space.px6,
-  backdropFilter: 'blur(4px)',
-  background: 'rgba(13, 15, 20, 0.15)',
-  border: '1px solid rgba(184, 212, 232, 0.08)',
-  borderRadius: '12px',
-  transition: `background 500ms ${vars.ease.out}, border-color 500ms ${vars.ease.out}`,
-  selectors: {
-    [`${panel}:hover &`]: {
-      background: 'rgba(13, 15, 20, 0.06)',
-      borderColor: 'rgba(184, 212, 232, 0.14)',
-    },
-  },
+  width: '100%',
+  height: '100%',
+  backgroundColor: vars.color.surface,
+})
+
+// Preview area — the "plate" (illustration) on the sheet.
+export const plate = style({
+  position: 'relative',
+  flex: 1,
+  overflow: 'hidden',
+})
+
+// Caption strip beneath the plate, like a folio colophon.
+export const colophon = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: vars.space.px1,
+  padding: `${vars.space.px3} ${vars.space.px6} ${vars.space.px4}`,
+  borderTop: `1px solid ${vars.color.inkFaint}`,
 })
 
 export const title = style({
   fontFamily: vars.font.display,
-  fontSize: '1.75rem',
-  fontWeight: 500,
-  letterSpacing: '-0.02em',
+  fontSize: '1.25rem',
+  fontWeight: 400,
+  letterSpacing: '0.03em',
   color: vars.color.textPrimary,
 })
 
@@ -55,8 +55,7 @@ export const meta = style({
   display: 'flex',
   flexWrap: 'wrap',
   gap: vars.space.px2,
-  fontFamily: vars.font.mono,
-  fontSize: '0.6875rem',
-  letterSpacing: '0.04em',
+  fontFamily: vars.font.hand,
+  fontSize: '0.95rem',
   color: vars.color.monoTag,
 })
