@@ -21,12 +21,44 @@ export const desk = style({
 
 // ——— Revealed on the desk beneath the papers ———
 
+// The generated bird's-eye desk still — the ground the papers actually clear.
+export const deskStill = style({
+  position: 'absolute',
+  inset: 0,
+  zIndex: 0,
+})
+
+export const deskImage = style({
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  display: 'block',
+})
+
+// Gentle grade over the still: settles the bright bench top so the light
+// title reads, and warms the corners like the last of the window light.
+export const deskGrade = style({
+  position: 'absolute',
+  inset: 0,
+  background:
+    'linear-gradient(to bottom, rgba(23, 19, 16, 0.34) 0%, rgba(23, 19, 16, 0.10) 30%, rgba(23, 19, 16, 0) 55%), radial-gradient(ellipse 120% 90% at 50% 60%, rgba(23, 19, 16, 0) 55%, rgba(23, 19, 16, 0.30) 100%)',
+  pointerEvents: 'none',
+})
+
+export const titleStack = style({
+  position: 'absolute',
+  inset: 0,
+  zIndex: 1,
+  pointerEvents: 'none',
+})
+
 export const title = style({
   position: 'absolute',
   top: '11vh',
   left: 0,
   right: 0,
-  zIndex: 1,
   textAlign: 'center',
   fontFamily: vars.font.display,
   fontSize: 'clamp(2.8rem, 7vw, 6.5rem)',
@@ -37,18 +69,10 @@ export const title = style({
   pointerEvents: 'none',
 })
 
-export const curatorNote = style({
-  position: 'absolute',
-  bottom: '9vh',
-  left: '7vw',
-  zIndex: 1,
-  maxWidth: '30vw',
-  fontFamily: vars.font.hand,
-  fontSize: '1.4rem',
-  lineHeight: 1.4,
-  color: vars.color.textSecondary,
-  transform: 'rotate(-2deg)',
-  pointerEvents: 'none',
+// The palette hinge: same inscription, light-on-wood once the desk shows.
+export const titleLight = style({
+  color: vars.color.duskText,
+  textShadow: '0 2px 24px rgba(23, 19, 16, 0.55)',
 })
 
 // ——— Overture manuscripts (decorative, part on scroll) ———
