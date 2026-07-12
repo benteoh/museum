@@ -40,19 +40,36 @@ type TornEdgeOptions = {
  */
 export function tornEdgePath({ width, height, seed, roughness = 0.015, segments = 18 }: TornEdgeOptions): string {
   const rand = mulberry32(seed)
-  const jitter = (scale: number) => {
-    const r = (rand() * 2 - 1) * roughness * scale
-    return Math.max(-roughness * scale, Math.min(roughness * scale, r))
+  // Two octaves per edge: a slow coarse meander with fine per-point fuzz on
+  // top — many small tears riding a gentle wander, not uniform noise.
+  const edgeJitter = (scale: number): number[] => {
+    const amp = roughness * scale
+    const coarseCount = Math.max(2, Math.round(segments / 8) + 1)
+    const coarse = Array.from({ length: coarseCount }, () => (rand() * 2 - 1) * amp * 0.65)
+    const out: number[] = []
+    for (let i = 0; i < segments; i++) {
+      const t = (i / segments) * (coarseCount - 1)
+      const k = Math.floor(t)
+      const frac = t - k
+      const meander = coarse[k] * (1 - frac) + coarse[Math.min(k + 1, coarseCount - 1)] * frac
+      const fuzz = (rand() * 2 - 1) * amp * 0.35
+      out.push(Math.max(-amp, Math.min(amp, meander + fuzz)))
+    }
+    return out
   }
+  const top = edgeJitter(height)
+  const right = edgeJitter(width)
+  const bottom = edgeJitter(height)
+  const left = edgeJitter(width)
   const pts: Array<[number, number]> = []
   // top: left → right
-  for (let i = 0; i < segments; i++) pts.push([(i / segments) * width, jitter(height)])
+  for (let i = 0; i < segments; i++) pts.push([(i / segments) * width, top[i]])
   // right: top → bottom
-  for (let i = 0; i < segments; i++) pts.push([width + jitter(width), (i / segments) * height])
+  for (let i = 0; i < segments; i++) pts.push([width + right[i], (i / segments) * height])
   // bottom: right → left
-  for (let i = 0; i < segments; i++) pts.push([width - (i / segments) * width, height + jitter(height)])
+  for (let i = 0; i < segments; i++) pts.push([width - (i / segments) * width, height + bottom[i]])
   // left: bottom → top
-  for (let i = 0; i < segments; i++) pts.push([jitter(width), height - (i / segments) * height])
+  for (let i = 0; i < segments; i++) pts.push([left[i], height - (i / segments) * height])
 
   const [first, ...rest] = pts
   const fmt = (n: number) => Number(n.toFixed(4)).toString()
