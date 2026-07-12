@@ -1,5 +1,5 @@
-// components/lab/DeskScene.css.ts
-// LAB SKETCH — the Overture desk: parting manuscripts reveal the title.
+// components/overture/OvertureScene.css.ts
+// The Overture desk: parting manuscripts reveal the title on the desk still.
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/tokens.css'
 
@@ -127,13 +127,3 @@ export const rimImage = style({
   filter: 'brightness(1.28) saturate(0.45) contrast(0.88) blur(1.5px)',
 })
 
-// Lab-only affordance so we can talk about moments precisely.
-export const hint = style({
-  position: 'fixed',
-  right: vars.space.px4,
-  bottom: vars.space.px4,
-  zIndex: 200,
-  fontFamily: vars.font.mono,
-  fontSize: '0.75rem',
-  color: vars.color.textSecondary,
-})

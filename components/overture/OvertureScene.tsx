@@ -1,14 +1,13 @@
 'use client'
 
-// components/lab/DeskScene.tsx
-// LAB SKETCH — the Overture: huge decorative da Vinci-style manuscripts
-// layered over the desk, overflowing the viewport, pulling apart as you
-// scroll to physically reveal the title inked beneath. The sheets are set
-// dressing — they link to nothing.
-//
-// The project gallery that follows lives in VisionScene (glass frames over
-// the Florence vista — see 2026-07-11-vision-gallery-design.md). The old
-// pile-shuffle gallery this scene once contained is retired.
+// components/overture/OvertureScene.tsx
+// The Overture — the home page's opening movement. Huge da Vinci-style
+// manuscripts overflow the viewport and pull apart as you scroll, physically
+// clearing a real desk: the parchment ground crossfades to the bird's-eye
+// vision-desk still and the title goes light-on-wood with it. The sheets are
+// set dressing — they link to nothing. The Vision gallery follows (see
+// components/vision/VisionScene and the Vision Gallery revision in
+// docs/superpowers/specs/2026-07-02-living-codex-design.md).
 import { useRef } from 'react'
 import {
   motion,
@@ -21,7 +20,7 @@ import { TornSheet } from '@/components/paper/TornSheet'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
 import { InkSpots } from './InkSpots'
 import { StudyDrawing, type StudyVariant } from './StudyDrawing'
-import * as styles from './DeskScene.css'
+import * as styles from './OvertureScene.css'
 
 // Viewports of scroll the parting occupies, plus one settled rest viewport.
 const OVERTURE_UNITS = 2.5
@@ -114,7 +113,7 @@ function OvertureSheet({
   )
 }
 
-export function DeskScene({
+export function OvertureScene({
   title,
   assets = {},
 }: {
@@ -224,8 +223,6 @@ export function DeskScene({
           2026-07-02-living-codex-design.md, Vision Gallery revision. The scene
           unpins after the settled rest viewport above; the Lift will extend
           this section and take over between the rest beat and the Vision. */}
-
-      <div className={styles.hint}>overture · {tier}</div>
     </section>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
-// components/lab/InkSpots.tsx
-// LAB SKETCH — dancing ink: small iron-gall blots that drift and breathe
+// components/overture/InkSpots.tsx
+// Dancing ink: small iron-gall blots that drift and breathe
 // over a manuscript, multiplied into the paper. Deterministic per seed.
 import { useEffect, useRef } from 'react'
 import { mulberry32, hashSeed } from '@/components/paper/tornEdge'
