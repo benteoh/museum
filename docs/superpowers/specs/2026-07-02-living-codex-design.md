@@ -46,6 +46,8 @@ Before the workbench settles, the very first viewport shows depth: several manus
 - Mobile scroll adaptation: per the mobile rule below, no cursor-driven flutter/lift since that's desktop-only physics — scroll-driven separation itself should work natively.
 
 ### Home — The Workbench
+> **⚠ Superseded 2026-07-11 as the *project gallery* medium** — see the "2026-07-11 revision — The Vision Gallery" section below. Projects are no longer strewn manuscript sheets (they read as knockoffs of the overture's manuscripts); they become glassy floating frames over a golden-hour Florence vista, reached by a generated look-down → look-up camera move from the workbench. The overture (parting manuscripts) and everything below about paper *material* stands.
+
 Warm parchment ground. Featured projects are manuscript sheets strewn across the surface — rotated, overlapping, torn-edged (procedural SVG masks), casting soft shadows. Each sheet carries a self-drawing ink diagram (the existing preview registry, re-skinned). Cursor proximity makes sheets lift and flutter with mass (spring transforms on the existing gallery hooks).
 
 ### The Tear — signature transition
@@ -192,3 +194,107 @@ Not locked decisions — a menu of real options surfaced while researching tech/
 - [ ] Bird glyph target points: does the flight-study outline hold with 120 particles? Fallback: Vitruvian circle-in-square (Phase 3)
 - [ ] HDRI preset: which warm Poly Haven environment (Phase 0, needed only for Phase 7)
 - [ ] Which projects get traced SVG wireframes first (Phase 5)
+
+---
+
+## 2026-07-11 revision — The Vision Gallery
+
+**Status: agreed during lab iterations. Supersedes the strewn-pile "Workbench shuffle" as the project gallery medium. The Overture (parting manuscripts) is retained.**
+
+### Why the pivot
+
+The project sheets in the pile read as a cheap knockoff of the hero manuscripts — same medium, worse execution, competing with the thing they follow. Instead of improving them, the projects change medium entirely: **paper is his process; glass visions are what he imagined.** Projects stop being more paper and become the futures da Vinci saw.
+
+### The narrative spine
+
+The visitor is behind da Vinci's eyes. One continuous scroll:
+
+1. **The Overture** *(kept as built in the lab)* — huge manuscripts part and sweep away as you scroll. Change from the earlier seam design: ALL five sheets exit (the codex-atlanticus "lands on the pile" handoff is retired — there is no pile to seed). The parting reveals not a DOM desk but…
+2. **The Desk (looking down)** — a generated still, bird's-eye POV of his own workbench: black leather boots with buckle-shine from the setting sun, worn terracotta floor tiles, the empty well-used oak workbench. The stillness after the papers clear. Site title composited as DOM type over the still's reserved calm area (never baked into the image).
+3. **The Lift (looking up)** — he raises his gaze: generated video, camera tilting up from the boots/desk to the view from his Florentine home — fields, cypresses, the city and Duomo in golden-hour haze. *The parallel: Florence is where he trained; this site is where I build myself.* Curator line lives here, as a hand-note over the vista.
+4. **The Vision (the projects)** — over the settled horizon vista, the projects materialise as **glassy frames** — as he might have imagined them. A horizontal rail driven by continued vertical scroll, left to right. They float with a gentle cloud-like bobble (never cloud-shaped). Cursor movement over a pane feeds a **water ripple across the glass** — the scene's one signature interaction. Click: into the project detail (transition TBD — candidate: the ripple swells to fill the frame and washes into the live app, harmonising with the Exhibit veil's ink-dissolve).
+5. **Coda / invitation** — open; design when the rail feels right.
+
+### Medium & mechanics per beat
+
+| Beat | Material (generated) | Life (code) |
+|---|---|---|
+| Overture | 5 manuscript scans *(have — WebP in `public/lab/overture/`)* | Parting choreography, torn edges, ink spots *(built — `components/lab/DeskScene`)* |
+| The Desk | `vision-desk` still, 16:9 ≥2560px | DOM title overlay; entrance grade/vignette |
+| The Lift | `vision-tilt` video (4–6s, first/last frame conditioned on the two stills) | Scroll integration — see open question 1 |
+| The Vision | `vision-horizon` still as backdrop | Glass frames *(built — `components/lab/VisionScene`)*: liquid glass holding live `ProjectPreview`s; per-slug float personality; cursor tilt; movement-fed ripple displacement; chromatic edge split |
+
+**Asset-first token inversion:** the vista's colour tokens (`vista*` family, or reuse of `duskTorch`/`duskText`) get **sampled from the approved stills**, not decided beforehand — the generated material is the source of truth, tokens follow it.
+
+### Tier behaviour
+
+- `full` — video lift, bobbing frames, ripple.
+- `reduced` — stills crossfade in place of the video; frames static, ripple replaced by a simple glass highlight on hover.
+- `static` — `vision-horizon` still + static frame grid. No video ever downloads.
+
+### Mobile
+
+Vertical rail instead of horizontal; tilt video needs a 9:16 generation variant (or a centre-crop check); tap = bobble+ripple.
+
+### Promotion plan (two stages, gated on assets)
+
+- **Stage 1 — home becomes Overture + Vision** *(blocker: `vision-horizon` still only)*: rebuild `app/page.tsx` as `DeskScene` → `VisionScene`; Hero/CuratorLine/GalleryTrack/ExhibitionPanel/`scatter.ts` deleted; glass frames become real links with keyboard focus; mobile vertical rail; preload/LCP strategy; `reduced`/`static` QA; 4× CPU throttle trace; precision spec written from lab values; `/lab` deleted.
+- **Stage 2 — the Lift** *(blockers: `vision-desk` still + tilt video)*: inserts the looking-down beat and video transition between the two movements. Isolated by design — the risky video-scroll engineering never blocks stage 1.
+
+### Open questions (resolve in the lab, in this order)
+
+1. **How scroll drives the Lift.** Options: (a) scrubbed frame-sequence on canvas (~90 extracted frames — jump-scroll safe, but heavy), (b) play-once video triggered at a scroll threshold (light, but fights the scroll-owns-time principle), (c) reduced-tier crossfade promoted to all tiers if (a)/(b) both disappoint. Decide with a real video in hand.
+2. **Frame-to-detail transition** — ripple-wash into the app vs. the tear? The tear was designed for paper; glass may want its own verb. Must not orphan the Exhibit veil concept above.
+3. **Overture → Desk reveal** — do the parting papers reveal the still directly (parchment ground fades during the last parting beats), or is there a residual desk-DOM beat? Instinct: direct reveal, the still *is* the desk.
+4. **Title placement** — on the Desk still (beat 2) vs. carried into the vista. Instinct: title on the desk, curator note on the vista.
+5. **Rail density** — how many frames on screen; one-subject-per-frame staging under bobble motion.
+
+### What this retires / keeps
+
+- **Retired:** pile shuffle as project gallery; the atlanticus pile-seed seam; portrait "workbench project sheet with cartouche" asset plan.
+- **Kept:** the entire Overture (choreography, tears, ink, entrance settle); `TornSheet`/`tornEdge`/`InkSpots`; deviceTier gating.
+- **Unchanged:** detail pages (Exhibit/aedicula/veil), index (Codex), boids plan.
+
+Generation prompts for all Vision assets live in `overture-asset-prompts.md` (stills before video — the tilt video is conditioned on the two approved stills).
+
+---
+
+## Parked direction — Physical Paper (WebGL)
+
+**Status: agreed direction, deferred past the current phase (Overture + Vision promotion).**
+
+The route from "themed page" to "award page" for the hero manuscripts: paper becomes physically modelled in WebGL.
+
+### The four behaviours
+
+1. **Scroll pull-away** — scrolling applies force that peels sheets off the pile.
+2. **Bend / curl / fold** — sheets are flexible surfaces, not rigid rectangles.
+3. **Lighting on a flexing plane** — light responds to curvature; paper is flexible across its width but rigid lengthwise.
+4. **Cursor interaction** — nearby paper pushes away, springs back.
+
+### The critical implementation decision: procedural deformation, NOT cloth simulation
+
+A real cloth sim (position-based dynamics, constraint solving) is the trap: jittery, un-art-directable, expensive, and history-dependent (breaks craft-bar #4 — stable at any scroll position). Instead: **plane mesh deformed in the vertex shader by a handful of scalar parameters, each driven by springs** (locked range: stiffness 40–70, damping 18–24).
+
+- **Curl**: paper is a developable surface — bends around one axis at a time, rigid along its length (behaviour 3 exactly). Cylindrical bend in a vertex shader, ~10 lines. Inherently prevents fake-looking double-curves.
+- **Pull-away**: scroll velocity pins the leading edge; the body lags and curls behind it, like a page lifted off a stack.
+- **Cursor push**: radial field displacing nearby vertices, sprung return. Geometry analogue of the boids' cursor awareness.
+- **Lighting**: recompute normals on the bent surface + one warm directional (candle/lamp) → sheen travels across the page as it flexes. The payoff no 2D approach can imitate.
+
+Deterministic, art-directable per frame, ~5 sheets × 2k vertices (trivial), stable when jump-scrolled.
+
+### Scope discipline
+
+- **Overture only.** Hero sheets are decorative (no links, no live content) — perfect WebGL citizens. Interactive content stays DOM.
+- **The 2D DOM overture becomes the `reduced` tier**, not dead code. `full` → WebGL bending paper; `reduced` → DOM parting; `static` → settled composition. `lib/deviceTier.ts` already gates this.
+- **Tears migrate**: `tornEdgePath` renders to an alpha-mask texture (fibre rim bakeable in), so torn silhouettes and per-seed determinism survive.
+- **Assets carry over untouched**: the generated scans become mesh textures.
+
+### Cost & entry point
+
+New deps: `three`, `@react-three/fiber` (+ selective drei). Shader work is the skill-intensive part; several lab rounds. When resumed, start with a minimal spike: **one** sheet — scan texture, torn alpha mask, curl parameter, warm directional light, cursor push. Aligns with Phase 3 (paper physics) groundwork and de-risks Phase 7 (R3F marble hall).
+
+### Related, also parked
+
+- **Candlelight cursor reveal** (Lithos-style two-image soft mask): warm light following the cursor brightens parchment / reveals faint mirror-writing beneath drawings. Hold until base material lands (one-signature-mechanic rule).
+- **Click-to-blow** (see Overture section above): natural fit once the push-field exists.
