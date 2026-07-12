@@ -4,7 +4,7 @@
 // the panes (refraction, specular, sun-glow) sampled from the approved vista
 // still — documented exception to the tokens-only rule, alongside the
 // light-on-dark type cases (frameTitle, curatorNote base).
-import { style } from '@vanilla-extract/css'
+import { globalStyle, style } from '@vanilla-extract/css'
 import { vars } from '@/styles/tokens.css'
 
 export const section = style({
@@ -233,4 +233,10 @@ export const staticGrid = style({
   gap: vars.space.px8,
   padding: `${vars.space.px16} ${vars.space.px8}`,
   maxWidth: '1100px',
+})
+
+// Frame slots carry a viewport-relative width for the rail; inside the
+// static grid they must fill their column instead.
+globalStyle(`${staticGrid} > *`, {
+  width: '100%',
 })

@@ -45,6 +45,7 @@ function GlassFrame({
   const rawId = useId()
   const filterId = `ripple-${rawId.replace(/[^a-zA-Z0-9_-]/g, '')}`
   const dispRef = useRef<SVGFEDisplacementMapElement>(null)
+  const glassRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef(0)
 
   // Deterministic float personality per project.
@@ -91,14 +92,20 @@ function GlassFrame({
   const lastPosRef = useRef<{ x: number; y: number } | null>(null)
   const runningRef = useRef(false)
 
+  // The SVG filter is attached only while the water is moving: a resting
+  // pane with the filter applied still re-rasterises (backdrop blur and all)
+  // every frame because of the turbulence <animate>, which tanks the whole
+  // rail's frame rate — measured 16fps idle vs 60fps with it detached.
   const pump = () => {
     if (runningRef.current) return
     runningRef.current = true
+    glassRef.current?.style.setProperty('filter', `url(#${filterId})`)
     const tick = () => {
       energyRef.current *= 0.93
       if (energyRef.current < 0.12) {
         energyRef.current = 0
         dispRef.current?.setAttribute('scale', '0')
+        glassRef.current?.style.setProperty('filter', 'none')
         runningRef.current = false
         return
       }
@@ -157,12 +164,9 @@ function GlassFrame({
         onBlur={() => onHoverChange?.(false)}
       >
         <motion.div
+          ref={glassRef}
           className={styles.glass}
-          style={
-            tilt
-              ? { filter: `url(#${filterId})`, rotateX, rotateY, transformPerspective: 900 }
-              : { filter: `url(#${filterId})` }
-          }
+          style={tilt ? { rotateX, rotateY, transformPerspective: 900 } : undefined}
           onPointerMove={onPaneMove}
           onPointerLeave={onPaneLeave}
           onPointerDown={onPaneDown}
