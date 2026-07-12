@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Cinzel, EB_Garamond, Caveat, JetBrains_Mono } from 'next/font/google'
 import { Nav } from '@/components/nav/Nav'
 import { BoidsCanvasWrapper } from '@/components/cursor/BoidsCanvasWrapper'
+import { CursorDot } from '@/components/cursor/CursorDot'
 import { PageTransition } from '@/components/page-transition/PageTransition'
 import '@/styles/global.css'
 import '@/styles/typography.css'
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         `}</style>
         <BoidsCanvasWrapper />
+        <CursorDot />
         <Nav />
         <PageTransition>{children}</PageTransition>
       </body>

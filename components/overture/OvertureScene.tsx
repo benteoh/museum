@@ -8,9 +8,10 @@
 // set dressing — they link to nothing. The Vision gallery follows (see
 // components/vision/VisionScene and the Vision Gallery revision in
 // docs/superpowers/specs/2026-07-02-living-codex-design.md).
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   motion,
+  useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
@@ -18,6 +19,7 @@ import {
 } from 'framer-motion'
 import { TornSheet } from '@/components/paper/TornSheet'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
+import { useSceneStore } from '@/hooks/useScene'
 import { InkSpots } from './InkSpots'
 import { StudyDrawing, type StudyVariant } from './StudyDrawing'
 import * as styles from './OvertureScene.css'
@@ -150,6 +152,14 @@ export function OvertureScene({
 
   const animateEntrance = tier === 'full'
   const deskSrc = assets['vision-desk']
+
+  // Publish which world the viewport is in (paper atelier → dusk desk) so
+  // ambient layers — cursor, ink motes — can match their material.
+  const setScene = useSceneStore((s) => s.setScene)
+  useMotionValueEvent(overtureProgress, 'change', (p) => {
+    setScene(p > revealMid ? 'desk' : 'paper')
+  })
+  useEffect(() => () => setScene('paper'), [setScene])
 
   // Static tier renders the settled end state: papers cleared, title on the
   // desk, no pin — a single quiet viewport.

@@ -4,14 +4,24 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { useBoids } from '@/hooks/useBoids'
 import { useCursorUpdater } from '@/hooks/useCursor'
+import { useSceneStore, type SceneName } from '@/hooks/useScene'
 import * as styles from './BoidsCanvas.css'
 
 const BOID_COUNT = 120
 const BOID_RADIUS = 3
 const IDLE_MS = 3000
 
-// Per-group RGB — one hue per rock-paper-scissors group
-const GROUP_COLORS = ['184, 212, 232', '232, 196, 184', '196, 232, 200']
+// Per-group RGB, one hue per rock-paper-scissors group, keyed by scene.
+// Canvas fillStyle strings mirror tokens (documented exception): the paper
+// world writes in iron-gall ink (textPrimary / accent / monoTag); the dusk
+// scenes glint warm (duskText / duskTorch / a sun-glow sampled from the
+// vista still). The swap happens while the canvas is faded out, so the
+// motes simply *return* in the new world's material.
+const SCENE_COLORS: Record<SceneName, string[]> = {
+  paper: ['56, 44, 25', '140, 79, 50', '122, 95, 56'],
+  desk: ['230, 220, 196', '216, 155, 84', '255, 236, 190'],
+  vista: ['230, 220, 196', '216, 155, 84', '255, 236, 190'],
+}
 
 function buildCircleTargets(
   count: number,
@@ -77,11 +87,13 @@ export function BoidsCanvas() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+      const palette = SCENE_COLORS[useSceneStore.getState().scene]
+
       // Ghost trail — previous frame positions at low opacity
       for (const prev of prevBoidsRef.current) {
         ctx.beginPath()
         ctx.arc(prev.x, prev.y, BOID_RADIUS, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${GROUP_COLORS[prev.group] ?? GROUP_COLORS[0]}, 0.08)`
+        ctx.fillStyle = `rgba(${palette[prev.group] ?? palette[0]}, 0.08)`
         ctx.fill()
       }
 
@@ -102,7 +114,7 @@ export function BoidsCanvas() {
       for (const boid of boids) {
         ctx.beginPath()
         ctx.arc(boid.x, boid.y, BOID_RADIUS, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${GROUP_COLORS[boid.group] ?? GROUP_COLORS[0]}, ${boid.opacity})`
+        ctx.fillStyle = `rgba(${palette[boid.group] ?? palette[0]}, ${boid.opacity})`
         ctx.fill()
       }
 

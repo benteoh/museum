@@ -9,8 +9,9 @@
 // hand-note lives here, over the vista.
 import { useEffect, useId, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useGallery } from '@/hooks/useGallery'
+import { useSceneStore } from '@/hooks/useScene'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { mulberry32, hashSeed } from '@/components/paper/tornEdge'
 import { ProjectPreview } from '@/components/projects/ProjectPreview'
@@ -226,11 +227,23 @@ export function VisionScene({
   const [paneHovered, setPaneHovered] = useState(false)
   const animate = tier === 'full'
 
+  // Publish the vista to ambient layers while this section owns the
+  // viewport; above it is the desk beat, below it the parchment coda.
+  const setScene = useSceneStore((s) => s.setScene)
+  const { scrollYProgress: sceneProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 0.7', 'end 0.3'],
+  })
+  useMotionValueEvent(sceneProgress, 'change', (p) => {
+    setScene(p >= 1 ? 'paper' : p > 0 ? 'vista' : 'desk')
+  })
+  useEffect(() => () => setScene('paper'), [setScene])
+
   // Settled end state: the vista with a quiet grid of panes. No pin, no
   // motion — the composition the rail would come to rest on.
   if (tier === 'static') {
     return (
-      <section className={styles.staticSection}>
+      <section ref={sectionRef} className={styles.staticSection}>
         <Backdrop src={backdropSrc} />
         <div className={styles.grounding} />
         <div className={styles.staticGrid}>
@@ -247,7 +260,7 @@ export function VisionScene({
   // native scroll — the vista holds behind it, tap feeds the ripple, no tilt.
   if (isMobile) {
     return (
-      <section className={styles.stackSection}>
+      <section ref={sectionRef} className={styles.stackSection}>
         <div className={styles.stackBackdropHolder}>
           <div className={styles.stackBackdrop}>
             <Backdrop src={backdropSrc} />
