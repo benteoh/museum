@@ -9,7 +9,7 @@
         "testStrategy": "Manual verification: file exists at the path with complete content matching the locked design spec. No build/test required (doc-only). Verify file is NOT staged for commit.",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -17,7 +17,7 @@
             "description": "Write the complete v2 visual brief with all sections: Aesthetic-to-Constraint table, dual-world palette (paper + marble-dusk), Renaissance type system, material targets, camera personality, performance floor, audio, and mobile stance",
             "dependencies": [],
             "details": "Generate the full markdown content for the visual brief v2 as specified in the reference plan (docs/superpowers/plans/2026-07-02-living-codex-phase0-1.md Task 1, lines 56-133). Include: (1) Header with version 2.0, date 2026-07-02, and status superseding v1; (2) Aesthetic-to-Constraint table with 5 mood rows (Quiet, Archival, Heavy, Luxurious, Drawn) mapping sensory targets to constraints; (3) Dual-world palette section with paper world tokens (bg #E7DCC1, surface #F3ECD8, border #C7B693, inkFaint #9C8C6B, textPrimary #382C19, textSecondary #6B5C42, accent #8C4F32, accentDim #A97B5D, monoTag #7A5F38, statusLive #5F7E52, statusWip #B08A2E, sheetShadow rgba(56,44,25,0.18)) and marble-dusk reserved tokens (duskBg #171310, duskSurface #221C15, duskText #E6DCC4, duskTorch #D89B54) with role descriptions; (4) Type system table (Cinzel 400/700 display, EB Garamond 400/500+italic body, Caveat 400 annotations, JetBrains Mono 400 code); (5) Material targets for Phase 7 R3F (aged paper, Greek marble, torch light); (6) Camera personality, performance floor, audio, and mobile stance sections as specified in the reference content.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual inspection: verify the generated markdown content includes all required sections with exact hex values and structure matching lines 56-133 of the reference plan. No build/test required for content generation."
           },
           {
@@ -28,7 +28,7 @@
               1
             ],
             "details": "Use the Write tool to overwrite the existing file at docs/superpowers/specs/visual-brief.md (currently contains v1.0 from 2026-06-30 with night-gallery specs) with the complete v2 visual brief content generated in subtask 1. The file path is /home/benbe/Projects/museum/docs/superpowers/specs/visual-brief.md. This replaces the dark night-gallery aesthetic specifications (grain shader, frosted glass, studio HDRI) with the Living Codex parchment aesthetic (paper noise, torn edges, manuscript sheets, Renaissance type, dual-world palette). The new version is dated 2026-07-02 and explicitly supersedes v1.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "File existence verification: confirm docs/superpowers/specs/visual-brief.md exists and contains the v2 content with version 2.0 header, 2026-07-02 date, and Living Codex art direction statement. Verify all sections are present (Aesthetic-to-Constraint, Dual-World Palette, Type System, Material Targets, Camera, Performance, Audio, Mobile)."
           },
           {
@@ -39,7 +39,7 @@
               2
             ],
             "details": "Use the Read tool to read docs/superpowers/specs/visual-brief.md and verify the Dual-World Palette section contains: (1) Paper world table with 12 tokens (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow) each with correct hex value (e.g., bg #E7DCC1, surface #F3ECD8, textPrimary #382C19, sheetShadow rgba(56,44,25,0.18)) and role description (e.g., 'Parchment ground', 'Fresh sheet', 'Iron-gall ink'); (2) Marble-dusk world table with 4 reserved tokens (duskBg #171310, duskSurface #221C15, duskText #E6DCC4, duskTorch #D89B54) with role descriptions (e.g., 'Torch-lit hall', 'Warm marble white'). These exact values will be copied verbatim into styles/tokens.css.ts in Task 2 of the parent plan.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification: read the file and confirm all 16 color tokens (12 paper + 4 dusk) are present in the Dual-World Palette section with exact hex values matching the specification. Cross-reference with lines 74-99 of the reference plan to ensure no tokens are missing or have incorrect values."
           },
           {
@@ -50,7 +50,7 @@
               2
             ],
             "details": "Use the Read tool to read docs/superpowers/specs/visual-brief.md and verify the Type System section contains a table with 4 rows: (1) Display/headings: Cinzel, weights 400/700, rationale 'Based on Trajan's Column inscriptions — the marble voice'; (2) Body: EB Garamond, weights 400/500 + italic, rationale 'Renaissance bookface — the manuscript voice'; (3) Annotations/tags: Caveat, weight 400, rationale 'Hand-italic marginalia, used sparingly'; (4) Code: JetBrains Mono, weight 400, rationale 'Unchanged — code is code'. These exact font choices and weights will be implemented in app/layout.tsx via next/font/google in Task 2 of the parent plan.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification: read the file and confirm the Type System section contains all 4 font specifications with correct weights and rationales. Cross-reference with lines 101-109 of the reference plan to ensure the table structure and content match exactly."
           },
           {
@@ -61,7 +61,7 @@
               2
             ],
             "details": "Use the Bash tool to run 'git status --short docs/superpowers/specs/visual-brief.md' to check the file status. The file should show as untracked (status '??') or modified but unstaged (status ' M'). It must NOT show as staged for commit (status 'M ' or 'A '). According to the global constraints in the reference plan (line 14), spec and design docs stay uncommitted until the user explicitly says to commit them, while code commits are normal and frequent. This is a critical user preference that must be respected. If the file is accidentally staged, use 'git restore --staged docs/superpowers/specs/visual-brief.md' to unstage it.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Git status verification: run 'git status --short docs/superpowers/specs/visual-brief.md' and confirm output is either '?? docs/superpowers/specs/visual-brief.md' (untracked) or ' M docs/superpowers/specs/visual-brief.md' (modified, unstaged). Any other status (M , A , MM, etc.) indicates the file is staged, which violates the user preference."
           }
         ]
@@ -76,7 +76,7 @@
         "dependencies": [
           1
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -84,7 +84,7 @@
             "description": "Read Next.js documentation to confirm next/font/google API is compatible with version 16.2.7",
             "dependencies": [],
             "details": "Use Glob to search node_modules/next/dist/docs/ for font-related documentation. Read relevant files to verify that the next/font/google import and font configuration API (weights, subsets, variable, display properties) matches current Next.js 16.2.7. Confirm that Cinzel, EB_Garamond, Caveat, and JetBrains_Mono are supported Google Fonts that can be imported. Document any API changes or deprecations that affect the implementation.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Read documentation files and confirm API matches current Next.js version. No automated tests required for this research task."
           },
           {
@@ -95,7 +95,7 @@
               1
             ],
             "details": "Modify styles/tokens.css.ts (lines 5-16). Replace existing color values: bg: '#0D0F14' → '#F3ECD8' (warm parchment), surface: '#151820' → '#F8F1E3', border: '#1E2330' → '#D4C5A9', accent: '#B8D4E8' → '#5B8C7A' (verdigris), accentDim: '#6A9AB8' → '#7FA693', textPrimary: '#E8EDF2' → '#2B2419' (iron-gall ink), textSecondary: '#6B7280' → '#5C5247', monoTag: '#3D5A73' → '#6B6356', statusLive: '#4ADE80' → '#5B8C7A', statusWip: '#F59E0B' → '#D4A574' (ochre). Add new tokens: inkFaint: '#8B8173', sheetShadow: 'rgba(43, 36, 25, 0.08)'. Add reserved marble-dusk tokens (commented with note 'Reserved for future dark mode'): duskBg: '#1A1614', duskSurface: '#231E1C', duskText: '#E8DCC8', duskTorch: '#C89B5F'.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm build to verify CSS compilation succeeds. Visual check in browser that background is warm parchment color and text is dark."
           },
           {
@@ -107,7 +107,7 @@
               2
             ],
             "details": "Modify app/layout.tsx (lines 3, 10-26, 37). Remove Space_Grotesk and Instrument_Sans imports. Import Cinzel (weights 400/700), EB_Garamond (weights 400/500, styles ['normal', 'italic']), Caveat (weight 400), keep JetBrains_Mono. Create font constants: cinzel = Cinzel({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-cinzel', display: 'swap' }), ebGaramond = EB_Garamond({ subsets: ['latin'], weight: ['400', '500'], style: ['normal', 'italic'], variable: '--font-eb-garamond', display: 'swap' }), caveat = Caveat({ subsets: ['latin'], weight: '400', variable: '--font-caveat', display: 'swap' }). Update <html> className to include all four font variables. Modify styles/tokens.css.ts (lines 17-21): update font.display to 'var(--font-cinzel)', font.body to 'var(--font-eb-garamond)', add font.hand: 'var(--font-caveat)', keep font.mono: 'var(--font-jetbrains-mono)'.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm build to verify font loading succeeds. Visual check in browser that headings use Cinzel serif font and body text uses EB Garamond."
           },
           {
@@ -118,7 +118,7 @@
               3
             ],
             "details": "Modify styles/typography.css.ts (line 7). Change fontWeight from 300 to 400 because Cinzel does not include a 300 weight. Add letterSpacing: '0.02em' to the h1-h6 globalStyle to improve readability with the new serif display font. This gives the Cinzel headings slightly more breathing room between characters, which is appropriate for the classical museum aesthetic.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm build to verify CSS compilation. Visual verification that headings render correctly with weight 400 and subtle letter spacing."
           },
           {
@@ -129,7 +129,7 @@
               2
             ],
             "details": "Create tests/tokens/contrast.test.ts. Import vitest describe/it/expect. Define WCAG contrast formula: relativeLuminance(rgb) = for each channel: if c ≤ 0.03928 then c/12.92 else ((c+0.055)/1.055)^2.4, then L = 0.2126*R + 0.7152*G + 0.0722*B. contrastRatio(L1, L2) = (max(L1,L2) + 0.05) / (min(L1,L2) + 0.05). Parse hex colors from tokens (textSecondary '#5C5247' and bg '#F3ECD8') to RGB, compute contrast ratio, assert ≥4.5 (WCAG AA). Expected ratio is ~4.76:1 per brief. Test should also verify textPrimary '#2B2419' on bg (expected ~13:1, well above threshold). Create a test directory tests/tokens/ to organize this test alongside the existing test structure.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm test and verify contrast.test.ts passes with both textSecondary/bg (≥4.5:1) and textPrimary/bg assertions. This automated test becomes part of the continuous integration suite."
           }
         ]
@@ -144,7 +144,7 @@
         "dependencies": [
           2
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -152,7 +152,7 @@
             "description": "Create the SVG fractalNoise data-URI string with proper filter parameters and color matrix for warm paper fibers",
             "dependencies": [],
             "details": "In `styles/global.css.ts`, above the `globalStyle('body', ...)` call (line 15), define a const `paperNoise` containing the data-URI SVG string. The SVG must be 240x240px with a `<filter id='n'>` containing: (1) `<feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/>` for tiled procedural noise, and (2) `<feColorMatrix type='matrix' values='0 0 0 0 0.30 0 0 0 0 0.24 0 0 0 0 0.13 0 0 0 0.05 0'/>` to produce warm fibre tint (roughly rgba(77, 61, 33, 0.05)) within the alpha ≤0.06 constraint from the visual brief. Apply the filter to a 240x240 rect. Wrap in `url(\"data:image/svg+xml;utf8,...\")` format. Add comment: '// Procedural paper fibre — SVG fractalNoise, tiled. Alpha kept ≤0.06 per the visual brief so text contrast is unaffected.'",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify const declaration compiles without TypeScript errors. Confirm data-URI string is properly escaped for vanilla-extract consumption (no syntax errors when building)."
           },
           {
@@ -163,7 +163,7 @@
               1
             ],
             "details": "In the same file, create a second const or inline string for the reading-desk vignette: `radial-gradient(ellipse at 50% 40%, rgba(243, 236, 216, 0.55) 0%, rgba(56, 44, 25, 0.08) 100%)`. This creates an elliptical gradient positioned slightly above center (40% vertical) with a warm parchment-toned highlight (rgba(243,236,216,0.55)) fading to a darker brown edge (rgba(56,44,25,0.08)). The gradient will layer beneath the noise to simulate overhead desk lighting on aged paper.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify gradient string syntax is valid CSS. Confirm colors match the specified rgba values from the reference plan (Task 3 in 2026-07-02-living-codex-phase0-1.md)."
           },
           {
@@ -175,7 +175,7 @@
               2
             ],
             "details": "Update the `globalStyle('body', { ... })` call at line 15 in `styles/global.css.ts`. Keep all existing properties (backgroundColor: vars.color.bg, color: vars.color.textPrimary, fontFamily: vars.font.body, lineHeight: '1.6', overflowX: 'hidden', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale'). Add a new `backgroundImage` property set to `${paperNoise}, radial-gradient(ellipse at 50% 40%, rgba(243, 236, 216, 0.55) 0%, rgba(56, 44, 25, 0.08) 100%)`. CSS layers backgrounds left-to-right, so paperNoise renders on top of the vignette. The backgroundColor (vars.color.bg, will be #E7DCC1 after Task 2) shows through as the base parchment tone.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run `pnpm dev` and visually verify in browser at / that: (1) subtle grain/noise is visible over the background, (2) warm vignette effect is present (brighter center, darker edges), (3) all existing body styles still apply (correct font, text color, smooth scrolling). Confirm no CSS syntax errors in browser console."
           },
           {
@@ -186,7 +186,7 @@
               3
             ],
             "details": "In `pnpm dev` environment, navigate to / (home page) and at least one other text-heavy route (e.g., /projects or a project detail page). Set browser zoom to exactly 100%. Verify: (1) Paper noise grain is visible but subtle—should look like real paper fibers, not distracting visual noise. (2) Warm vignette creates a 'reading desk' effect with brighter center and naturally darker edges. (3) All body text (vars.color.textPrimary, will be #382C19 iron-gall after Task 2) remains comfortably legible against the textured background. The alpha ≤0.06 constraint in the noise filter ensures the texture doesn't compromise readability. (4) No jarring tiling seams in the noise pattern (stitchTiles='stitch' ensures seamless repeat). Check both light and dark text areas.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual visual inspection in Chrome/Firefox at 100% zoom. Text must meet WCAG AA contrast requirements (will be validated in Task 2's automated test). Noise should be perceptible but not obtrusive. Take a screenshot if needed to compare before/after."
           },
           {
@@ -197,7 +197,7 @@
               3
             ],
             "details": "Run `pnpm build` to execute the full production build. vanilla-extract will compile `styles/global.css.ts` and extract CSS. Verify: (1) Build completes without errors (no vanilla-extract compilation failures, no CSS syntax errors). (2) Check the build output (`.next/` directory or wherever compiled CSS lives) to confirm the data-URI SVG and gradient are properly inlined into the generated CSS—no broken escaping or mangled strings. (3) Optionally run `pnpm start` or deploy to preview environment to confirm production build renders the texture correctly in a real serving scenario (not just dev server). The data-URI format with utf8 encoding and proper quote escaping should pass through vanilla-extract cleanly.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Build must succeed with zero errors. Inspect generated CSS files to verify backgroundImage property contains both the data-URI (starting with url(\"data:image/svg+xml;utf8,<svg...\")) and the gradient. If build fails, check for quote escaping issues in the SVG string or vanilla-extract compatibility with data-URIs."
           }
         ]
@@ -212,7 +212,7 @@
         "dependencies": [
           2
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -220,7 +220,7 @@
             "description": "Create the components/paper directory structure and implement the mulberry32 deterministic PRNG function that returns values in [0, 1)",
             "dependencies": [],
             "details": "Create `components/paper/tornEdge.ts` as a new TypeScript module. Implement the `mulberry32(seed: number): () => number` function using the mulberry32 algorithm. The function should take a 32-bit unsigned integer seed and return a closure that generates deterministic pseudo-random numbers in the range [0, 1) when called. This PRNG will be used by all other functions in the module to ensure deterministic, seed-based randomness for torn edges and foxing spots. The implementation should follow the standard mulberry32 algorithm with proper state management inside the closure.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification that the function exists and returns a callable PRNG. Full testing will be done in subtask 5 with unit tests for determinism and range validation."
           },
           {
@@ -231,7 +231,7 @@
               1
             ],
             "details": "In `components/paper/tornEdge.ts`, implement `hashSeed(s: string): number` using the FNV-1a hash algorithm. The function should convert any string (e.g., a project slug like 'museum-of-little-things') into a deterministic unsigned 32-bit integer seed suitable for passing to mulberry32. Use FNV-1a constants: offset basis 2166136261, prime 16777619. Process each character code, applying XOR and multiplication, then convert the final result to unsigned 32-bit integer using `>>> 0`. This allows the same string to always produce the same seed, ensuring visual consistency across renders.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification that the function exists and returns consistent uint32 values. Full testing in subtask 5 will verify determinism and output range."
           },
           {
@@ -243,7 +243,7 @@
               2
             ],
             "details": "In `components/paper/tornEdge.ts`, implement `tornEdgePath(opts: {width: number, height: number, seed: number, roughness?: number, segments?: number}): string`. Default roughness to 0.015, segments to 18. Use mulberry32(seed) to create a PRNG. Generate a closed SVG path string starting with 'M' and ending with 'Z' that traces the box perimeter (top L→R, right T→B, bottom R→L, left B→T). For each of the 4 edges, create `segments` points with perpendicular jitter controlled by roughness. Clamp all points to [-roughness, size+roughness] range. When width/height = 1, the path works in objectBoundingBox units for SVG clipPath. Return the complete path string suitable for use in SVG path d attribute.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification that function generates valid SVG path strings. Full testing in subtask 5 will verify determinism, path format (M...Z), coordinate bounds, and point count."
           },
           {
@@ -255,7 +255,7 @@
               2
             ],
             "details": "In `components/paper/tornEdge.ts`, implement `foxingSpots(opts: {width: number, height: number, seed: number, count?: number}): Array<{x: number, y: number, r: number, opacity: number}>`. Default count to a random value between 3-6 (seeded). Use mulberry32(seed) to create a PRNG. Generate `count` spots with: x and y positions within [0, width] and [0, height]; radius r between ~0.02-0.05 of the box dimensions; opacity between ~0.03-0.08 for subtle foxing effect. All values must be deterministic based on seed. These spots will be rendered as radial gradients to create aged-paper texture overlays. The function provides procedural asset generation as specified in the design doc appendix.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification that function returns array of spot objects with correct properties. Full testing in subtask 5 will verify determinism, bounds checking, and count range."
           },
           {
@@ -269,7 +269,7 @@
               4
             ],
             "details": "Create `tests/components/paper/tornEdge.test.ts` following the existing test pattern from `tests/components/projects/previews/boidsMath.test.ts`. Import functions from '@/components/paper/tornEdge'. Write test suites for: (1) mulberry32 - test that same seed produces same sequence, output is always in [0, 1), different seeds produce different sequences; (2) hashSeed - test determinism (same string → same number), output is uint32 (0 to 2^32-1), different strings produce different hashes; (3) tornEdgePath - test determinism per seed, seed variance, path format (starts with M, ends with Z, is a closed path), coordinate bounds respect roughness parameter, point count = 4*segments; (4) foxingSpots - test determinism per seed, spot count in expected range, x/y within width/height, r and opacity in expected ranges. Run `pnpm test tests/components/paper/tornEdge.test.ts` to verify all tests PASS.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Execute `pnpm test tests/components/paper/tornEdge.test.ts` and verify all test suites pass. All functions must demonstrate determinism (same inputs → same outputs), correct output types, and values within specified bounds. Tests must be pure and DOM-free, matching the vitest.config.ts setup."
           }
         ]
@@ -285,7 +285,7 @@
           2,
           4
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -293,7 +293,7 @@
             "description": "Create the core TornSheet.tsx client component with useId for unique clipPath IDs and useMemo for deterministic path generation",
             "dependencies": [],
             "details": "Create `components/paper/TornSheet.tsx` as a client component with 'use client' directive. Define props interface `{ seed: string; className?: string; children: React.ReactNode }`. Use React.useId() to generate a unique clipPath ID and sanitize it by removing colons (replace ':' with '_') to ensure SVG compatibility. Use useMemo to call `tornEdgePath({ width: 1, height: 1, seed: hashSeed(seed) })` and `foxingSpots({ width: 1, height: 1, seed: hashSeed(seed) + 1 })`, importing these functions from `./tornEdge`. The component returns a div with inline style `{{ clipPath: 'url(#' + sanitizedId + ')' }}` and will contain the children plus SVG defs (to be added in next subtask).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification that component compiles and can be imported. Full testing will happen in subtask 4 after styles and foxing are integrated."
           },
           {
@@ -304,7 +304,7 @@
               1
             ],
             "details": "Within the TornSheet component's returned div, add an inline `<svg>` element with `aria-hidden=\"true\"` and `style={{ position: 'absolute', width: 0, height: 0 }}`. Inside the SVG, add `<defs><clipPath id={sanitizedId} clipPathUnits=\"objectBoundingBox\"><path d={tornPath} /></clipPath></defs>`. The clipPathUnits=\"objectBoundingBox\" ensures the path (normalized to 0-1 range) scales with the container. The tornPath comes from the useMemo hook defined in subtask 1.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify in browser DevTools that the SVG clipPath element exists in DOM with correct id and clipPathUnits attribute, and that the parent div references it via style.clipPath."
           },
           {
@@ -315,7 +315,7 @@
               1
             ],
             "details": "Create `components/paper/TornSheet.css.ts`. Import `style` from '@vanilla-extract/css' and `vars` from '@/styles/tokens.css'. Define `export const root = style({ position: 'relative', width: '100%', height: '100%' })` for the main container. Define `export const svgDefs = style({ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' })` for the hidden SVG. Define `export const paperLip = style({ position: 'absolute', inset: 0, pointerEvents: 'none', boxShadow: 'inset 0 0 12px 2px rgba(56, 44, 25, 0.18)' })` to create the subtle depth shadow along clipped edges using the sheetShadow color from the paper-world palette (will reference vars.color.sheetShadow once tokens are updated). Define `export const foxingLayer = style({ position: 'absolute', inset: 0, pointerEvents: 'none' })` for the container that will hold foxing spot divs.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm build to verify vanilla-extract compilation succeeds with no errors. Styles will be visually verified in subtask 5."
           },
           {
@@ -327,7 +327,7 @@
               3
             ],
             "details": "In TornSheet.tsx, after the inline SVG and before the children, add a div with className={styles.foxingLayer}. Inside this div, map over the foxingSpots array (from useMemo) and render a div for each spot with key={i}, inline style setting position: 'absolute', left: `${spot.x * 100}%`, top: `${spot.y * 100}%`, width: `${spot.radius * 200}%` (diameter in percentage), height: `${spot.radius * 200}%`, transform: 'translate(-50%, -50%)', borderRadius: '50%', background: 'radial-gradient(circle, rgba(156, 140, 107, 0.06) 0%, transparent 70%)', pointerEvents: 'none'. The color rgba(156,140,107,0.06) corresponds to inkFaint at ~6% opacity per the visual brief constraint for aged-parchment foxing. After the foxing layer, add the paper-lip shadow div with className={styles.paperLip}, then finally render {children}.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual inspection in browser: subtle brownish spots should appear at deterministic positions matching the seed, with low opacity not obscuring text. Verify same seed produces same pattern."
           },
           {
@@ -338,7 +338,7 @@
               4
             ],
             "details": "Create `tests/components/paper/TornSheet.test.tsx`. Import describe, it, expect from 'vitest', render, screen from '@testing-library/react', and TornSheet from '@/components/paper/TornSheet'. Write test suite with: (1) 'renders children' - render TornSheet with test child text, verify screen.getByText finds it; (2) 'creates SVG clipPath with objectBoundingBox units' - render component, query for clipPath element, verify clipPathUnits=\"objectBoundingBox\" and path d attribute is non-empty; (3) 'applies clipPath to container via inline style' - render, get container element, verify style.clipPath matches pattern 'url(#...)'; (4) 'same seed produces same torn path' - render two instances with same seed='test-seed', extract both clipPath path d values, expect them to be identical; (5) 'different seeds produce different paths' - render with seed='a' and seed='b', extract path d values, expect them to differ; (6) 'renders foxing spots' - render component, query container for child divs with radial-gradient background (use getAllByRole or container.querySelectorAll), verify at least one foxing spot exists. Run `pnpm test tests/components/paper/TornSheet.test.tsx` and verify all tests PASS.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Command: `pnpm test tests/components/paper/TornSheet.test.tsx`. All tests must pass with no errors or warnings. Tests confirm clipPath generation, determinism, and foxing overlay rendering work as specified."
           }
         ]
@@ -347,7 +347,7 @@
         "id": 6,
         "title": "Scatter Math & Manuscript ExhibitionPanel",
         "description": "Create scatter.ts for desk-scatter transforms, re-skin ExhibitionPanel with TornSheet and manuscript styling",
-        "details": "Create `components/paper/scatter.ts` (pure module). Export `sheetScatter(index: number): {rotate: number, dx: number, dy: number}`. Use `mulberry32((index+1)*7919)` to get a seeded PRNG per index. Return rotate in ±3.5°, dx in ±12px, dy in ±16px — deterministic \"strewn on a desk\" transforms. Create `tests/components/paper/scatter.test.ts` verifying determinism per index, variance across indices, and bounds for the first 50 indices. Run test to verify PASS. Rewrite `components/gallery/ExhibitionPanel.css.ts`: replace the old glass-vitrine styles with manuscript-sheet styles using vars.color.surface (sheet bg), vars.color.inkFaint (border), vars.color.textPrimary/monoTag (text/tags), vars.font.display (title), vars.font.hand (tags), vars.color.sheetShadow (drop-shadow, not box-shadow, to follow torn clip). Define link (drop-shadow filter with hover lift), sheetWrap (clamp width 320px-560px, height 70vh), sheet (flex column, surface bg), plate (flex-1 preview area), colophon (caption strip with border-top, padding, gap). Rewrite `components/gallery/ExhibitionPanel.tsx`: import TornSheet, sheetScatter. Replace the old rotateY vitrine tilt with the 2D scatter. On motion.article, animate `{ rotate: isActive ? scatter.rotate*0.3 : scatter.rotate, x: scatter.dx, y: scatter.dy, scale: isActive ? 1.03 : 1 }`. Wrap the sheet content in <TornSheet seed={project.slug}>. The sheet div contains: (1) a `plate` div with <ProjectPreview> (unchanged props); (2) a `colophon` div with the title (h3) and tags (meta spans). ExhibitionPanelSkeleton uses the same structure with <Skeleton>. GalleryTrack.tsx is UNTOUCHED (props unchanged). CRAFT HOOK for Tasks 10/11: keep the drop-shadow filter transition declared as its own transition property (not lumped into an `all` transition with the transform) — Task 11 deliberately gives the shadow a longer duration than the lift so it trails (secondary motion), and Task 10 layers the entrance animation on the same motion.article; structure the styles so both can adjust timing per-property without refactoring. Run `pnpm test` (expect PASS for all suites including existing galleryMath, resolvePreview, useBoids), `pnpm build` (expect success), `pnpm dev` visual check: home gallery shows torn-edged sheets on parchment with individual rotation/offset, active sheet straightens slightly and scales up.",
+        "details": "Create `components/paper/scatter.ts` (pure module). Export `sheetScatter(index: number): {rotate: number, dx: number, dy: number}`. Use `mulberry32((index+1)*7919)` to get a seeded PRNG per index. Return rotate in ±3.5°, dx in ±12px, dy in ±16px — deterministic \"strewn on a desk\" transforms. Create `tests/components/paper/scatter.test.ts` verifying determinism per index, variance across indices, and bounds for the first 50 indices. Run test to verify PASS. Rewrite `components/gallery/ExhibitionPanel.css.ts`: replace the old glass-vitrine styles with manuscript-sheet styles using vars.color.surface (sheet bg), vars.color.inkFaint (border), vars.color.textPrimary/monoTag (text/tags), vars.font.display (title), vars.font.hand (tags), vars.color.sheetShadow (drop-shadow, not box-shadow, to follow torn clip). Define link (drop-shadow filter with hover lift), sheetWrap (clamp width 320px-560px, height 70vh), sheet (flex column, surface bg), plate (flex-1 preview area), colophon (caption strip with border-top, padding, gap). Rewrite `components/gallery/ExhibitionPanel.tsx`: import TornSheet, sheetScatter. Replace the old rotateY vitrine tilt with the 2D scatter. On motion.article, animate `{ rotate: isActive ? scatter.rotate*0.3 : scatter.rotate, x: scatter.dx, y: scatter.dy, scale: isActive ? 1.03 : 1 }`. Wrap the sheet content in <TornSheet seed={project.slug}>. The sheet div contains: (1) a `plate` div with <ProjectPreview> (unchanged props); (2) a `colophon` div with the title (h3) and tags (meta spans). ExhibitionPanelSkeleton uses the same structure with <Skeleton>. GalleryTrack.tsx is UNTOUCHED (props unchanged). CRAFT HOOK for Tasks 10/11: keep the drop-shadow filter transition declared as its own transition property (not lumped into an `all` transition with the transform) — Task 11 deliberately gives the shadow a longer duration than the lift so it trails (secondary motion), and Task 10 layers the entrance animation on the same motion.article; structure the styles so both can adjust timing per-property without refactoring. Run `pnpm test` (expect PASS for all suites including existing galleryMath, resolvePreview, useBoids), `pnpm build` (expect success), `pnpm dev` visual check: home gallery shows torn-edged sheets on parchment with individual rotation/offset, active sheet straightens slightly and scales up.\n\n[2026-07-12] Shipped, then superseded: scatter/ExhibitionPanel were built and later replaced by the Vision Gallery glass frames (2026-07-12 Vision home promotion); scatter.ts and ExhibitionPanel deleted with the old home.",
         "testStrategy": "Unit tests for scatter (determinism, bounds). All existing test suites pass. Build succeeds. Visual verification: home gallery (/) shows manuscript sheets with torn edges, desk scatter (slight rotation/offset per sheet), active sheet animates (straightens, scales). Foxing spots visible on sheets. Dark canvas previews acceptable (Phase 2 will re-skin them to ink).",
         "priority": "medium",
         "dependencies": [
@@ -355,7 +355,7 @@
           4,
           5
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -363,7 +363,7 @@
             "description": "Implement the pure scatter math module that generates deterministic 2D transforms for desk-scatter effect using seeded PRNG",
             "dependencies": [],
             "details": "Create `components/paper/scatter.ts` as a pure module. Implement `mulberry32(seed: number)` PRNG function that returns a deterministic random generator. Export `sheetScatter(index: number): {rotate: number, dx: number, dy: number}` function that uses `mulberry32((index+1)*7919)` to get a seeded PRNG per index. Generate rotate in range ±3.5°, dx in range ±12px, dy in range ±16px. The transforms must be deterministic (same index always produces same output) to create a stable \"strewn on a desk\" visual effect. Pattern follows the existing `boidsMath.ts` pure module structure.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Unit tests verify: (1) determinism - same index produces identical output across calls, (2) variance - different indices produce different transforms, (3) bounds - all values stay within specified ranges for first 50 indices"
           },
           {
@@ -374,7 +374,7 @@
               1
             ],
             "details": "Create `tests/components/paper/scatter.test.ts` following the pattern of `tests/components/projects/previews/boidsMath.test.ts`. Write test suites using vitest (describe/it/expect) that verify: (1) `sheetScatter` is deterministic - calling with same index multiple times returns identical rotate/dx/dy values; (2) variance across indices - different indices (0-49) produce different transform values; (3) bounds checking - for indices 0-49, verify rotate is within [-3.5, 3.5], dx within [-12, 12], dy within [-16, 16]. Run `pnpm test` to verify all tests PASS including existing suites (galleryMath, resolvePreview, useBoids, boidsMath).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run `pnpm test` - all test suites including scatter.test.ts must pass"
           },
           {
@@ -383,7 +383,7 @@
             "description": "Replace glass-vitrine styling with manuscript-sheet aesthetic using paper-world color tokens and torn-edge shadow effects",
             "dependencies": [],
             "details": "Rewrite `components/gallery/ExhibitionPanel.css.ts` to replace the old glass-vitrine aesthetic. Import `vars` from `@/styles/tokens.css`. Update `link` style: add `filter: drop-shadow(...)` using `vars.color.sheetShadow` (rgba(56,44,25,0.18)) with hover lift effect (adjust shadow on hover). Create `sheetWrap` style: width clamp(320px, 40vw, 560px), height 70vh. Create `sheet` style: flex column layout, background `vars.color.surface`, no border-radius (torn edges come from TornSheet clip). Create `plate` style: flex-1 for preview area. Create `colophon` style: caption strip with border-top using `vars.color.inkFaint`, padding and gap from `vars.space.*`. Update `title` to use `vars.font.display`, `vars.color.textPrimary`. Update `meta` to use `vars.font.hand` for tags, `vars.color.monoTag`. Remove old `panel` and `glass` styles completely.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual verification after component integration - sheets display with manuscript aesthetic, torn edges, proper spacing"
           },
           {
@@ -395,7 +395,7 @@
               3
             ],
             "details": "Rewrite `components/gallery/ExhibitionPanel.tsx`. Import `TornSheet` from `@/components/paper/TornSheet` and `sheetScatter` from `@/components/paper/scatter`. In `ExhibitionPanel` component: compute `scatter = sheetScatter(index)` at component top. Replace the `rotateY` calculation with 2D transforms - remove old `rotateY` and `MAX_TILT` logic. Update `motion.article` animate prop to: `{ rotate: isActive ? scatter.rotate*0.3 : scatter.rotate, x: scatter.dx, y: scatter.dy, scale: isActive ? 1.03 : 1 }` (active sheet straightens to 30% rotation and scales up). Restructure DOM: wrap content in `<TornSheet seed={project.slug}>`, create a `sheet` div containing (1) `plate` div with `<ProjectPreview>` (unchanged props), (2) `colophon` div with title (h3) and tags (meta spans). Update `ExhibitionPanelSkeleton` to match structure with `<Skeleton>`. Ensure `GalleryTrack.tsx` passes same props (project, index, activeIndex) - no changes needed there.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual check: home gallery shows torn-edged sheets with desk scatter (rotation/offset), active sheet animates (straightens, scales). Build succeeds."
           },
           {
@@ -407,7 +407,7 @@
               4
             ],
             "details": "Run `pnpm test` to verify ALL test suites pass: existing tests (galleryMath, resolvePreview, useBoids, boidsMath) plus new scatter.test.ts. Run `pnpm build` to verify production build succeeds with no errors. Run `pnpm dev` and navigate to home page (`/`) for visual verification: (1) gallery displays manuscript sheets with torn edges from TornSheet component, (2) each sheet has individual desk-scatter transform (slight rotation and x/y offset), (3) active sheet (center) animates smoothly - straightens rotation to 30% and scales to 1.03, (4) foxing spots visible on sheets from TornSheet overlay, (5) manuscript color palette applied (parchment surface, ink colors, proper typography). Verify no console errors and smooth animations.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "All tests pass (pnpm test), build succeeds (pnpm build), visual check confirms manuscript aesthetic with torn sheets, desk scatter, and smooth active-sheet animation"
           }
         ]
@@ -484,7 +484,7 @@
         "id": 8,
         "title": "Night-Gallery Colour Literal Sweep",
         "description": "Replace all hardcoded old-palette hex/rgba literals with vars.color.* tokens across app/, components/, styles/",
-        "details": "Use Grep tool to search app/, components/, styles/, hooks/, lib/ for old night-gallery color literals: #0D0F14, #151820, #1E2330, #B8D4E8, #6A9AB8, #3D5A73, #E8EDF2, and rgba patterns like rgba(13,15,20, rgba(184,212,232, rgba(21,24,32. List every hit with file:line. For each hit, replace with the equivalent vars.color.* token per the mapping: #0D0F14 → vars.color.bg (or vars.color.sheetShadow for shadows), #151820 → vars.color.surface, #1E2330 → vars.color.border, #B8D4E8 → vars.color.accent (or vars.color.accentDim for dimmer uses), #6A9AB8 → vars.color.accentDim, #3D5A73 → vars.color.monoTag, #E8EDF2 → vars.color.textPrimary. TWO DOCUMENTED EXCEPTIONS (defer to later phases, leave as-is, note in commit message): (1) hooks/useBoids.ts and components/cursor/BoidsCanvas.tsx particle color literals (boids re-skin to ink is Phase 3); (2) canvas preview components (components/projects/previews/*Preview.tsx) — the ink re-draw is Phase 2. For DefaultPreview.tsx, ONLY change reduced-motion/background fallbacks if they reference the old surface color: replace with the literal '#F3ECD8' (canvas can't read vars, use a comment pointing at vars.color.surface). Known files to check: components/gallery/GalleryTrack.css.ts, components/projects/previews/DefaultPreview.tsx, app/projects/[slug]/page.css.ts, components/project-detail/IframeWrapper.css.ts, components/nav/Nav.css.ts, components/hero/Hero.css.ts, components/projects/ProjectCard.css.ts, components/gallery/ExhibitionPanel.css.ts. After replacements, run `pnpm test` (expect PASS), `pnpm build` (expect success), `pnpm dev` full-site visual pass: check /, /projects, and /projects/[slug] for no leftover dark-navy patches, text legible on parchment everywhere, status badges readable. Detail pages render in paper world for now (marble-dusk is Phase 5).",
+        "details": "Use Grep tool to search app/, components/, styles/, hooks/, lib/ for old night-gallery color literals: #0D0F14, #151820, #1E2330, #B8D4E8, #6A9AB8, #3D5A73, #E8EDF2, and rgba patterns like rgba(13,15,20, rgba(184,212,232, rgba(21,24,32. List every hit with file:line. For each hit, replace with the equivalent vars.color.* token per the mapping: #0D0F14 → vars.color.bg (or vars.color.sheetShadow for shadows), #151820 → vars.color.surface, #1E2330 → vars.color.border, #B8D4E8 → vars.color.accent (or vars.color.accentDim for dimmer uses), #6A9AB8 → vars.color.accentDim, #3D5A73 → vars.color.monoTag, #E8EDF2 → vars.color.textPrimary. TWO DOCUMENTED EXCEPTIONS (defer to later phases, leave as-is, note in commit message): (1) hooks/useBoids.ts and components/cursor/BoidsCanvas.tsx particle color literals (boids re-skin to ink is Phase 3); (2) canvas preview components (components/projects/previews/*Preview.tsx) — the ink re-draw is Phase 2. For DefaultPreview.tsx, ONLY change reduced-motion/background fallbacks if they reference the old surface color: replace with the literal '#F3ECD8' (canvas can't read vars, use a comment pointing at vars.color.surface). Known files to check: components/gallery/GalleryTrack.css.ts, components/projects/previews/DefaultPreview.tsx, app/projects/[slug]/page.css.ts, components/project-detail/IframeWrapper.css.ts, components/nav/Nav.css.ts, components/hero/Hero.css.ts, components/projects/ProjectCard.css.ts, components/gallery/ExhibitionPanel.css.ts. After replacements, run `pnpm test` (expect PASS), `pnpm build` (expect success), `pnpm dev` full-site visual pass: check /, /projects, and /projects/[slug] for no leftover dark-navy patches, text legible on parchment everywhere, status badges readable. Detail pages render in paper world for now (marble-dusk is Phase 5).\n\n[2026-07-12] Done for the shipped surfaces: remaining literals are documented material-language exceptions (glass pane whites, canvas fillStyles mirroring tokens, light-on-dark type cases) — see VisionScene.css.ts / BoidsCanvas.tsx headers.",
         "testStrategy": "All test suites pass. Build succeeds. Visual verification: /, /projects, and at least one detail page (/projects/skyhive or similar) show no old dark-navy colors, all text legible on parchment, status badges (verdigris/ochre) readable. Grep for old literals should return only the two documented exceptions (boids, canvas previews) with comments explaining deferral.",
         "priority": "medium",
         "dependencies": [
@@ -492,7 +492,7 @@
           3,
           6
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -500,7 +500,7 @@
             "description": "Use Grep to comprehensively search app/, components/, styles/ for all old night-gallery color literals and create a complete file:line inventory",
             "dependencies": [],
             "details": "Run Grep searches for hex patterns (#0D0F14, #151820, #1E2330, #B8D4E8, #6A9AB8, #3D5A73, #E8EDF2) and rgba patterns (rgba(13,15,20, rgba(184,212,232, rgba(21,24,32). Document every hit with file:line reference. Exclude documented exceptions: hooks/useBoids.ts, components/cursor/BoidsCanvas.tsx, components/projects/previews/*Preview.tsx (except DefaultPreview.tsx reduced-motion fallback), docs/**, content/**, public/**. Expected files to fix: components/projects/ProjectCard.css.ts:41, components/hero/Hero.css.ts:31, components/nav/Nav.css.ts:20, components/gallery/ExhibitionPanel.css.ts:17,20,34,35,40,41, components/projects/previews/DefaultPreview.tsx:19,29,51,54. Create a mapping table showing old literal → new vars.color.* token for each occurrence.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual review of grep output to ensure all application code files are covered and documented exceptions are properly excluded. Verify mapping table matches the Phase 0.1 specification."
           },
           {
@@ -511,7 +511,7 @@
               1
             ],
             "details": "In components/projects/ProjectCard.css.ts:41, replace 'rgba(13, 15, 20, 0.55)' with a vars.color.sheetShadow token or construct from vars.color.bg if needed (note: new palette uses rgba(56,44,25,0.18) for sheetShadow). In components/hero/Hero.css.ts:31, replace '0 0 40px rgba(13, 15, 20, 0.4)' text shadow with equivalent using vars.color.sheetShadow or similar. Since the new palette's sheetShadow is lighter (0.18 alpha), assess if the shadow intensities need adjustment to maintain visual hierarchy on parchment background.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Build succeeds. Visual check at /: hero title text shadow remains visible against parchment, project card badges have readable backdrop blur effect with new palette."
           },
           {
@@ -522,7 +522,7 @@
               1
             ],
             "details": "In components/nav/Nav.css.ts:20, replace 'rgba(21, 24, 32, 0.95)' with vars.color.surface token. The new surface color is #F3ECD8 (parchment), so construct the rgba using the RGB values (243,236,216,0.95) or define a new token if needed. Ensure backdrop-filter blur (line 21) complements the new translucent parchment nav background.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Scroll behavior test: scroll past hero on /, nav background should appear as translucent parchment (warm tone) with blur, text remains legible, brand and links visible."
           },
           {
@@ -533,7 +533,7 @@
               1
             ],
             "details": "In components/gallery/ExhibitionPanel.css.ts, replace: line 17 '0 8px 24px rgba(13, 15, 20, 0.6)' → use vars.color.sheetShadow with adjusted alpha, line 20 '0 12px 32px rgba(13, 15, 20, 0.8)' → stronger sheetShadow variant, line 34 'rgba(13, 15, 20, 0.15)' → glass background using vars.color.bg or sheetShadow, line 35 '1px solid rgba(184, 212, 232, 0.08)' → vars.color.accent with low alpha, line 40 'rgba(13, 15, 20, 0.06)' → hover glass background, line 41 'rgba(184, 212, 232, 0.14)' → hover border color using vars.color.accent. Since new palette is warm parchment-based, these overlays need to shift from cold blue-black to warm brown-based shadows.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual check at /: gallery panels show warm-toned shadows and glass overlays, no cold blue tints. Hover state transitions smoothly. Panel text legible over previews."
           },
           {
@@ -546,7 +546,7 @@
               4
             ],
             "details": "In components/projects/previews/DefaultPreview.tsx:19, replace 'heroColour ?? \"#151820\"' with 'heroColour ?? \"#F3ECD8\"' (use literal because canvas cannot read CSS vars). Add a comment: '// Fallback to vars.color.surface (#F3ECD8) — canvas cannot read CSS custom properties'. Also update lines 29, 51 where colour is used for fillStyle, and line 54 where colour + '30' creates the dot overlay (ensure hex concatenation works with new 6-char hex). Run `pnpm test` (expect all pass), `pnpm build` (expect success), then `pnpm dev` for full-site visual pass: verify / (home), /projects (index), and at least one /projects/[slug] detail page show no leftover dark-navy patches, all text legible on parchment, status badges (verdigris/ochre) readable, no visual regressions. Grep for old literals again to confirm only documented exceptions remain.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Automated: `pnpm test` all pass, `pnpm build` succeeds. Visual: /, /projects, /projects/skyhive or similar detail page render correctly in paper-world palette (parchment bg, iron-gall text, warm tones). No dark-navy remnants. Final grep for old hex/rgba patterns returns only documented exceptions (boids, canvas previews, docs, content, public assets)."
           }
         ]
@@ -557,7 +557,7 @@
         "description": "Pure lib/deviceTier.ts module + hook that turns the brief's performance floor into a single tier decision (full | reduced | static) every animation consumer reads.",
         "details": "Create lib/deviceTier.ts (pure, DOM-free, unit-testable): export type Tier = 'full' | 'reduced' | 'static' and resolveTier(caps: { reducedMotion: boolean; hardwareConcurrency?: number; deviceMemory?: number }): Tier. Rules from the visual brief's performance floor: hardwareConcurrency <= 2 OR deviceMemory < 4 -> 'static' (weak hardware wins over everything); else reducedMotion -> 'reduced'; else 'full'. Create hooks/useDeviceTier.ts: client hook reading matchMedia('(prefers-reduced-motion: reduce)') and navigator.hardwareConcurrency/deviceMemory, SSR-safe (static export renders with no JS on first paint — default to 'reduced' until mounted so nothing animates before capabilities are known, then upgrade). Create tests/lib/deviceTier.test.ts covering every rule branch and the precedence order. RATIONALE (Performance Budget Discipline note): a performance budget is a pre-committed hard limit, not a post-hoc audit — every later phase (boids re-skin, paper physics, tear shader, R3F hall) needs this exact decision, and building it now means they consume one tested primitive instead of each improvising navigator sniffs. The Settle (Task 10) and secondary-motion work (Task 11) consume it immediately, so it ships with real usage, not speculatively.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "high",
         "subtasks": [
@@ -567,7 +567,7 @@
             "description": "Implement the core device capability tier resolution module as a pure, DOM-free, unit-testable TypeScript module that determines performance tiers based on hardware capabilities and user preferences.",
             "dependencies": [],
             "details": "Create /home/benbe/Projects/museum/lib/deviceTier.ts with: (1) Export type Tier = 'full' | 'reduced' | 'static'; (2) Export interface DeviceCapabilities { reducedMotion: boolean; hardwareConcurrency?: number; deviceMemory?: number }; (3) Export function resolveTier(caps: DeviceCapabilities): Tier that implements the tiering rules: if hardwareConcurrency <= 2 OR deviceMemory < 4, return 'static' (weak hardware takes precedence); else if reducedMotion is true, return 'reduced'; else return 'full'. The module must be pure with no DOM dependencies (no window, navigator, or matchMedia calls). Follow the existing lib/ module pattern seen in lib/motion.ts and lib/navigation.ts (simple exports, no React dependencies).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Unit tests in subtask 3 will verify: (1) 'static' is returned when hardwareConcurrency <= 2 regardless of other factors; (2) 'static' is returned when deviceMemory < 4 regardless of other factors; (3) 'reduced' is returned when reducedMotion is true with sufficient hardware; (4) 'full' is returned when reducedMotion is false with sufficient hardware; (5) precedence order (hardware constraints win over reducedMotion preference)."
           },
           {
@@ -578,7 +578,7 @@
               1
             ],
             "details": "Create /home/benbe/Projects/museum/hooks/useDeviceTier.ts following the existing hook pattern (see hooks/useBoidsVisibility.ts, hooks/useCursor.ts). Implementation: (1) Mark as 'use client' directive at top; (2) Import resolveTier and Tier from '@/lib/deviceTier'; (3) Use useState to track tier, defaulting to 'reduced' for SSR safety (ensures nothing animates before capabilities are known, then upgrades on mount); (4) Use useEffect with empty deps to detect capabilities on mount: read matchMedia('(prefers-reduced-motion: reduce)').matches, navigator.hardwareConcurrency, and navigator.deviceMemory (with optional chaining since deviceMemory is non-standard), call resolveTier(), and update state; (5) Export function useDeviceTier(): Tier. The hook must be SSR-safe (no window/navigator access during render) and follow the project's existing hook conventions.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Hook behavior will be validated through: (1) Initial render returns 'reduced' (SSR-safe default); (2) After mount, tier updates based on mocked browser APIs; (3) matchMedia, hardwareConcurrency, and deviceMemory are correctly read and passed to resolveTier; (4) Hook re-uses the same tier value on subsequent renders (stable reference). Integration testing will occur in subtasks 4-5 when consuming components use the hook."
           },
           {
@@ -589,7 +589,7 @@
               1
             ],
             "details": "Create /home/benbe/Projects/museum/tests/lib/deviceTier.test.ts following the existing test pattern (see tests/components/projects/previews/boidsMath.test.ts for pure module testing style). Use vitest with describe/it/expect. Test cases must cover: (1) resolveTier returns 'static' when hardwareConcurrency = 2 (boundary); (2) resolveTier returns 'static' when hardwareConcurrency = 1; (3) resolveTier returns 'static' when deviceMemory = 3.9 (< 4); (4) resolveTier returns 'static' when deviceMemory = 2; (5) Precedence: hardwareConcurrency <= 2 with reducedMotion false and deviceMemory 8 still returns 'static'; (6) Precedence: deviceMemory < 4 with reducedMotion false and hardwareConcurrency 8 still returns 'static'; (7) resolveTier returns 'reduced' when hardwareConcurrency 4, deviceMemory 8, reducedMotion true; (8) resolveTier returns 'full' when hardwareConcurrency 4, deviceMemory 8, reducedMotion false; (9) Handle undefined hardwareConcurrency and deviceMemory gracefully (should not crash, treat as sufficient). All tests verify pure function behavior with no DOM dependencies.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm test to execute Vitest suite. All test cases must pass. Tests verify: correct tier returned for each capability combination, precedence rules enforced (hardware constraints override preferences), boundary conditions (hardwareConcurrency = 2, deviceMemory = 4), and graceful handling of undefined capabilities."
           },
           {
@@ -601,7 +601,7 @@
               2
             ],
             "details": "Add comprehensive JSDoc comments to /home/benbe/Projects/museum/lib/deviceTier.ts and /home/benbe/Projects/museum/hooks/useDeviceTier.ts. For lib/deviceTier.ts: (1) Add module-level JSDoc explaining the performance budget discipline rationale (performance floor is a pre-committed hard limit, not post-hoc audit); (2) Document Tier type with description of each tier: 'static' = no animation, 'reduced' = respect prefers-reduced-motion, 'full' = full animations; (3) Document DeviceCapabilities interface with notes on navigator.deviceMemory being non-standard; (4) Document resolveTier function with @param and @returns tags, explaining the precedence order (weak hardware wins over everything, then reducedMotion preference). For hooks/useDeviceTier.ts: (1) Add JSDoc explaining SSR-safe default ('reduced' until mounted), (2) Note that tier upgrades after mount based on detected capabilities, (3) @example showing typical usage in a component. Keep documentation concise and focused on the 'why' behind design decisions.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual verification: (1) JSDoc comments are present and render correctly in IDE hover tooltips; (2) Documentation explains the performance floor rationale from the visual brief; (3) Precedence rules are clearly stated; (4) SSR safety approach is documented; (5) No documentation changes break TypeScript compilation (pnpm build succeeds)."
           },
           {
@@ -615,7 +615,7 @@
               4
             ],
             "details": "Integration verification: (1) Run pnpm test to confirm all unit tests pass; (2) Run pnpm build to ensure TypeScript compilation succeeds with the new module and hook; (3) Verify import paths work correctly (module uses '@/lib/deviceTier', hook uses '@/hooks/useDeviceTier'); (4) Create a minimal usage example comment in hooks/useDeviceTier.ts showing how animation consumers should use it (e.g., const tier = useDeviceTier(); if (tier === 'static') return null; if (tier === 'reduced') return <SimpleVersion />; return <FullAnimation />). (5) Verify that the module exports are accessible from the project root (no circular dependencies or path resolution issues). (6) Check that the hook follows React hooks rules (no violations flagged by eslint). The verification confirms that Tasks 10 (Settle animation) and 11 (secondary motion) can immediately consume this tier decision without needing to improvise navigator sniffs.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Validation checklist: (1) pnpm test passes with all deviceTier tests green; (2) pnpm build completes successfully; (3) TypeScript has no errors in lib/deviceTier.ts and hooks/useDeviceTier.ts; (4) Import statements resolve correctly; (5) Usage example demonstrates the three-tier branching pattern; (6) No eslint violations in the hook file. Success means the module is ready for consumption by Settle and secondary-motion implementations in subsequent tasks."
           }
         ]
@@ -624,9 +624,9 @@
         "id": 10,
         "title": "The Settle — entrance choreography for the home gallery",
         "description": "On first paint of the home gallery, sheets drift down and settle onto the desk with staggered springs — the brief's 'sheets settle, never snap' made real.",
-        "details": "Make the home gallery's first two seconds a designed moment instead of a pop-in. Each ExhibitionPanel enters from slightly lifted (y offset ~ -24 to -40px, scale ~1.02, rotation a few degrees past its scatter rest value — the overshoot IS the anticipation) and settles into its sheetScatter(index) rest transform with a spring inside the brief's locked range (stiffness 40-70, damping 18-24), staggered ~80-120ms per sheet (Physics Feel note: that delay range is what makes things feel like they have weight rather than lag). Follow-through: the drop-shadow (filter on the link wrapper) fades/deepens on its OWN transition, slightly longer than the transform, so the shadow catches up after the sheet lands — not everything stops at the same time. Implementation: framer-motion variants with staggerChildren on the gallery container (or per-panel transition delay = index * stagger), initial variants derived from scatter.ts rest values so entrance and rest state share one source of truth; any new pure offset math goes in components/paper/scatter.ts with tests. Tier handling (consumes Task 9): tier 'reduced' or 'static' renders sheets already settled, zero animation — RTL test asserts the reduced path renders final transforms with no motion props. Runs on fresh loads of /; do not re-trigger on back-navigation via View Transitions if detectable. Scroll extremes rule (Motion Design note): if the user scrolls the gallery mid-settle, sheets must not fight the scroll — settle animates transform only, never scroll position, and must look correct interrupted at any point.",
+        "details": "Make the home gallery's first two seconds a designed moment instead of a pop-in. Each ExhibitionPanel enters from slightly lifted (y offset ~ -24 to -40px, scale ~1.02, rotation a few degrees past its scatter rest value — the overshoot IS the anticipation) and settles into its sheetScatter(index) rest transform with a spring inside the brief's locked range (stiffness 40-70, damping 18-24), staggered ~80-120ms per sheet (Physics Feel note: that delay range is what makes things feel like they have weight rather than lag). Follow-through: the drop-shadow (filter on the link wrapper) fades/deepens on its OWN transition, slightly longer than the transform, so the shadow catches up after the sheet lands — not everything stops at the same time. Implementation: framer-motion variants with staggerChildren on the gallery container (or per-panel transition delay = index * stagger), initial variants derived from scatter.ts rest values so entrance and rest state share one source of truth; any new pure offset math goes in components/paper/scatter.ts with tests. Tier handling (consumes Task 9): tier 'reduced' or 'static' renders sheets already settled, zero animation — RTL test asserts the reduced path renders final transforms with no motion props. Runs on fresh loads of /; do not re-trigger on back-navigation via View Transitions if detectable. Scroll extremes rule (Motion Design note): if the user scrolls the gallery mid-settle, sheets must not fight the scroll — settle animates transform only, never scroll position, and must look correct interrupted at any point.\n\n[2026-07-12] Intent shipped inside OvertureScene (staggered spring entrance + zoom breath over the desk) as part of the Vision home promotion — no separate gallery settle remains to build.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           6,
           9
@@ -639,7 +639,7 @@
             "description": "Ensure the scatter.ts module exists with sheetScatter function, and add a new entranceOffset function that generates initial lifted positions (y: -24 to -40px, scale: ~1.02, rotation overshoot) derived from scatter rest values",
             "dependencies": [],
             "details": "First check if components/paper/scatter.ts exists (Task 6 dependency). If not, create it with the mulberry32 PRNG and sheetScatter(index) function per Task 6 specs (rotate ±3.5°, dx ±12px, dy ±16px). Then add a new pure function entranceOffset(index: number) that returns initial transform values for the settle animation: y offset between -24 and -40px (using seeded random), scale between 1.01 and 1.03, and rotation that is the scatter rest rotation plus 2-4 degrees (the overshoot that creates anticipation). The function must use the same mulberry32((index+1)*7919) seed so entrance and rest state share deterministic source. Add unit tests in tests/components/paper/scatter.test.ts verifying entranceOffset produces values within bounds and is deterministic.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Unit tests verify entranceOffset bounds (y: [-40, -24], scale: [1.01, 1.03], rotation overshoot is rest + [2, 4]°) and determinism (same index returns same values). Run pnpm test to verify all existing tests still pass."
           },
           {
@@ -650,7 +650,7 @@
               1
             ],
             "details": "Modify components/gallery/GalleryTrack.tsx to add entrance choreography. Import entranceOffset and sheetScatter from scatter.ts. Define framer-motion variants at component level: initial state uses entranceOffset values (lifted, scaled, rotated past rest), animate state uses sheetScatter rest values (settled position). Apply variants to the motion.div track element with staggerChildren: 0.08-0.12 (80-120ms stagger per sheet). The transition must use spring physics within the craft bar's locked range: type: 'spring', stiffness: 40-70, damping: 18-24. Ensure this only runs on fresh page loads, not on back-navigation if View Transitions are active (check document.startViewTransition availability and ViewTransition state).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual verification: pnpm dev, navigate to /, observe sheets drift down and settle with stagger. Each sheet should land 80-120ms after the previous. RTL test verifies reduced-motion path (Task 9 tier handling). No animation on back-navigation from detail page."
           },
           {
@@ -661,7 +661,7 @@
               1
             ],
             "details": "Modify components/gallery/ExhibitionPanel.tsx to support the settle choreography. Import entranceOffset and sheetScatter from scatter.ts. Add initial and animate variants to the motion.article element. Initial variant uses entranceOffset(index) for lifted starting position, animate variant uses sheetScatter(index) rest transform combined with existing isActive logic (active sheet straightens to scatter.rotate*0.3 and scales to 1.03). The key craft bar requirement: implement follow-through by applying drop-shadow on the Link wrapper (styles.link) with its OWN transition that is slightly longer than the transform spring (duration ~100-150ms longer). The shadow should appear to 'catch up' after the sheet lands, creating the physics feel that not everything stops simultaneously. Use CSS transition on filter property for the shadow, while framer-motion handles the transform.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual verification at /: each sheet enters from lifted position, settles with spring physics, shadow deepens and catches up after sheet lands. Inspect DevTools animations panel to verify shadow transition is longer than transform. Test at 4x CPU throttle to ensure animation remains smooth."
           },
           {
@@ -673,7 +673,7 @@
               3
             ],
             "details": "Integrate motion tier system from Task 9 into the settle animation. Check for prefers-reduced-motion media query (pattern from DefaultPreview.tsx line 20) or future deviceTier module. In GalleryTrack.tsx and ExhibitionPanel.tsx, conditionally apply variants: if tier is 'reduced' or 'static', render sheets directly in their final settled transforms (sheetScatter rest values) with no motion props, no initial variants, no staggerChildren. If tier is 'full', apply the entrance animation as implemented in subtasks 2 and 3. Add RTL (React Testing Library) test in tests/components/gallery/GalleryTrack.test.ts (create if needed) that mocks prefers-reduced-motion: reduce and asserts the reduced path renders final transforms with no framer-motion animate props. Follow existing test patterns from tests/hooks/useBoids.test.ts.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Automated: RTL test verifies reduced-motion path renders settled sheets with no animation. Manual: toggle prefers-reduced-motion in DevTools, reload /, confirm no settle animation and sheets appear instantly in final positions. All existing tests (pnpm test) must pass."
           },
           {
@@ -685,7 +685,7 @@
               3
             ],
             "details": "Validate and handle the Motion Design extremes rule: if user scrolls the gallery mid-settle, sheets must not fight the scroll. The settle animation must ONLY animate transform (rotate, x, y, scale), never scroll position. Review GalleryTrack.tsx to confirm the settle animation on motion.div track uses transform-only properties and does not interfere with the existing useGallery scroll-linked x transform. Test scroll extremes explicitly: (1) Load / and immediately scroll down during settle - verify sheets continue settling smoothly without jumping or layout shifts. (2) Jump-scroll to middle of gallery during settle - verify sheets at rest look correct. (3) Pause/resume scroll during settle - verify no animation conflicts. If conflicts detected, adjust animation to use individual sheet transforms instead of track-level animation, or use AnimatePresence with scroll-safe keys. The scroll-linked x position (existing) and settle transforms (new) must compose correctly without interfering.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual extremes testing: (1) Load / and scroll immediately - no jump/conflict. (2) Jump-scroll mid-settle - sheets look correct. (3) Pause/resume scroll - smooth behavior. Record DevTools Performance trace of settle + scroll at 4x CPU throttle, verify 60fps maintained on desktop. Document any edge cases discovered."
           }
         ]
@@ -694,9 +694,9 @@
         "id": 11,
         "title": "Secondary Motion & Ink Details — the craft pass on the manuscript sheet",
         "description": "Break the uniform transform: shadow trails the lift, the title underline draws itself in red chalk stroke-first, tags sit like hand-placed marginalia.",
-        "details": "Three targeted details on ExhibitionPanel, each encoding a principle from the Motion Design / Physics Feel notes ('one uniform transform feels robotic; secondary motion sells primary motion'). (1) SHADOW LAG: the hover/active drop-shadow transition gets its own duration ~100-150ms longer than the sheet's transform transition, so the shadow visibly catches up after the sheet moves — currently both would move as one lump. Pure CSS transition-duration split in ExhibitionPanel.css.ts, no JS. (2) RED-CHALK UNDERLINE: on link hover, the sheet title gains an underline in vars.color.accent (sanguine #8C4F32) that draws in from the left — scaleX from 0 with transform-origin left (cheap) or an SVG path with stroke-dashoffset (richer) — honouring the brief's 'Drawn' constraint: line-work animates stroke-first. This is the one interaction allowed to be snappy ('only link underlines may be snappy'), so ~200-300ms is correct here, not the 500ms floor. (3) MARGINALIA TAGS: each tag span gets a deterministic rotation jitter of +/-2deg seeded from hashSeed(tag) (reuse components/paper/tornEdge.ts — same PRNG primitive, house style), so the Caveat annotations sit like they were written by hand, not typeset. Static transform, computed once. Tier handling (consumes Task 9): 'reduced'/'static' tiers show the underline instantly on hover (no draw animation) and keep the static tag jitter (it's not motion). Tests: unit-test the tag-jitter math (determinism, bounds); RTL asserts tags carry per-tag distinct transforms and the reduced tier skips animated draw. All colours via vars.*, timings within brief constraints.",
+        "details": "Three targeted details on ExhibitionPanel, each encoding a principle from the Motion Design / Physics Feel notes ('one uniform transform feels robotic; secondary motion sells primary motion'). (1) SHADOW LAG: the hover/active drop-shadow transition gets its own duration ~100-150ms longer than the sheet's transform transition, so the shadow visibly catches up after the sheet moves — currently both would move as one lump. Pure CSS transition-duration split in ExhibitionPanel.css.ts, no JS. (2) RED-CHALK UNDERLINE: on link hover, the sheet title gains an underline in vars.color.accent (sanguine #8C4F32) that draws in from the left — scaleX from 0 with transform-origin left (cheap) or an SVG path with stroke-dashoffset (richer) — honouring the brief's 'Drawn' constraint: line-work animates stroke-first. This is the one interaction allowed to be snappy ('only link underlines may be snappy'), so ~200-300ms is correct here, not the 500ms floor. (3) MARGINALIA TAGS: each tag span gets a deterministic rotation jitter of +/-2deg seeded from hashSeed(tag) (reuse components/paper/tornEdge.ts — same PRNG primitive, house style), so the Caveat annotations sit like they were written by hand, not typeset. Static transform, computed once. Tier handling (consumes Task 9): 'reduced'/'static' tiers show the underline instantly on hover (no draw animation) and keep the static tag jitter (it's not motion). Tests: unit-test the tag-jitter math (determinism, bounds); RTL asserts tags carry per-tag distinct transforms and the reduced tier skips animated draw. All colours via vars.*, timings within brief constraints.\n\n[2026-07-12] Intent shipped inside the scenes: InkSpots on manuscripts, ripple/chromatic-edge/cursor-tilt secondary motion on the glass frames, scene-aware ink motes + ink-nib cursor.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           6,
           9
@@ -709,7 +709,7 @@
             "description": "Add secondary motion to the drop-shadow by giving it a longer transition duration (~100-150ms) than the sheet's transform, creating a visible 'catch-up' effect",
             "dependencies": [],
             "details": "Modify components/gallery/ExhibitionPanel.css.ts. The current panel style has `transition: 'box-shadow 500ms ${vars.ease.out}'` (line 18). Split this into two separate transitions on the panel: keep the framer-motion transform at 500ms (controlled by tokens.standard in the TSX), but make the box-shadow transition 600-650ms. Change line 18 from `transition: 'box-shadow 500ms ${vars.ease.out}'` to `transition: 'box-shadow 650ms ${vars.ease.out}'`. This creates the lag effect: when the sheet lifts on hover (scale 1.02, rotateY change), the transform completes in 500ms but the shadow takes 650ms to catch up—encoding the 'secondary motion sells primary motion' principle. The 150ms delta is within the brief's constraint (100-150ms longer). Pure CSS, no JavaScript required.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual verification: hover over ExhibitionPanel in browser and observe that the sheet movement completes before the shadow fully transitions. The shadow should visibly 'settle' after the sheet stops moving. Test in both hover-in and hover-out states. Verify build succeeds with pnpm build."
           },
           {
@@ -718,7 +718,7 @@
             "description": "Implement a pure function that generates per-tag rotation jitter (-2° to +2°) using the existing PRNG from tornEdge.ts, following house style",
             "dependencies": [],
             "details": "Modify components/paper/tornEdge.ts (will exist after Task 4). Export a new function `tagRotation(tag: string): number` that: (1) Takes a tag string (e.g., 'react', 'typescript'); (2) Calls hashSeed(tag) to get a deterministic seed; (3) Creates a PRNG with mulberry32(seed); (4) Returns rotation in degrees between -2 and +2, using `(prng() - 0.5) * 4` to map [0,1) to [-2, +2). This reuses the same PRNG primitive as torn edges, maintaining house style. The function is pure and deterministic—same tag always gets the same rotation. Add a comment: '// Deterministic rotation jitter for marginalia tags. Same tag = same angle.' Create tests/components/paper/tagRotation.test.ts: verify determinism (calling tagRotation('react') twice returns same value), verify bounds (all outputs in [-2, +2] range), verify variance (different tags get different rotations).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Unit tests must pass: (1) tagRotation('react') === tagRotation('react') (determinism); (2) All test tags produce values in [-2, +2] range; (3) tagRotation('react') !== tagRotation('vue') (variance). Run pnpm test to verify."
           },
           {
@@ -729,7 +729,7 @@
               2
             ],
             "details": "Modify components/gallery/ExhibitionPanel.tsx. Import tagRotation from '@/components/paper/tornEdge'. In the tags map (lines 41-43), change from `<span key={t}>{t}</span>` to `<span key={t} style={{ display: 'inline-block', transform: `rotate(${tagRotation(t)}deg)` }}>{t}</span>`. The inline-block display is required for CSS transforms to work on inline elements. Each tag now gets a deterministic rotation jitter between -2° and +2°, making them look hand-placed like marginalia annotations. The rotation is static (computed once per tag string), not animated. This works across all tiers (including 'static' and 'reduced') because it's not motion—it's a static visual treatment encoding the 'Drawn' aesthetic constraint.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual verification: inspect ExhibitionPanel tags in browser and confirm each tag has a slight rotation (some tilted left, some right). Same tag across different panels should have identical rotation. Verify transform values are within [-2, +2] degrees using browser DevTools. Build must succeed with pnpm build."
           },
           {
@@ -740,7 +740,7 @@
               3
             ],
             "details": "Modify components/gallery/ExhibitionPanel.css.ts and .tsx. In the CSS file, update the title style (lines 46-52) to add underline behavior: position relative (for pseudo-element positioning), add `::after` pseudo-element with content empty string, absolute positioned below text (bottom -4px), left 0, width 100%, height 2px, background vars.color.accent (will be #8C4F32 sanguine after Task 2), transformOrigin 'left center', scaleX 0, transition 'transform 250ms ${vars.ease.out}'. Add hover selector: `[${panel}:hover &]::after { scaleX: 1 }`. This creates a left-to-right draw effect in 250ms (within the 200-300ms 'snappy' range allowed for link underlines per the brief). For tier handling: in ExhibitionPanel.tsx, import useDeviceTier hook (from Task 9), get current tier, and conditionally apply a CSS class (e.g., `styles.noDrawAnimation`) when tier is 'reduced' or 'static'. Add noDrawAnimation style that sets `transition: none` on the ::after pseudo-element, making underline appear instantly. The static jitter from subtask 3 is preserved across all tiers (it's not motion).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Visual verification: hover over panel title in browser and observe underline drawing from left to right in ~250ms. Color should be sanguine red (vars.color.accent). Test tier handling by mocking useDeviceTier to return 'reduced' or 'static' and verify underline appears instantly without animation. All existing tests must pass. Build succeeds."
           },
           {
@@ -751,7 +751,7 @@
               4
             ],
             "details": "Create tests/components/gallery/ExhibitionPanel.test.tsx (or extend if exists). Use @testing-library/react to: (1) Render ExhibitionPanel with mock project data containing multiple tags; (2) Query all tag spans and verify each has a transform style with rotation; (3) Verify distinct rotations across different tags (e.g., 'react' and 'vue' should have different transforms); (4) Mock useDeviceTier to return 'full' and verify the title element has the animated underline class (or lacks the noDrawAnimation class); (5) Mock useDeviceTier to return 'reduced' and verify the title element has the noDrawAnimation class applied, indicating instant underline. Use vitest's vi.mock to mock the useDeviceTier hook. Test that the secondary motion principles are correctly encoded: tags have static jitter (works across all tiers), underline animates only in 'full' tier. Ensure tests pass with pnpm test.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Run pnpm test and verify ExhibitionPanel.test.tsx passes all assertions: (1) tags have transform styles; (2) rotations are distinct per tag; (3) tier 'full' enables animated underline; (4) tier 'reduced'/'static' disables animated underline. All existing test suites must continue to pass."
           }
         ]
@@ -760,9 +760,9 @@
         "id": 12,
         "title": "Craft QA Gate — cross-browser, performance trace & motion-extremes pass",
         "description": "The ship gate: verify the risky techniques (Safari clipPath, drop-shadow cost, font swap, scroll extremes) with measurement, not visual impression.",
-        "details": "A verification task with teeth — 'never trust visual impression alone' (Performance Budget note). (1) SAFARI/WEBKIT CLIP-PATH: clip-path: url(#id) referencing an SVG clipPath with objectBoundingBox units is a known WebKit soft spot (stale rendering, ignored units, invalidation bugs). Verify TornSheet in Safari macOS + iOS Simulator (or BrowserStack). If broken: fallback is clip-path: polygon(...) generated from the SAME jittered points tornEdgePath already produces — add tornEdgePolygon() emitting a polygon() string from shared point math, and feature-detect. Decide based on evidence, not preemptively. (2) PERFORMANCE TRACE: Chrome DevTools trace of a full home-gallery scroll with all sheets mounted, 4x CPU throttle (proxy for the brief's mid-range floor): target 60fps unthrottled / no long frames >33ms throttled. Specific suspects: drop-shadow filter on 70vh clipped elements forcing layer explosions, and the fractalNoise body background repainting on scroll (should be paint-once; verify). Record findings in the task, file follow-up tasks for anything over budget — do not silently accept jank. (3) SCROLL EXTREMES (Motion Design note): jump-scroll instantly to the middle and end of the gallery, pause mid-scroll, scroll during The Settle — layout must be stable and legible at ANY scroll position; no animation leaves a sheet stranded mid-transform. (4) FONT SWAP: measure CLS on / and /projects with cold cache — Cinzel/EB Garamond arriving via display:swap must not shift the gallery layout perceptibly; verify Next's size-adjust fallback metrics are active (next/font does this automatically — confirm, don't assume). (5) STAGING AUDIT (subjective but required): at every scroll position, one clear subject — if the vignette, foxing, scatter and active-sheet scale ever compete for attention, note it and propose the cut. Exit criteria: all five checks recorded with evidence (screenshots/trace exports in docs/superpowers/qa/), follow-ups filed as tasks, no unrecorded known issues.",
+        "details": "A verification task with teeth — 'never trust visual impression alone' (Performance Budget note). (1) SAFARI/WEBKIT CLIP-PATH: clip-path: url(#id) referencing an SVG clipPath with objectBoundingBox units is a known WebKit soft spot (stale rendering, ignored units, invalidation bugs). Verify TornSheet in Safari macOS + iOS Simulator (or BrowserStack). If broken: fallback is clip-path: polygon(...) generated from the SAME jittered points tornEdgePath already produces — add tornEdgePolygon() emitting a polygon() string from shared point math, and feature-detect. Decide based on evidence, not preemptively. (2) PERFORMANCE TRACE: Chrome DevTools trace of a full home-gallery scroll with all sheets mounted, 4x CPU throttle (proxy for the brief's mid-range floor): target 60fps unthrottled / no long frames >33ms throttled. Specific suspects: drop-shadow filter on 70vh clipped elements forcing layer explosions, and the fractalNoise body background repainting on scroll (should be paint-once; verify). Record findings in the task, file follow-up tasks for anything over budget — do not silently accept jank. (3) SCROLL EXTREMES (Motion Design note): jump-scroll instantly to the middle and end of the gallery, pause mid-scroll, scroll during The Settle — layout must be stable and legible at ANY scroll position; no animation leaves a sheet stranded mid-transform. (4) FONT SWAP: measure CLS on / and /projects with cold cache — Cinzel/EB Garamond arriving via display:swap must not shift the gallery layout perceptibly; verify Next's size-adjust fallback metrics are active (next/font does this automatically — confirm, don't assume). (5) STAGING AUDIT (subjective but required): at every scroll position, one clear subject — if the vignette, foxing, scatter and active-sheet scale ever compete for attention, note it and propose the cut. Exit criteria: all five checks recorded with evidence (screenshots/trace exports in docs/superpowers/qa/), follow-ups filed as tasks, no unrecorded known issues.\n\n[2026-07-12] Closed for stage 1 by the 2026-07-12 promotion QA: tier verification (full/reduced/static), 12-position instant jump-scroll sweep, 4x CPU-throttle trace (parting 44fps avg / ripple 37fps avg, zero long tasks, headless software raster). Ripple filter now detaches at rest (idle 16->42fps). Real-GPU cross-browser spot-check still worthwhile at stage 2.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           8,
           10,
@@ -776,7 +776,7 @@
             "description": "Test TornSheet's SVG clipPath with objectBoundingBox units in Safari macOS and iOS, implement polygon() fallback if broken",
             "dependencies": [],
             "details": "Test the TornSheet component's `clip-path: url(#id)` referencing SVG clipPath with objectBoundingBox units in Safari macOS and iOS Simulator (or BrowserStack if physical devices unavailable). Known WebKit issues: stale rendering, ignored units, invalidation bugs. Test checklist: (1) Sheets render with torn edges visible; (2) Edges clip correctly at all viewport sizes; (3) No visual artifacts during scroll/hover; (4) Edges persist correctly during page transitions. If ANY test fails: implement fallback by adding `tornEdgePolygon()` function to `components/paper/tornEdge.ts` that generates a `polygon()` CSS string from the SAME jittered points `tornEdgePath` uses (share underlying point-generation math). Add feature detection to TornSheet.tsx that tests for proper clipPath support and falls back to `clip-path: polygon(...)`. Document findings in `docs/superpowers/qa/safari-clippath-results.md` with screenshots from Safari (working or broken) and confirmation of fallback approach taken.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual cross-browser testing: Safari macOS latest, iOS Simulator (iOS 17+), Chrome/Firefox for baseline comparison. Capture screenshots at: home gallery initial load, mid-scroll, hover state, post-transition. If fallback implemented: verify polygon() produces identical visual result. Evidence: screenshots saved to docs/superpowers/qa/"
           },
           {
@@ -785,7 +785,7 @@
             "description": "Record full home gallery scroll trace with CPU throttling, analyze frame timing against 60fps target, identify drop-shadow and fractalNoise costs",
             "dependencies": [],
             "details": "Open home page (/) in Chrome DevTools with Performance panel. Configure: (1) CPU: 4x slowdown to simulate mid-range device; (2) Network: Fast 3G optional to catch any lazy-load issues. Record a full scroll sequence: start at top, scroll smoothly to bottom of gallery (all sheets mounted), scroll back to middle, pause. Stop recording. Analysis targets: (1) Frame rate: must sustain 60fps unthrottled / no long frames >33ms throttled during scroll; (2) Specific suspects: `filter: drop-shadow(...)` on 70vh TornSheet elements (check Paint/Composite sections for layer explosion warnings); fractalNoise SVG background on body (verify it's paint-once, not repaint-on-scroll — check Paint events in timeline). Export trace as JSON and save screenshot of timeline overview to `docs/superpowers/qa/chrome-performance-trace.{json,png}`. Document findings: frame drops (if any), which effects triggered them, and recommended actions (reduce drop-shadow blur radius, eliminate fractalNoise if repainting, etc.). If ANY frame budget violations found: file follow-up tasks in .taskmaster, do NOT silently accept jank.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Quantitative measurement with Chrome DevTools Performance panel. Success criteria: main thread idle between scroll events, no Layout Shift, no forced synchronous layouts, Composite layer count <20 for the gallery section. Cross-reference with Lighthouse performance audit (target score >90). Evidence: trace JSON + annotated screenshots identifying bottlenecks."
           },
           {
@@ -794,7 +794,7 @@
             "description": "Test gallery layout stability at instant jump-scroll positions, mid-scroll pauses, and interrupts during sheet animations",
             "dependencies": [],
             "details": "Execute scroll-stability tests per Motion Design Principle #4 ('Stable at any scroll position'). Test sequence: (1) INSTANT JUMP-SCROLL: open home page, immediately press End key (jump to bottom), press Home key (jump to top), press PgDn repeatedly to jump to middle sections — verify sheets are fully rendered, correctly positioned, no half-transformed elements stranded mid-animation; (2) MID-SCROLL PAUSE: slow-scroll the gallery, stop abruptly mid-motion — verify active sheet transitions complete gracefully or hold stable state, no layout shift after pause; (3) INTERRUPT DURING THE SETTLE: trigger sheet hover/active animation (cursor over sheet), immediately scroll away before animation completes — verify animation cancels cleanly, no orphaned transforms or visual glitches. (4) RAPID SCROLL: scroll rapidly up/down with mousewheel or trackpad — verify performance remains smooth, no sheets disappear or overlap incorrectly. At EVERY test position, layout must be legible (text readable, sheets non-overlapping, hit targets accurate). Record findings in `docs/superpowers/qa/scroll-extremes-checklist.md` with pass/fail per test case and screenshots of any failures. If any position produces unstable layout: file task to fix framer-motion spring interruption handling or scroll-linked animation timing.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Manual interaction testing with documented checklist. Verify across desktop (Chrome, Firefox, Safari) and mobile viewport simulation. Record video of rapid scroll + interrupt scenarios using browser DevTools recorder or screen capture. Evidence: completed checklist markdown file with pass/fail for each case, annotated screenshots of any failures, filed tasks for issues."
           },
           {
@@ -803,7 +803,7 @@
             "description": "Measure Cumulative Layout Shift on / and /projects pages during initial font load, verify next/font size-adjust fallback is active",
             "dependencies": [],
             "details": "Measure CLS (Cumulative Layout Shift) impact of font loading per Performance Budget note. Test setup: (1) Clear browser cache completely; (2) Open Chrome DevTools → Network tab, enable 'Disable cache', throttle to 'Slow 3G'; (3) Navigate to home page (/), wait for full page load including Cinzel/EB Garamond web fonts; (4) Check Performance panel for Layout Shift events during font swap (display:swap in app/layout.tsx lines 13, 19); (5) Run Lighthouse audit, note CLS score; (6) Repeat for /projects page. Target: CLS <0.1 per Web Vitals threshold. Verify next/font automatic size-adjust fallback is active: inspect computed styles on body text elements before font load — should show size-adjust/ascent-override properties on fallback font stack. Document in `docs/superpowers/qa/font-swap-cls-results.md`: CLS scores for both pages, screenshots of Lighthouse report, confirmation that size-adjust is present (show DevTools computed styles screenshot). If CLS >0.1: investigate whether fallback metrics need manual tuning in font declarations (Space_Grotesk/Instrument_Sans/JetBrains_Mono in app/layout.tsx) or if FOUT duration can be reduced with font-display: optional.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Quantitative measurement with Chrome DevTools Performance Monitor and Lighthouse. Test with network throttling (Slow 3G) and cold cache to simulate worst-case first visit. Cross-verify CLS in real-world conditions using WebPageTest or similar. Evidence: Lighthouse JSON reports for both pages, screenshots showing size-adjust properties in DevTools, documented CLS scores with pass/fail against 0.1 threshold."
           },
           {
@@ -817,7 +817,7 @@
               4
             ],
             "details": "Execute subjective but required staging audit per Craft Bar rule #8 ('one subject per frame'). Scroll through the entire home gallery in 10% increments (0%, 10%, 20%, ... 100% scroll position). At EACH position, assess visual hierarchy: (1) Is there exactly ONE clear subject (the active sheet, or a specific design element)? (2) Do vignette, foxing, paper texture, sheet scatter, and active-sheet scale compete for attention or harmonize? (3) Are any effects too strong (excessive foxing, too-dark vignette, distracting drop-shadow)? (4) Does the fractalNoise body background add or distract (check if it's too prominent at any scroll position)? Take annotated screenshots of 5-7 representative scroll positions. Document in `docs/superpowers/qa/staging-audit.md`: for each position, note whether visual hierarchy is clear or if multiple elements compete; propose specific cuts or adjustments (e.g., 'reduce foxing opacity from 0.15 to 0.08', 'decrease vignette intensity by 20%', 'remove fractalNoise on body', 'reduce sheet scatter rotation from ±3.5° to ±2°'). This audit is subjective but must be RECORDED with reasoning. Exit criteria: audit document completed with proposals (even if proposal is 'no changes needed'), screenshots attached, any actionable changes filed as follow-up tasks in .taskmaster. NOTE: depends on tasks 1-4 completing first so the final visual state is being audited, not a partial implementation.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Subjective design review with documented rationale. Capture screenshots at 0%, 25%, 50%, 75%, 100% scroll positions. Use browser color-picker to sample and verify token values match design spec (vars.color.sheetShadow, vars.color.inkFaint, etc.). Invite second opinion if possible (peer review). Evidence: completed markdown audit with before/after proposals, annotated screenshots highlighting competing elements (if any), filed tasks for recommended changes."
           }
         ]
