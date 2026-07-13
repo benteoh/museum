@@ -1,4 +1,4 @@
-// components/lab/StudyDrawing.css.ts
+// components/overture/StudyDrawing.css.ts
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/tokens.css'
 

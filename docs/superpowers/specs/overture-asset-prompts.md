@@ -36,17 +36,33 @@ Generate in this order — stills first, video last (it's conditioned on them).
 >
 > Also generate a 9:16 crop-safe variant for mobile.
 
-### 3. `vision-tilt` — the lift (video, 4–6s)
+### 3. `vision-tilt` — the lift (video, 4–6s) — FINAL PROMPTS
 
-Only after both stills are approved. Use a video model with **first-frame / last-frame conditioning** (Kling, Runway, Higgsfield): first frame = `vision-desk.png`, last frame = `vision-horizon.png`.
+Both endpoint stills are approved and live in the repo: `public/lab/overture/vision-desk.webp` (first frame) and `public/lab/overture/vision-horizon.webp` (last frame). Convert to PNG before uploading if the tool rejects WebP.
 
-> Slow, deliberate camera tilt up from looking down at the workbench and boots, rising through the loggia opening to settle on the distant view of Florence at sunset. Single continuous motion, no cuts, constant gentle speed with a soft ease at both ends — the movement of a man lifting his gaze, unhurried. Lighting continuous golden hour throughout. No people entering frame, nothing on the desk.
+**Tool requirement:** a model with **start-frame + end-frame conditioning** — Kling ("start & end frame"), Runway Gen-3+ ("first and last keyframe"), Higgsfield, Pika ("keyframes"). Sora/ChatGPT currently takes only a start image — usable as a fallback but the landing on our exact vista is then luck; prefer a dual-keyframe tool.
 
-Deliver: MP4 (H.264) + the raw generation; we may extract a frame sequence for scroll-scrubbing, so highest available quality/framerate.
+**Main deliverable (16:9, 4–6s, highest quality/framerate offered):**
+
+> Camera begins pointed straight down at an old oak workbench in a Renaissance workshop — worn wood, black boots visible at the bottom of frame on terracotta tiles. The camera tilts slowly and smoothly upward, in one single continuous unbroken motion, rising past the edge of the workbench and through the open loggia, coming to rest gazing out over sunlit Tuscan fields with cypress trees toward the distant city of Florence and its Duomo on the hazy golden horizon at sunset. The motion of a man unhurriedly lifting his gaze from his work to the horizon: slow start, gentle constant speed, soft settle at the end. Continuous warm golden-hour light throughout, sun low on the left. No cuts, no camera shake, no zoom, no people, no birds, no text, nothing moving on the desk.
+
+**Negative prompt (if the tool has a field for it):** cuts, scene change, camera shake, handheld wobble, zoom, dolly, people, hands, faces, birds, text, watermark, day-night change, rain.
+
+**Settings guidance:** duration 5s; motion strength low-medium (the move is one axis — over-energetic settings invent extra movement); if the tool offers "camera control: tilt up", set it and lower the text emphasis on motion.
+
+**Mobile variant (9:16, same prompt):** condition on centre-crops of the same two stills (crop to 9:16 around the boots/bench centre and the Duomo respectively — do the crops before upload so the model isn't choosing the framing). Only worth generating after the 16:9 is approved.
+
+**Deliver:** the highest-quality MP4/MOV the tool exports *plus* the raw generation file. We may extract a frame sequence (~90 frames) for scroll-scrubbing, so bitrate and framerate matter more than file size — do not let the tool "optimise for sharing".
+
+**Acceptance checks before spending on the mobile variant:**
+1. First and last frames visually match our stills (minor drift acceptable — the page crossfades at both ends).
+2. One continuous tilt — any hidden cut or direction reversal is a reject.
+3. Light stays golden-hour throughout; no flicker or exposure pumping.
+4. Nothing enters frame (hands, birds, furniture inventing itself).
 
 ## Other optional assets (later)
 
-- **Ambient vista loop** (Stillmind-style): 6–10s seamless loop of the horizon still barely alive — heat shimmer over fields, drifting haze — candidate `full`-tier backdrop under the glass frames.
+- **Ambient vista loop** (Stillmind-style, `full` tier only): 6–10s seamless loop conditioned on `vision-horizon` — *"The identical landscape, completely static camera, only barely-perceptible ambient motion: heat shimmer rising off the distant fields, a whisper of haze drifting across the horizon, faint warm light flicker on the city. Seamless loop, no camera movement whatsoever, no clouds racing, no birds."* Reject anything with visible camera drift — it sits under stationary UI.
 
 ## Art-direction guardrails
 

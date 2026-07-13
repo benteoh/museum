@@ -1,17 +1,17 @@
 'use client'
 
-// components/lab/DeskScene.tsx
-// LAB SKETCH — the Overture: huge decorative da Vinci-style manuscripts
-// layered over the desk, overflowing the viewport, pulling apart as you
-// scroll to physically reveal the title inked beneath. The sheets are set
-// dressing — they link to nothing.
-//
-// The project gallery that follows lives in VisionScene (glass frames over
-// the Florence vista — see 2026-07-11-vision-gallery-design.md). The old
-// pile-shuffle gallery this scene once contained is retired.
-import { useRef } from 'react'
+// components/overture/OvertureScene.tsx
+// The Overture — the home page's opening movement. Huge da Vinci-style
+// manuscripts overflow the viewport and pull apart as you scroll, physically
+// clearing a real desk: the parchment ground crossfades to the bird's-eye
+// vision-desk still and the title goes light-on-wood with it. The sheets are
+// set dressing — they link to nothing. The Vision gallery follows (see
+// components/vision/VisionScene and the Vision Gallery revision in
+// docs/superpowers/specs/2026-07-02-living-codex-design.md).
+import { useEffect, useRef } from 'react'
 import {
   motion,
+  useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
@@ -19,9 +19,10 @@ import {
 } from 'framer-motion'
 import { TornSheet } from '@/components/paper/TornSheet'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
+import { useSceneStore } from '@/hooks/useScene'
 import { InkSpots } from './InkSpots'
 import { StudyDrawing, type StudyVariant } from './StudyDrawing'
-import * as styles from './DeskScene.css'
+import * as styles from './OvertureScene.css'
 
 // Viewports of scroll the parting occupies, plus one settled rest viewport.
 const OVERTURE_UNITS = 2.5
@@ -30,6 +31,10 @@ const REST_UNITS = 1
 const SETTLE_SPRING = { type: 'spring', stiffness: 48, damping: 19 } as const
 // All generated scans are 16:10 per the asset prompt pack.
 const SHEET_ASPECT = '16 / 10'
+// The parting papers clear a real desk: over the last beats of the parting
+// the parchment ground crossfades to the bird's-eye desk still, and the
+// title's ink goes light-on-wood with it (the palette hinge into dusk).
+const DESK_REVEAL_RANGE: [number, number] = [0.55, 0.9]
 
 export type OvertureAssets = Partial<Record<string, string>>
 
@@ -47,9 +52,9 @@ type OvertureConfig = {
 
 // Layered back-to-front; later entries render on top and depart earlier.
 const OVERTURE_SHEETS: OvertureConfig[] = [
-  { seed: 'codex-atlanticus', variant: 'script',    w: 'min(88vw, 141vh)', home: { dx: -4, dy: 5, rotate: -5 },  away: { dx: -95, dy: 25, rotate: -14 }, range: [0.42, 0.95] },
+  { seed: 'codex-atlanticus', variant: 'script',    w: 'min(88vw, 141vh)', home: { dx: -4, dy: 5, rotate: -5 },  away: { dx: -102, dy: 25, rotate: -14 }, range: [0.42, 0.95] },
   { seed: 'codex-leicester',  variant: 'gear',      w: 'min(76vw, 134vh)', home: { dx: 7, dy: -3, rotate: 6 },   away: { dx: 90, dy: -40, rotate: 15 },  range: [0.32, 0.85] },
-  { seed: 'codex-windsor',    variant: 'vitruvian', w: 'min(72vw, 125vh)', home: { dx: -6, dy: -5, rotate: 3 },  away: { dx: -80, dy: -55, rotate: -9 }, range: [0.2, 0.72] },
+  { seed: 'codex-windsor',    variant: 'vitruvian', w: 'min(72vw, 125vh)', home: { dx: -6, dy: -5, rotate: 3 },  away: { dx: -94, dy: -64, rotate: -9 }, range: [0.2, 0.72] },
   { seed: 'codex-turin',      variant: 'force',     w: 'min(66vw, 115vh)', home: { dx: 8, dy: 6, rotate: -7 },   away: { dx: 85, dy: 60, rotate: -18 },  range: [0.1, 0.6] },
   { seed: 'codex-flight',     variant: 'wing',      w: 'min(64vw, 106vh)', home: { dx: 0, dy: 0, rotate: 4 },    away: { dx: 20, dy: -95, rotate: 12 },  range: [0.02, 0.48] },
 ]
@@ -110,18 +115,17 @@ function OvertureSheet({
   )
 }
 
-export function DeskScene({
+export function OvertureScene({
   title,
-  curatorNote,
   assets = {},
 }: {
   title: string
-  curatorNote: string
   assets?: OvertureAssets
 }) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const tier = useDeviceTier()
   const units = OVERTURE_UNITS + REST_UNITS
+  const isStatic = tier === 'static'
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -135,7 +139,46 @@ export function DeskScene({
   const overtureSprung = useSpring(overtureRaw, { stiffness: 60, damping: 22 })
   const overtureProgress = tier === 'full' ? overtureSprung : overtureRaw
 
+  // Ground crossfade: parchment → desk still, dark ink → light-on-wood type.
+  // Eased late so the parchment holds while paper still covers most of the
+  // ground, then the desk arrives in the final beats — a reveal, not a swap.
+  const [revealStart, revealEnd] = DESK_REVEAL_RANGE
+  const revealMid = revealStart + (revealEnd - revealStart) * 0.5
+  const deskOpacity = useTransform(overtureProgress, [revealStart, revealMid, revealEnd], [0, 0.3, 1])
+  const inkTitleOpacity = useTransform(overtureProgress, [revealStart, revealMid, revealEnd], [1, 0.7, 0])
+  // The desk settles from slightly nearer as the papers clear it — the depth
+  // cue that sells "papers lifting off a real surface".
+  const deskScale = useTransform(overtureProgress, DESK_REVEAL_RANGE, [1.055, 1])
+
   const animateEntrance = tier === 'full'
+  const deskSrc = assets['vision-desk']
+
+  // Publish which world the viewport is in (paper atelier → dusk desk) so
+  // ambient layers — cursor, ink motes — can match their material.
+  const setScene = useSceneStore((s) => s.setScene)
+  useMotionValueEvent(overtureProgress, 'change', (p) => {
+    setScene(p > revealMid ? 'desk' : 'paper')
+  })
+  useEffect(() => () => setScene('paper'), [setScene])
+
+  // Static tier renders the settled end state: papers cleared, title on the
+  // desk, no pin — a single quiet viewport.
+  if (isStatic) {
+    return (
+      <section className={styles.section} style={{ height: '100vh' }}>
+        <div className={styles.sticky}>
+          <div className={styles.desk}>
+            {deskSrc && (
+              // eslint-disable-next-line @next/next/no-img-element -- full-bleed generated still
+              <img className={styles.deskImage} src={deskSrc} alt="" />
+            )}
+            <div className={styles.deskGrade} />
+            <h1 className={`${styles.title} ${styles.titleLight}`}>{title}</h1>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section ref={sectionRef} className={styles.section} style={{ height: `${(units + 1) * 100}vh` }}>
@@ -147,9 +190,30 @@ export function DeskScene({
           animate={{ scale: 1 }}
           transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Inked on the desk — physically revealed as the papers part. */}
-          <h1 className={styles.title}>{title}</h1>
-          <p className={styles.curatorNote}>{curatorNote}</p>
+          {/* The real desk beneath everything — revealed as the papers clear it. */}
+          {deskSrc && (
+            <motion.div className={styles.deskStill} style={{ opacity: deskOpacity, scale: deskScale }}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- full-bleed generated still */}
+              <img className={styles.deskImage} src={deskSrc} alt="" />
+              <div className={styles.deskGrade} />
+            </motion.div>
+          )}
+
+          {/* Inked on the desk — physically revealed as the papers part. The
+              title is one heading; its colour treatment crossfades with the
+              ground (iron-gall on parchment → light type on dusk wood). */}
+          <div className={styles.titleStack}>
+            <motion.h1 className={styles.title} style={{ opacity: inkTitleOpacity }}>
+              {title}
+            </motion.h1>
+            <motion.div
+              aria-hidden
+              className={`${styles.title} ${styles.titleLight}`}
+              style={{ opacity: deskOpacity }}
+            >
+              {title}
+            </motion.div>
+          </div>
 
           {OVERTURE_SHEETS.map((config, i) => (
             <div key={config.seed} className={styles.sheetLayer} style={{ zIndex: 10 + i }}>
@@ -165,7 +229,10 @@ export function DeskScene({
         </motion.div>
       </div>
 
-      <div className={styles.hint}>overture · {tier}</div>
+      {/* STAGE 2: the Lift (tilt video) slots here — see
+          2026-07-02-living-codex-design.md, Vision Gallery revision. The scene
+          unpins after the settled rest viewport above; the Lift will extend
+          this section and take over between the rest beat and the Vision. */}
     </section>
   )
 }

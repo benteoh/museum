@@ -257,6 +257,34 @@ Vertical rail instead of horizontal; tilt video needs a 9:16 generation variant 
 
 Generation prompts for all Vision assets live in `overture-asset-prompts.md` (stills before video — the tilt video is conditioned on the two approved stills).
 
+### Shipped values — Stage 1 (2026-07-12, ground truth for stage 2)
+
+**Overture (`components/overture/OvertureScene.tsx`)**
+- Scroll units: parting 2.5 viewports + 1 rest viewport; section height `(3.5 + 1) × 100vh`.
+- Sprung scroll (full tier only): stiffness 60, damping 22. Reduced tier maps raw.
+- Entrance: settle spring 48/19, per-sheet delay `0.12 + i × 0.13`; desk zoom breath 1.035 → 1 over 1.8s `[0.16, 1, 0.3, 1]`.
+- Sheet exits (top sheets leave first): flight `[0.02, 0.48]`, turin `[0.1, 0.6]`, windsor `[0.2, 0.72]` (away −94vw/−64vh), leicester `[0.32, 0.85]`, atlanticus `[0.42, 0.95]` (away −102vw/25vh). Windsor/atlanticus aways pushed fully off-frame so the rest viewport is still.
+- **Desk reveal**: crossfade window `[0.55, 0.9]` of overture progress, eased late — desk opacity `[0, 0.3, 1]` through the 0.725 midpoint, ink title `[1, 0.7, 0]`; desk still settles 1.055 → 1 scale. Title crossfades dark-on-parchment → `duskText` light-on-wood (dual layer, one heading + aria-hidden twin).
+- Scene handoff: `paper` → `desk` published at the 0.725 reveal midpoint.
+
+**Vision (`components/vision/VisionScene.tsx`)**
+- Rail: section height `(n + 1) × 100vh`; track gap 5vw, side padding 16vw; frame width `clamp(300px, 30vw, 480px)`; `useGallery` spring 60/20.
+- Float personality (seeded per slug): rest offset ±5vh, amplitude 1–2.2vh, period 5.5–8.5s (rotate ×1.6), tilt ±0.5–1°.
+- Cursor tilt: ±3° Y / ±2.4° X, spring 140/18, perspective 900.
+- Ripple energy model: `energy += pointer-distance × 0.18`, cap 14, decay ×0.93/frame, cutoff 0.12; tap injects 7. **The displacement filter attaches only while energy > 0** — resting panes with the filter attached re-rasterise every frame (16fps idle measured) because of the turbulence `<animate>`.
+- Active pane scale 1.04 (spring 55/21), hover 1.05, tap 0.97.
+- Curator note: bottom-left 6vw/7vh, Caveat 1.45rem `duskText`, −2° rotate; dims to 0.3 over 0.6s while any pane is hovered/focused.
+- Focus: warm glow ring on the glass via `:focus-visible` on the pane link (no default outline).
+- Mobile (<640px): vertical stack, native scroll, vista held by sticky-in-absolute-holder (a negative-margin sticky escapes its section), tilt off, tap = ripple + tap-scale bobble.
+- Scene publishing: `vista` while section progress ∈ (0, 1) at offset `['start 0.7', 'end 0.3']`; `desk` above, `paper` below.
+
+**Ambient (cursor + motes)**
+- Scene presence of boids: paper 1 (with the 40vh scroll fade — carried off with the first sheets), desk 0 (stillness), vista 0.45 (warm dust); presence fades over 0.9s. Palettes mirror tokens: ink `56,44,25 / 140,79,50 / 122,95,56`; dusk `230,220,196 / 216,155,84 / 255,236,190`. Boids full tier only.
+- CursorDot (fine pointer + full tier): halo follow spring 320/26, state spring 380/26; hover: halo 1.55 / dot 0.55; press: 0.75 / 0.7; scene tint 500ms.
+
+**Measured (4× CPU throttle, headless software raster — pessimistic bound)**
+- Parting scroll 44fps avg / p95 33ms; pane ripple 37fps avg / p95 33ms; rail idle 42fps; zero long tasks. Real-GPU numbers will be higher; spot-check in headed Chrome at stage 2.
+
 ---
 
 ## Parked direction — Physical Paper (WebGL)

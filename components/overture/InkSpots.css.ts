@@ -1,4 +1,4 @@
-// components/lab/InkSpots.css.ts
+// components/overture/InkSpots.css.ts
 import { style } from '@vanilla-extract/css'
 
 export const root = style({

@@ -1,7 +1,7 @@
 'use client'
 
-// components/lab/StudyDrawing.tsx
-// LAB SKETCH — procedural placeholder for a generated manuscript scan.
+// components/overture/StudyDrawing.tsx
+// Procedural fallback when a manuscript seed has no generated scan.
 import { mulberry32, hashSeed } from '@/components/paper/tornEdge'
 import * as styles from './StudyDrawing.css'
 
