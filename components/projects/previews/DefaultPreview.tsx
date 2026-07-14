@@ -1,78 +1,78 @@
-// components/projects/previews/DefaultPreview.tsx
 'use client'
 
-import { useEffect, useRef } from 'react'
-import * as styles from './DefaultPreview.css'
+import { useMemo } from 'react'
+import { useDeviceTier } from '@/hooks/useDeviceTier'
+import { hashSeed, mulberry32 } from '@/components/paper/tornEdge'
+import { mirrorWritingLines, strokeDrawProps, STUDY_INKS, type StudyWorld } from './studyKit'
+import * as styles from './PreviewStudy.css'
 
-type Dot = { x: number; y: number; phase: number; speed: number; radius: number }
+type Props = {
+  slug: string
+  heroColour?: string
+  world: StudyWorld
+}
 
-/** Calm animated fill shown when a project has no component or image. */
-export function DefaultPreview({ heroColour }: { heroColour?: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+function polygonStudy(seed: string) {
+  const random = mulberry32(hashSeed(seed))
+  const sides = 5 + Math.floor(random() * 3)
+  const radius = 18 + random() * 5
+  const rotation = random() * Math.PI
+  return Array.from({ length: sides }, (_, index) => {
+    const angle = rotation + (index / sides) * Math.PI * 2
+    return `${80 + Math.cos(angle) * radius},${61 + Math.sin(angle) * radius}`
+  }).join(' ')
+}
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+export function DefaultPreview({ slug, heroColour, world }: Props) {
+  const tier = useDeviceTier()
+  const fullyDrawn = tier !== 'full'
+  const inks = STUDY_INKS[world]
+  const seed = `${slug}:${heroColour ?? 'uncoloured'}`
+  const writing = useMemo(
+    () => mirrorWritingLines(seed, { count: 4, top: 18, lineGap: 6, left: 20, right: 136, minWidth: 42, maxWidth: 82, wobble: 1.1 }),
+    [seed],
+  )
+  const polygon = useMemo(() => polygonStudy(seed), [seed])
 
-    // Canvas fill can't consume vars — literal mirrors vars.color.surface.
-    const colour = heroColour ?? '#F3ECD8'
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const draw = (length: number, delay: number) => ({
+    ...strokeDrawProps(length, fullyDrawn),
+    className: fullyDrawn ? styles.drawnStroke : styles.drawOn,
+    style: {
+      '--stroke-length': length,
+      animationDelay: `${delay}ms`,
+    } as React.CSSProperties,
+  })
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-    resize()
-
-    if (reduced) {
-      ctx.fillStyle = colour
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      return
-    }
-
-    const dots: Dot[] = Array.from({ length: 70 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.5 + Math.random() * 1.5,
-      radius: 1 + Math.random() * 1.5,
-    }))
-
-    let t = 0
-    let raf = 0
-    let last = 0
-
-    const loop = (timestamp: number) => {
-      if (timestamp - last < 16.67) { raf = requestAnimationFrame(loop); return }
-      last = timestamp
-      t += 0.005
-
-      ctx.fillStyle = colour
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      ctx.fillStyle = colour + '30'
-      for (const d of dots) {
-        const ox = Math.sin(t * d.speed + d.phase) * 18
-        const oy = Math.cos(t * d.speed * 0.7 + d.phase) * 12
-        ctx.beginPath()
-        ctx.arc(d.x + ox, d.y + oy, d.radius, 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      raf = requestAnimationFrame(loop)
-    }
-
-    raf = requestAnimationFrame(loop)
-    const ro = new ResizeObserver(resize)
-    ro.observe(canvas)
-
-    return () => {
-      cancelAnimationFrame(raf)
-      ro.disconnect()
-    }
-  }, [heroColour])
-
-  return <canvas ref={canvasRef} className={styles.root} aria-hidden />
+  return (
+    <svg
+      className={`${styles.root} ${world === 'glass' ? styles.glass : ''}`}
+      viewBox="0 0 160 100"
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+      focusable="false"
+      data-study="default"
+      data-study-world={world}
+      data-drawn={String(fullyDrawn)}
+      style={{ color: inks.primary, '--study-accent': inks.accent } as React.CSSProperties}
+    >
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <g opacity="0.25" strokeWidth="0.35">
+          {Array.from({ length: 5 }, (_, index) => (
+            <path key={index} data-geometry d={`M 16 ${15 + index * 7} H 144`} {...draw(130, index * 35)} />
+          ))}
+        </g>
+        <g stroke={inks.annotation} strokeWidth="0.5" opacity="0.8">
+          {writing.map((path, index) => (
+            <path key={path} data-geometry d={path} {...draw(100, 170 + index * 55)} />
+          ))}
+        </g>
+        <g stroke="var(--study-accent)">
+          <rect data-geometry x="54" y="38" width="52" height="46" strokeWidth="0.65" {...draw(200, 400)} />
+          <circle cx="80" cy="61" r="23" strokeWidth="0.65" {...draw(150, 480)} />
+          <polygon data-geometry points={polygon} strokeWidth="0.9" {...draw(150, 560)} />
+          <path data-geometry d="M 48 61 H 112 M 80 32 V 90" opacity="0.48" strokeWidth="0.4" {...draw(125, 620)} />
+        </g>
+      </g>
+    </svg>
+  )
 }

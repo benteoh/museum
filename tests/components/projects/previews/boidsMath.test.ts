@@ -17,6 +17,14 @@ describe('createParticles', () => {
       expect(p.y).toBeLessThanOrEqual(300)
     }
   })
+
+  it('uses an injected random source for deterministic visitor placement', () => {
+    const random = () => 0.25
+
+    expect(createParticles(3, 100, 60, random)).toEqual(
+      createParticles(3, 100, 60, random),
+    )
+  })
 })
 
 describe('tick', () => {
@@ -41,5 +49,14 @@ describe('tick', () => {
     const ps = createParticles(18, 400, 300)
     const next = tick(ps, 400, 300)
     expect(next.some((p) => p.vx !== 0 || p.vy !== 0)).toBe(true)
+  })
+
+  it('honours a calm speed ceiling for manuscript visitor motes', () => {
+    const next = tick([{ x: 20, y: 20, vx: 1, vy: 1 }], 100, 60, {
+      maxSpeed: 0.08,
+      maxForce: 0.004,
+    })
+
+    expect(Math.hypot(next[0].vx, next[0].vy)).toBeLessThanOrEqual(0.080001)
   })
 })

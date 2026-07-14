@@ -1,123 +1,77 @@
-// components/projects/previews/SkyhivePreview.tsx
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useDeviceTier } from '@/hooks/useDeviceTier'
+import { forceArrowGeometry, strokeDrawProps, STUDY_INKS, type StudyWorld } from './studyKit'
+import * as styles from './PreviewStudy.css'
 
-type Cube = { x: number; y: number; size: number; speed: number }
+type Cube = { cx: number; cy: number; size: number }
 
-const BG = '#0d1520'
+const CUBES: Cube[] = [
+  { cx: 57, cy: 38, size: 14 },
+  { cx: 85, cy: 52, size: 14 },
+  { cx: 57, cy: 66, size: 14 },
+  { cx: 113, cy: 38, size: 14 },
+]
 
-function drawIsoCube(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number, op: number) {
-  const h = s * 0.5
-  // Top face
-  ctx.beginPath()
-  ctx.moveTo(cx, cy - h)
-  ctx.lineTo(cx + s, cy)
-  ctx.lineTo(cx, cy + h)
-  ctx.lineTo(cx - s, cy)
-  ctx.closePath()
-  ctx.fillStyle = `rgba(74,127,160,${op})`
-  ctx.fill()
-  // Left face
-  ctx.beginPath()
-  ctx.moveTo(cx - s, cy)
-  ctx.lineTo(cx, cy + h)
-  ctx.lineTo(cx, cy + h + s)
-  ctx.lineTo(cx - s, cy + s)
-  ctx.closePath()
-  ctx.fillStyle = `rgba(26,47,74,${op})`
-  ctx.fill()
-  // Right face
-  ctx.beginPath()
-  ctx.moveTo(cx + s, cy)
-  ctx.lineTo(cx, cy + h)
-  ctx.lineTo(cx, cy + h + s)
-  ctx.lineTo(cx + s, cy + s)
-  ctx.closePath()
-  ctx.fillStyle = `rgba(47,74,107,${op})`
-  ctx.fill()
-}
-
-function makeCube(canvasWidth: number, canvasHeight: number): Cube {
+function cubeGeometry({ cx, cy, size }: Cube) {
+  const half = size / 2
   return {
-    x: Math.random() * canvasWidth,
-    y: canvasHeight + Math.random() * canvasHeight,
-    size: 8 + Math.random() * 10,
-    speed: 0.2 + Math.random() * 0.4,
+    top: `${cx},${cy - half} ${cx + size},${cy} ${cx},${cy + half} ${cx - size},${cy}`,
+    left: `${cx - size},${cy} ${cx},${cy + half} ${cx},${cy + half + size} ${cx - size},${cy + size}`,
+    right: `${cx + size},${cy} ${cx},${cy + half} ${cx},${cy + half + size} ${cx + size},${cy + size}`,
   }
 }
 
-export function SkyhivePreview() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+const DIMENSION = forceArrowGeometry(36, 88, 132, 88, 2.5)
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+export function SkyhivePreview({ world }: { world: StudyWorld }) {
+  const tier = useDeviceTier()
+  const fullyDrawn = tier !== 'full'
+  const inks = STUDY_INKS[world]
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-    resize()
-
-    const cubes: Cube[] = Array.from({ length: 12 }, () => makeCube(canvas.width, canvas.height))
-    // Scatter initial y so they don't all start off-screen
-    for (const c of cubes) { c.y = Math.random() * canvas.height }
-
-    if (reduced) {
-      ctx.fillStyle = BG
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      const sorted = [...cubes].sort((a, b) => a.y - b.y)
-      for (const c of sorted) drawIsoCube(ctx, c.x, c.y, c.size, 0.5)
-      return
-    }
-
-    let raf = 0
-    let last = 0
-
-    const loop = (timestamp: number) => {
-      if (timestamp - last < 16.67) { raf = requestAnimationFrame(loop); return }
-      last = timestamp
-
-      ctx.fillStyle = BG
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      for (const c of cubes) {
-        c.y -= c.speed
-        if (c.y + c.size * 2 < 0) {
-          c.x = Math.random() * canvas.width
-          c.y = canvas.height + c.size
-          c.size = 8 + Math.random() * 10
-          c.speed = 0.2 + Math.random() * 0.4
-        }
-      }
-
-      // Sort back-to-front (higher y = drawn later = in front)
-      const sorted = [...cubes].sort((a, b) => a.y - b.y)
-      for (const c of sorted) drawIsoCube(ctx, c.x, c.y, c.size, 0.6)
-
-      raf = requestAnimationFrame(loop)
-    }
-
-    raf = requestAnimationFrame(loop)
-    const ro = new ResizeObserver(resize)
-    ro.observe(canvas)
-
-    return () => {
-      cancelAnimationFrame(raf)
-      ro.disconnect()
-    }
-  }, [])
+  const draw = (length: number, delay: number) => ({
+    ...strokeDrawProps(length, fullyDrawn),
+    className: fullyDrawn ? styles.drawnStroke : styles.drawOn,
+    style: {
+      '--stroke-length': length,
+      animationDelay: `${delay}ms`,
+    } as React.CSSProperties,
+  })
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: '100%', height: '100%', display: 'block' }}
-      aria-hidden
-    />
+    <svg
+      className={`${styles.root} ${world === 'glass' ? styles.glass : ''}`}
+      viewBox="0 0 160 100"
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+      focusable="false"
+      data-study="skyhive"
+      data-study-world={world}
+      data-drawn={String(fullyDrawn)}
+      style={{ color: inks.primary, '--study-accent': inks.accent } as React.CSSProperties}
+    >
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <path data-geometry d="M 20 76 L 80 16 L 140 76 M 22 24 H 138 M 80 10 V 92" opacity="0.3" strokeWidth="0.4" {...draw(310, 0)} />
+        {CUBES.map((cube, index) => {
+          const paths = cubeGeometry(cube)
+          const moving = tier === 'full' && index === 3
+          return (
+            <g key={paths.top} className={moving ? styles.assembling : undefined}>
+              <polygon data-geometry points={paths.top} {...draw(65, 100 + index * 80)} />
+              <polygon data-geometry points={paths.left} {...draw(70, 140 + index * 80)} />
+              <polygon data-geometry points={paths.right} {...draw(70, 180 + index * 80)} />
+            </g>
+          )
+        })}
+        <g stroke="var(--study-accent)" strokeWidth="0.45" opacity="0.8">
+          {Array.from({ length: 7 }, (_, index) => (
+            <path key={index} data-geometry d={`M ${45 + index * 4} 72 L ${61 + index * 4} 80`} {...draw(25, 520 + index * 25)} />
+          ))}
+          <path data-geometry d={DIMENSION.shaftPath} {...draw(100, 620)} />
+          <path data-geometry d={DIMENSION.headPath} fill="var(--study-accent)" {...draw(16, 650)} />
+          <path data-geometry d="M 36 84 V 92 M 132 84 V 92" {...draw(20, 650)} />
+        </g>
+      </g>
+    </svg>
   )
 }

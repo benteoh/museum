@@ -1,6 +1,11 @@
 // components/projects/previews/boidsMath.ts
 export type Particle = { x: number; y: number; vx: number; vy: number }
 
+export type TickOptions = {
+  maxSpeed?: number
+  maxForce?: number
+}
+
 const MAX_SPEED = 1.5
 const MAX_FORCE = 0.04
 const COHESION_RADIUS = 80
@@ -10,13 +15,18 @@ const W_COHESION = 0.001
 const W_SEPARATION = 0.05
 const W_ALIGNMENT = 0.04
 
-export function createParticles(count: number, width: number, height: number): Particle[] {
+export function createParticles(
+  count: number,
+  width: number,
+  height: number,
+  random: () => number = Math.random,
+): Particle[] {
   return Array.from({ length: count }, () => {
-    const angle = Math.random() * Math.PI * 2
-    const speed = 0.4 + Math.random() * 0.8
+    const angle = random() * Math.PI * 2
+    const speed = 0.4 + random() * 0.8
     return {
-      x: Math.random() * width,
-      y: Math.random() * height,
+      x: random() * width,
+      y: random() * height,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
     }
@@ -31,7 +41,12 @@ function dist(ax: number, ay: number, bx: number, by: number) {
   return Math.sqrt((ax - bx) ** 2 + (ay - by) ** 2)
 }
 
-export function tick(particles: Particle[], width: number, height: number): Particle[] {
+export function tick(
+  particles: Particle[],
+  width: number,
+  height: number,
+  { maxSpeed = MAX_SPEED, maxForce = MAX_FORCE }: TickOptions = {},
+): Particle[] {
   return particles.map((p) => {
     let dx = 0, dy = 0
     let cohX = 0, cohY = 0, cohN = 0
@@ -51,13 +66,13 @@ export function tick(particles: Particle[], width: number, height: number): Part
     dy += sepY * W_SEPARATION
     if (aliN > 0) { dx += (aliVx / aliN - p.vx) * W_ALIGNMENT; dy += (aliVy / aliN - p.vy) * W_ALIGNMENT }
 
-    dx = clamp(dx, -MAX_FORCE, MAX_FORCE)
-    dy = clamp(dy, -MAX_FORCE, MAX_FORCE)
+    dx = clamp(dx, -maxForce, maxForce)
+    dy = clamp(dy, -maxForce, maxForce)
 
     let vx = p.vx + dx
     let vy = p.vy + dy
     const speed = Math.sqrt(vx ** 2 + vy ** 2)
-    if (speed > MAX_SPEED) { vx = (vx / speed) * MAX_SPEED; vy = (vy / speed) * MAX_SPEED }
+    if (speed > maxSpeed) { vx = (vx / speed) * maxSpeed; vy = (vy / speed) * maxSpeed }
 
     let x = p.x + vx
     let y = p.y + vy

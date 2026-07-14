@@ -177,6 +177,7 @@ function GlassFrame({
               heroImage={project.heroImage}
               heroColour={project.heroColour}
               title={project.title}
+              world="glass"
             />
           </div>
           <div className={styles.caption}>
