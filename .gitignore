@@ -46,6 +46,9 @@ next-env.d.ts
 # Claude
 .claude/
 
+# Local Git worktrees
+.worktrees/
+
 # Logs
 logs
 *.log
