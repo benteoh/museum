@@ -257,6 +257,16 @@ Vertical rail instead of horizontal; tilt video needs a 9:16 generation variant 
 
 Generation prompts for all Vision assets live in `overture-asset-prompts.md` (stills before video — the tilt video is conditioned on the two approved stills).
 
+### Ink previews — dual register
+
+Each project preview uses one deterministic da Vinci-style SVG study in two material registers: `paper` is the iron-gall notebook drawing used by the project index and detail placeholder; `glass` is the same geometry in warm luminous `duskText`/`duskTorch` strokes for the Vision panes. `ProjectPreview` defaults to `paper`; only `VisionScene` selects `glass`. This keeps paper as the record of process and glass as the imagined future, without making the drawing itself a second spectacle.
+
+- **Museum of Little Things:** aedicula/elevation, tiny exhibit glyphs and mirror-writing annotations; only its six visitor motes have a full-tier idle movement, paused outside the viewport and when the document is hidden.
+- **Skyhive:** isometric wireframe hive, construction axes, hatch and dimension marks; one full-tier cube-group assembly/explode movement.
+- **Default:** seeded ruled marginalia with a circle/square/polygon construction; no idle movement.
+
+All three studies use SVG stroke drawing on the `full` tier and begin fully drawn and still on `reduced` and `static`. They are pointer-inert and decorative so the surrounding card or glass-pane link remains the sole interactive subject.
+
 ### Shipped values — Stage 1 (2026-07-12, ground truth for stage 2)
 
 **Overture (`components/overture/OvertureScene.tsx`)**
