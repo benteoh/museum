@@ -2,28 +2,10 @@
 
 // components/overture/StudyDrawing.tsx
 // Procedural fallback when a manuscript seed has no generated scan.
-import { mulberry32, hashSeed } from '@/components/paper/tornEdge'
+import { mirrorWritingLines } from '@/components/projects/previews/studyKit'
 import * as styles from './StudyDrawing.css'
 
 export type StudyVariant = 'wing' | 'vitruvian' | 'gear' | 'script' | 'force'
-
-/** Sketchy pseudo-handwriting rows — deterministic squiggle per seed. */
-function scriptRows(seed: string): string[] {
-  const rand = mulberry32(hashSeed(seed))
-  const rows: string[] = []
-  for (let y = 22; y <= 82; y += 7) {
-    let d = `M 10 ${y}`
-    let x = 10
-    const end = 55 + rand() * 35
-    while (x < end) {
-      const step = 2.5 + rand() * 3.5
-      x += step
-      d += ` q ${step / 2} ${(rand() * 2 - 1) * 2.2} ${step} 0`
-    }
-    rows.push(d)
-  }
-  return rows
-}
 
 export function StudyDrawing({ variant, seed }: { variant: StudyVariant; seed: string }) {
   return (
@@ -73,7 +55,7 @@ export function StudyDrawing({ variant, seed }: { variant: StudyVariant; seed: s
             })}
           </>
         )}
-        {variant === 'script' && scriptRows(seed).map((d, i) => <path key={i} d={d} strokeWidth={0.45} />)}
+        {variant === 'script' && mirrorWritingLines(seed).map((d, i) => <path key={i} d={d} strokeWidth={0.45} />)}
         {variant === 'force' && (
           <>
             <path d="M 18 76 L 82 76 L 82 38 Z" />
