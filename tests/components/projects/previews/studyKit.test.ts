@@ -47,6 +47,13 @@ describe('forceArrowGeometry', () => {
       headPath: 'M 30 20 L 26 16 L 26 24 Z',
     })
   })
+
+  it('rotates the arrowhead wings perpendicular to a vertical shaft', () => {
+    expect(forceArrowGeometry(10, 20, 10, 40, 4)).toEqual({
+      shaftPath: 'M 10 20 L 10 40',
+      headPath: 'M 10 40 L 14 36 L 6 36 Z',
+    })
+  })
 })
 
 describe('STUDY_INKS', () => {

@@ -2,10 +2,15 @@
 
 // components/overture/StudyDrawing.tsx
 // Procedural fallback when a manuscript seed has no generated scan.
-import { mirrorWritingLines } from '@/components/projects/previews/studyKit'
+import { forceArrowGeometry, mirrorWritingLines } from '@/components/projects/previews/studyKit'
 import * as styles from './StudyDrawing.css'
 
 export type StudyVariant = 'wing' | 'vitruvian' | 'gear' | 'script' | 'force'
+
+const FORCE_ARROWS = [
+  forceArrowGeometry(62, 61, 74, 70, 2),
+  forceArrowGeometry(58, 62, 58, 74, 1.5),
+]
 
 export function StudyDrawing({ variant, seed }: { variant: StudyVariant; seed: string }) {
   return (
@@ -60,10 +65,12 @@ export function StudyDrawing({ variant, seed }: { variant: StudyVariant; seed: s
           <>
             <path d="M 18 76 L 82 76 L 82 38 Z" />
             <circle cx={58} cy={57} r={5} />
-            <line x1={62} y1={61} x2={74} y2={70} />
-            <path d="M 74 70 l -3 -1 l 1 3 Z" fill="currentColor" />
-            <line x1={58} y1={62} x2={58} y2={74} strokeWidth={0.35} />
-            <path d="M 58 74 l -1.5 -3 l 3 0 Z" fill="currentColor" />
+            {FORCE_ARROWS.map(({ shaftPath, headPath }, i) => (
+              <g key={shaftPath}>
+                <path d={shaftPath} strokeWidth={i === 1 ? 0.35 : undefined} />
+                <path d={headPath} fill="currentColor" />
+              </g>
+            ))}
           </>
         )}
       </g>
