@@ -414,16 +414,16 @@
       },
       {
         "id": 7,
-        "title": "Dual-World Codex Specimen Page",
-        "description": "Create unlinked dev-only route rendering both palettes, full type system, and live TornSheet demo",
-        "details": "Create `app/dev/tokens/page.tsx` (server component, no data dependencies). Render two side-by-side sections: (1) Paper World: swatch grid showing all paper-world color tokens (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow) as colored divs with hex labels, type specimens at a few sizes (h1-h3, p, code) using vars.font.* to showcase Cinzel/Garamond/Caveat/Mono, and a live <TornSheet seed=\"specimen-demo\"><div>Sample sheet content with foxing</div></TornSheet> demo; (2) Marble-Dusk World (reserved): swatch grid for duskBg, duskSurface, duskText, duskTorch with labels, type specimens in the dusk palette (textPrimary → duskText, bg → duskBg). Style everything inline or via a local `page.css.ts` using vars.* exclusively (no hardcoded colors). This page is NEVER linked from Nav or any other page — it's a dev-only QA specimen for the site owner/implementer to verify both palettes render correctly before Phase 5 activates the dusk world. The marble-dusk tokens are reserved-but-unused until Phase 5; this page surfaces any palette/type problems in the dusk world now instead of during Phase 5. Next's static export will pre-render the route at build time even though it's unlinked, which is acceptable (it won't leak as a discoverable page unless someone guesses the URL).",
-        "testStrategy": "Manual verification in `pnpm dev`: navigate to /dev/tokens. Verify: (1) both paper and dusk palettes render side-by-side with correct hex values; (2) type specimens show correct fonts at various sizes; (3) live TornSheet demo displays torn edges and foxing overlay. Confirm page is NOT linked from Nav. Build succeeds (page is statically exported but unlinked).",
+        "title": "Dual-World Codex Specimen Page (cancelled)",
+        "description": "Cancelled: an unlinked palette specimen page does not currently improve the project journey.",
+        "details": "Cancelled during the 2026-07-14 roadmap cleanup. The task was a useful Phase 0-1 QA aid, but it is now additional surface area with no direct project-view value. Reintroduce it only if the detail-page Exhibit work exposes a concrete token or typography problem that needs a dedicated specimen.",
+        "testStrategy": "No implementation planned.",
         "priority": "low",
         "dependencies": [
           2,
           5
         ],
-        "status": "pending",
+        "status": "cancelled",
         "subtasks": [
           {
             "id": 1,
@@ -431,7 +431,7 @@
             "description": "Set up the unlinked dev-only route at app/dev/tokens/page.tsx with basic server component structure and two-column layout scaffolding",
             "dependencies": [],
             "details": "Create directory app/dev/tokens/ and add page.tsx as a server component (no 'use client' directive, no data dependencies). Set up basic structure with two side-by-side sections using flexbox or grid layout: (1) Paper World section and (2) Marble-Dusk World section. Each section should have a header and placeholder content. This establishes the foundation for the specimen page that will showcase both color palettes side-by-side.",
-            "status": "pending",
+            "status": "cancelled",
             "testStrategy": "Manual verification: navigate to /dev/tokens in browser after running pnpm dev. Confirm page renders with two distinct sections labeled 'Paper World' and 'Marble-Dusk World'. Build must succeed (pnpm build) - Next.js static export will pre-render the route even though it's unlinked."
           },
           {
@@ -442,7 +442,7 @@
               1
             ],
             "details": "In the Paper World section of app/dev/tokens/page.tsx, create a grid of color swatches. For each paper-world token from vars.color.* (bg, surface, border, inkFaint, textPrimary, textSecondary, accent, accentDim, monoTag, statusLive, statusWip, sheetShadow), render a colored div with the token value as background and display the hex code below it. Use inline styles or create page.css.ts with vanilla-extract style() calls, referencing vars.color.* exclusively. Layout should be a responsive grid (e.g., 3-4 columns) with adequate spacing between swatches.",
-            "status": "pending",
+            "status": "cancelled",
             "testStrategy": "Visual verification in browser: all 12 paper-world tokens render as colored squares with accurate hex labels beneath. Cross-reference hex values against styles/tokens.css.ts to ensure they match exactly. No hardcoded colors should appear - all must use vars.color.* references."
           },
           {
@@ -453,7 +453,7 @@
               2
             ],
             "details": "Below the paper-world swatch grid, add type specimens showcasing the Renaissance font system. Create examples for: h1/h2/h3 headings (vars.font.display - Cinzel) with sample text, paragraph text (vars.font.body - EB Garamond) at body size, hand-italic annotations (vars.font.hand - Caveat) for tag/annotation samples, and code blocks (vars.font.mono - JetBrains Mono). Use actual HTML heading/p/code elements styled with vars.font.* and vars.color.textPrimary/textSecondary. Include labels identifying which font is being shown at each specimen.",
-            "status": "pending",
+            "status": "cancelled",
             "testStrategy": "Visual check in browser: verify Cinzel displays in headings, EB Garamond in body text, Caveat in hand-written samples, and JetBrains Mono in code blocks. Text should be rendered in appropriate paper-world colors (textPrimary for main text, textSecondary for faded). Inspect computed styles to confirm correct font-family values."
           },
           {
@@ -464,7 +464,7 @@
               3
             ],
             "details": "Import TornSheet from @/components/paper/TornSheet (created in Task 5). Below type specimens, render <TornSheet seed=\"specimen-demo\"><div className={demoSheetStyle}>Sample sheet content with foxing</div></TornSheet>. Style the inner div with vars.color.surface background, padding, and min-height to make the torn edges visible. Add a foxing overlay using either CSS (::before pseudo-element with radial-gradient spots) or inline SVG to create 3-5 age spots/stains (brown/sepia tones at low opacity ~0.1-0.15). The foxing pattern references the 'aged paper' material from the visual brief and demonstrates how sheets will look with archival authenticity.",
-            "status": "pending",
+            "status": "cancelled",
             "testStrategy": "Visual verification: TornSheet renders with jagged torn edges (not straight), the demo content is clipped to the torn boundary, and subtle brown/sepia foxing spots are visible on the sheet surface. Verify the seed produces deterministic results by refreshing - torn edge pattern should not change."
           },
           {
@@ -475,7 +475,7 @@
               4
             ],
             "details": "In the Marble-Dusk World section, create a swatch grid showing the 4 reserved dusk tokens (vars.color.duskBg, duskSurface, duskText, duskTorch) with hex labels, following the same pattern as paper-world swatches. Below swatches, add type specimens using the same font system but styled with dusk palette colors: set background to duskBg, text to duskText, and accents to duskTorch. Include a note/label stating 'Reserved for Phase 5 - Detail Pages' to clarify these tokens are not yet active in the live site. This section ensures the dusk palette renders correctly even though it won't be used until Phase 5, surfacing any palette issues early.",
-            "status": "pending",
+            "status": "cancelled",
             "testStrategy": "Manual verification at /dev/tokens: (1) all 4 dusk tokens render with correct hex values matching tokens.css.ts; (2) type specimens display on dark duskBg with light duskText (confirm readable contrast); (3) duskTorch accent color is visible and distinct from duskText; (4) 'Reserved for Phase 5' label appears. Build succeeds and page is never linked from Nav or other routes."
           }
         ]
@@ -825,7 +825,7 @@
     ],
     "metadata": {
       "created": "2026-07-05T21:59:01.091Z",
-      "updated": "2026-07-06T08:05:07.361Z",
+      "updated": "2026-07-14T00:00:00.000Z",
       "description": "Tasks for master context"
     }
   },
@@ -833,34 +833,110 @@
     "tasks": [
       {
         "id": 1,
-        "title": "Phase 2 — Ink Previews",
-        "description": "Re-skin the preview registry as self-drawing SVG/canvas line diagrams per project, with mirror-writing annotations and force arrows.",
-        "details": "STUB EPIC — not scoped for implementation. Builds on components/projects/previews/ and boidsMath. Needs its own plan/PRD before work starts. See docs/superpowers/specs/2026-07-02-living-codex-design.md Phase 2.",
-        "testStrategy": "",
+        "title": "Phase 2 — Project Previews & Kinetic Inscription",
+        "description": "Retain project-led previews inside quieter, more translucent Vision glass frames; add one full-tier ink system that accurately writes the focused card's title and tags in the same typeface.",
+        "details": "Replaces the discarded 2026-07-13 ink-study direction. Start from the original project-specific previews and Vision glass cards: the project preview must enhance recognition of the work, not replace it with a shared da Vinci SVG language. Retain the original previews and refine the glass material with restrained translucency, internal depth/reflection, and a warm edge treatment, without competing with the card content. Add one rail-level KineticInscription system, attached to the focused card caption rather than individual previews. At build time generate exact SVG glyph paths from the same display typeface, size, letter spacing, title, and tags rendered by the card. On a focused-card change, a small ink particle flock leaves the prior inscription, travels as a quiet stream to the next caption, then writes that card's title and tags together in reading order. The accessible DOM text never disappears; the kinetic layer is decorative. Stop all animation work once writing has settled—there must be no permanently visible splots and no rAF loop at rest. Full tier only; reduced/static render ordinary stable typography with no particles. If a glyph path cannot be generated, show DOM text only. The pane link remains the only interactive element. Do not use browser tooling for verification unless the project owner explicitly requests it.",
+        "testStrategy": "Unit-test glyph-path generation and ordering, active-card handoff, full/reduced/static states, and that the animation loop stops after settling. Keep the existing preview resolution-order coverage. Run pnpm test, pnpm build, and JSON validation; no browser screenshots or CDP trace unless explicitly requested by the project owner.",
         "status": "pending",
         "dependencies": [],
-        "priority": "medium",
-        "subtasks": []
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Audit preview content and establish the project-first baseline",
+            "description": "Decide what each current preview communicates about its project and remove preview motion or decoration that competes with the card.",
+            "dependencies": [],
+            "details": "Keep the original project-specific preview system as the baseline. Inventory the two bespoke canvases, image fallback, and default preview against the criterion that a visitor should recognise the project before noticing the treatment. Retain, simplify, or replace individual preview media only when it improves that recognition. Do not introduce a shared illustrative language.",
+            "status": "pending",
+            "testStrategy": "Preserve existing resolution-order tests and add unit coverage for any changed preview contract. Run pnpm test and pnpm build."
+          },
+          {
+            "id": 2,
+            "title": "Refine the Vision glass material",
+            "description": "Make the existing frames clearer, more translucent, and more materially convincing without competing with the project preview or caption.",
+            "dependencies": [1],
+            "details": "Work within VisionScene and its styles: restrained internal depth/reflection, warm edge treatment, and readable caption/preview contrast. Preserve the existing focused-card, link, ripple, and tier behaviour unless a change directly improves the material hierarchy.",
+            "status": "pending",
+            "testStrategy": "Unit-test any changed interaction/tier contracts. Run pnpm test and pnpm build."
+          },
+          {
+            "id": 3,
+            "title": "Spike exact-typeface kinetic inscription",
+            "description": "Prove or reject the ability to turn the active card's title and tags into ordered paths from the same display typeface.",
+            "dependencies": [1],
+            "details": "Build an isolated proof that produces deterministic glyph paths in rendered reading order, moves a small particle flock between captions, writes the next caption, and stops completely when settled. The stable DOM text remains accessible throughout. This is a decision gate, not a commitment to ship the effect.",
+            "status": "pending",
+            "testStrategy": "Unit-test path generation, ordering, handoff state, and zero scheduled animation after settling. Run pnpm test and pnpm build."
+          },
+          {
+            "id": 4,
+            "title": "Decide and implement the focused-card inscription",
+            "description": "Ship the kinetic inscription only if the spike meets the project-first and no-idle-motion criteria; otherwise explicitly close it without implementation.",
+            "dependencies": [2, 3],
+            "details": "If approved, attach one decorative rail-level layer to the focused caption, use the exact title/tag typeface, and gate it to the full tier. It must not overlap with a legible Phase 3 bird formation, create permanently visible splots, or take interaction from the pane link.",
+            "status": "pending",
+            "testStrategy": "Test full/reduced/static rendering, focus handoff, cleanup, and decorative/accessibility constraints. Run pnpm test and pnpm build."
+          }
+        ]
       },
       {
         "id": 2,
-        "title": "Phase 3 — Paper Physics & Ink Boids",
-        "description": "Cursor lift/flutter springs on gallery sheets; boids re-skin to ink particles with a flight-study-bird idle glyph.",
-        "details": "STUB EPIC — not scoped for implementation. Builds on useBoids, spec 03/04, and the scatter/TornSheet work from Phase 0-1 (master tag, Task 6 — Scatter Math & Manuscript ExhibitionPanel). Open question to resolve first: does a flight-study bird outline hold at 120 particles? Fallback is the Vitruvian circle-in-square. FEEL TARGETS when scoped (from the spec's craft bar + Physics Feel notes): cursor-proximity lift responds with ~80-120ms of weight (feels like mass, not lag); springs stay inside the brief's locked range (stiffness 40-70, damping 18-24); the cursor is a physics object too — lift/flutter should chain as secondary motion (sheet moves, shadow and neighbours respond slightly later), not as a uniform hover transform. Consumes lib/deviceTier.ts (master tag, Task 9) for the reduced/static tiers instead of inventing its own capability sniff. See docs/superpowers/specs/2026-07-02-living-codex-design.md Phase 3 and 'The craft bar'.",
-        "testStrategy": "",
+        "title": "Phase 3 — Overture Paper Physics & Flight-Study Boids",
+        "description": "Elevate the home journey with weighted manuscript behaviour in the Overture and a legible flight-study boid formation that transitions into restrained ambient dust.",
+        "details": "Reframed after the Vision Gallery promotion. Paper physics no longer applies to the retired home sheet gallery; it applies to the Overture manuscripts, adding authored mass through curl, scroll/cursor energy, delayed shadows, and stable interrupted states. Flight-study boids remain a signature wide-shot element, using the existing global boid system rather than a second particle layer. Their exact moment is intentionally unresolved: decide during the phase whether the bird forms while the manuscripts are visible and dissolves into vista dust, or appears later as a subtle rail-navigation cue. The focused-card kinetic inscription remains a Phase 2 local effect and must not run beside a legible bird formation. Full tier only; reduced/static retain the settled visual composition. Reuse `useDeviceTier`, the current `useBoids` system, and the existing Overture/Vision scene handoff; no standalone capability sniffing. Springs stay within stiffness 40–70 and damping 18–24. Do not use browser tooling for verification unless the project owner explicitly requests it.",
+        "testStrategy": "Unit-test deterministic formation targets, motion-state handoff, tier gating, and stopped/settled states. Exercise scroll interruption through component/state tests. Run pnpm test and pnpm build; no browser screenshots or CDP trace unless explicitly requested by the project owner.",
         "status": "pending",
         "dependencies": [],
-        "priority": "medium",
-        "subtasks": []
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define the Overture physics and bird-formation moments",
+            "description": "Choose the precise scene moments for weighted manuscript motion and the flight-study flock so they never compete with the focused project card.",
+            "dependencies": [],
+            "details": "Resolve later in the phase whether the bird forms with the manuscripts and dissolves into vista dust, or becomes a subtle later cue. Document the chosen handoff and a quiet resting composition before implementation.",
+            "status": "pending",
+            "testStrategy": "Review the state model for complete full/reduced/static paths and interruption-safe handoffs."
+          },
+          {
+            "id": 2,
+            "title": "Spike manuscript mass and interruption-safe settling",
+            "description": "Add a small, isolated proof of curl, delayed shadow, and scroll/cursor energy on one Overture manuscript.",
+            "dependencies": [1],
+            "details": "Use the existing Overture and device-tier architecture. The proof must remain legible under jump scrolls and immediately settle to a stable state when input stops; it is not a general sheet-gallery system.",
+            "status": "pending",
+            "testStrategy": "Unit-test deterministic state mapping and tier gating. Run pnpm test and pnpm build."
+          },
+          {
+            "id": 3,
+            "title": "Spike flight-study target formation in the shared boid system",
+            "description": "Test a legible bird target with the existing global boids, plus its dissolve into quiet ambient dust.",
+            "dependencies": [1],
+            "details": "Do not create a second particle system. Establish a target-point budget and fallback only if a bird cannot read at the existing count; keep the effect absent from reduced/static and quiet during focused-card inscription.",
+            "status": "pending",
+            "testStrategy": "Unit-test deterministic target generation, formation/dissolve transitions, and tier gating. Run pnpm test and pnpm build."
+          },
+          {
+            "id": 4,
+            "title": "Integrate the approved Overture physics and flight-study behaviour",
+            "description": "Combine only the proven manuscript and boid effects into the existing Overture-to-Vision handoff.",
+            "dependencies": [2, 3],
+            "details": "Keep one visual subject at a time: bird formation, card inscription, and focused frame cannot all peak together. Stop or fade loops when their scene moment has settled.",
+            "status": "pending",
+            "testStrategy": "Test scene handoff, interruption, lifecycle cleanup, and all device tiers. Run pnpm test and pnpm build."
+          }
+        ]
       },
       {
         "id": 3,
-        "title": "Phase 4 — The Tear Transition",
-        "description": "Procedural tear-mask animation + View Transition from the parchment home into the marble-dusk detail page; this is where the palette shift is sold.",
-        "details": "STUB EPIC — not scoped for implementation. Builds on components/page-transition/ and spec 06 (exit transitions). UNDECIDED renderer fork — see docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Implementation options — Tear, Overture & click-to-blow': (a) extend the DOM/SVG torn-edge path from Phase 0-1 (components/paper/tornEdge.ts) with the View Transition API, cheapest, no new deps; or (b) a real GPU fold/curl shader plane (R3F + drei shaderMaterial, or PixiJS/raw WebGL2 if Phase 7 isn't happening) using gl_FrontFacing to show paper on the front and marble on the back mid-fold — the technique the Nov 2025 Codrops case study actually uses. If (b) is chosen, the DOM/SVG path from (a) becomes the prefers-reduced-motion / low-end-hardware fallback, not a separate build. Also undecided if chosen: scroll choreography (GSAP+ScrollTrigger vs Theatre.js vs native CSS scroll-timeline vs Framer Motion's own scroll hooks), shader authoring (raw GLSL vs TSL), and marble/paper texture source (procedural noise vs baked PBR from Poly Haven, already the spec's committed asset source). See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'The Tear — signature transition' for the experience description.",
+        "title": "Phase 4 — Frame-to-Exhibit Transition Decision",
+        "description": "Choose and prototype the transition from a Vision glass frame into its project exhibit; do not assume the retired paper tear is the answer.",
+        "details": "The original tear was designed for paper-sheet navigation and is no longer the default for the Vision Gallery. Start with a small decision/prototype task after the Exhibit direction is clear: compare a ripple-wash continuation, a quiet native View Transition, and an intentionally simple cut. Only retain a tear if it makes a coherent narrative return from glass to the detail-page medium. Do not add a new renderer or GPU dependency before a chosen prototype proves necessary. Full/reduced/static states must each have a complete transition or stable direct-navigation fallback. Do not use browser tooling for verification unless the project owner explicitly requests it.",
         "testStrategy": "",
         "status": "pending",
-        "dependencies": [],
+        "dependencies": [
+          4
+        ],
         "priority": "medium",
         "subtasks": []
       },
@@ -872,7 +948,7 @@
         "testStrategy": "",
         "status": "pending",
         "dependencies": [],
-        "priority": "medium",
+        "priority": "high",
         "subtasks": []
       },
       {
@@ -881,29 +957,29 @@
         "description": "Re-tune post-processing (paper-fibre grain, warm vignette, sepia grade) and wire up optional ambient audio.",
         "details": "STUB EPIC — not scoped for implementation. Builds on spec 05 (grain/vignette shader) and spec 07 (audio: paper-and-stone loop, volume 0.15, default off, localStorage('museum-muted')). See docs/superpowers/specs/2026-07-02-living-codex-design.md Phase 6.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "deferred",
         "dependencies": [],
         "priority": "low",
         "subtasks": []
       },
       {
         "id": 6,
-        "title": "Phase 7 — Marble Hall (optional R3F)",
-        "description": "Full React Three Fiber marble hall scene: warm HDRI, marble PBR materials from the v2 brief's material table.",
-        "details": "STUB EPIC — optional, not scoped for implementation. Builds on spec 08 (R3F gallery). Material targets already locked in the v2 visual brief (Phase 0-1 Task 1): aged paper roughness 0.75-0.85, Greek marble roughness 0.15-0.25/transmission 0.1-0.2. HDRI preset still an open question. LINKED DECISION: whether this phase happens at all should be decided together with the Tear's (this tag, Task 3) renderer fork — if the Tear adopts R3F + drei shaderMaterial, this phase reuses the same renderer/scene graph; if the Tear stays DOM/SVG or goes PixiJS/raw WebGL2, this phase would need its own renderer setup from scratch. See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Implementation options — Tear, Overture & click-to-blow' and Phase 7.",
+        "title": "Phase 7 — Marble Hall (cancelled)",
+        "description": "Cancelled: a full R3F marble hall is not currently needed to strengthen the project journey.",
+        "details": "Cancelled during the roadmap cleanup. Do not introduce React Three Fiber, HDRI, or marble PBR work under the current product direction. Reconsider only as a new, separately justified proposal after the Vision cards, Overture physics, and Exhibit are established.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "cancelled",
         "dependencies": [],
         "priority": "low",
         "subtasks": []
       },
       {
         "id": 7,
-        "title": "The Overture — Landing Entrance (proposed, unscheduled)",
-        "description": "Layered manuscript-over-backdrop intro on first load; scroll separates the sheets and converges them into one, handing off into the home gallery.",
-        "details": "STUB EPIC — proposed idea, not yet scheduled into the Phase 0-7 sequence and not scoped for implementation. See docs/superpowers/specs/2026-07-02-living-codex-design.md, 'The Overture — landing entrance' for full description. DECIDED: backdrop is a wooden desk/table (not marble) — overture stays entirely in the paper world, no dusk palette spent early. DECIDED: the converged manuscript does not dissolve away — it becomes the seed for the project gallery itself, so this and Home — The Workbench read as one continuous scroll. NEW: a 'click-to-blow' gesture — clicking anywhere puffs air at the desk, scattering/fluttering the papers via the same mass/spring physics as the rest of the brief. UNDECIDED tech, see docs/superpowers/specs/2026-07-02-living-codex-design.md, 'Implementation options — Tear, Overture & click-to-blow': scroll convergence choreography (GSAP+ScrollTrigger vs Theatre.js vs native CSS scroll-timeline vs Framer Motion's own scroll hooks, optionally Lenis for a shared velocity store) and click-to-blow physics (hand-rolled velocity integrator matching useBoids.ts vs matter.js/planck.js vs @react-three/rapier vs prototyping the gesture in Spline vs GSAP's paid physics plugins). Depends on Phase 0-1's scatter.ts/tornEdge.ts (master tag, Tasks 4 & 6) and benefits from Phase 3's physics groundwork (this tag, Task 2) before it reads well. Remaining open questions: is click-to-blow one-shot (kicks off the scroll sequence) or repeatable/ambient; its mobile/tap equivalent; an explicit exception to the brief's 900ms/no-simultaneous-animation constraint for this scroll-linked sequence; the mobile scroll adaptation.",
+        "title": "The Overture — Landing Entrance (cancelled duplicate)",
+        "description": "Cancelled: Stage 1 already shipped the Overture; its remaining physics work lives in Phase 3.",
+        "details": "Cancelled during the roadmap cleanup. This task describes an obsolete paper-to-home-gallery handoff that predates the Vision Gallery and duplicates the shipped Overture. Any future Overture improvement must be scoped through Phase 3's paper-physics and flight-study-boids task, not as a second landing-entry system.",
         "testStrategy": "",
-        "status": "pending",
+        "status": "cancelled",
         "dependencies": [],
         "priority": "low",
         "subtasks": []
@@ -911,8 +987,8 @@
     ],
     "metadata": {
       "created": "2026-07-05T22:00:10.190Z",
-      "updated": "2026-07-05T23:18:43.661Z",
-      "description": "Stub epics for Living Codex phases 2-7 — placeholders only, not scoped for implementation yet. Each gets its own PRD/plan when its turn comes."
+      "updated": "2026-07-14T00:00:00.000Z",
+      "description": "Reprioritized Living Codex roadmap. Phase 2 owns project-led card clarity and an optional kinetic inscription; Phase 3 owns Overture paper physics and flight-study boids; cancelled and deferred tasks stay as explicit historical decisions."
     }
   }
 }
