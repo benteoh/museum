@@ -11,9 +11,17 @@ const CHASE_RADIUS = 150
 const FLEE_RADIUS = 120
 
 // Motion limits
-const MAX_SPEED = 2.8
+export const MAX_SPEED = 2.8
 const MAX_FORCE = 0.09
 const W_FORMATION = 0.002
+
+// Banded (murmuration) mode — Stage 2 of the liquid-ink lab. Banded boids
+// live inside a horizon band over the vista: slower, more cohesive, deaf to
+// the cursor (a visitor's mouse should not scatter birds a kilometre away).
+export const BAND_MAX_SPEED = 1.15
+const W_BAND_CLAMP = 0.01 // soft steer-back per px outside the band — replaces edge wrap
+const W_BAND_COHESION = 0.0035 // extra pull toward the banded centroid so the goo pass fuses the flock
+const FADE_DAMPING = 0.94
 
 // Rock-paper-scissors groups: group g chases (g+1), flees (g-1)
 export const GROUPS = 3
@@ -27,6 +35,9 @@ const W_FLEE = 0.1 // flee > chase so prey scatter and the chase never resolves
 const W_WANDER = 0.045
 const WANDER_JITTER = 0.5
 
+// `mode` is optional so existing free-boid call sites and fixtures stay valid.
+export type BoidMode = 'free' | 'banded' | 'fading'
+
 export type Boid = {
   x: number
   y: number
@@ -35,9 +46,15 @@ export type Boid = {
   opacity: number
   group: number
   wanderAngle: number
+  mode?: BoidMode
 }
 
 export type CursorPos = { x: number; y: number }
+
+/** Viewport-space rectangle banded boids are softly held inside. */
+export type Band = { top: number; bottom: number; left: number; right: number }
+
+const NO_CURSOR: CursorPos = { x: -1, y: -1 }
 
 export function createBoid(width: number, height: number, group?: number): Boid {
   const angle = Math.random() * Math.PI * 2
@@ -172,15 +189,55 @@ export function updateBoids(
   cursor: CursorPos,
   width: number,
   height: number,
-  formationTargets?: Array<{ x: number; y: number }>
+  formationTargets?: Array<{ x: number; y: number }>,
+  band?: Band
 ): Boid[] {
+  // Banded centroid, computed once: the extra cohesion that lets the goo
+  // threshold fuse the murmuration into one body.
+  let bandCx = 0, bandCy = 0, bandCount = 0
+  if (band) {
+    for (const b of boids) {
+      if (b.mode === 'banded') {
+        bandCx += b.x
+        bandCy += b.y
+        bandCount++
+      }
+    }
+    if (bandCount > 0) {
+      bandCx /= bandCount
+      bandCy /= bandCount
+    }
+  }
+
   return boids.map((boid, i) => {
-    const { dx: ruleDx, dy: ruleDy, wanderAngle } = applyBoidRules(boid, boids, cursor)
+    const mode = boid.mode ?? 'free'
+
+    // Fading boids are the released remainder: they coast to a stop and dry up.
+    if (mode === 'fading') {
+      const vx = boid.vx * FADE_DAMPING
+      const vy = boid.vy * FADE_DAMPING
+      return {
+        ...boid,
+        x: boid.x + vx,
+        y: boid.y + vy,
+        vx,
+        vy,
+        opacity: boid.opacity * 0.95,
+      }
+    }
+
+    const banded = mode === 'banded' && band !== undefined
+    const { dx: ruleDx, dy: ruleDy, wanderAngle } = applyBoidRules(
+      boid,
+      boids,
+      banded ? NO_CURSOR : cursor
+    )
 
     let dx = ruleDx
     let dy = ruleDy
 
-    if (formationTargets) {
+    // Idle formations belong to the free flock only.
+    if (formationTargets && mode === 'free') {
       const target = formationTargets[i % formationTargets.length]
       if (target) {
         dx += (target.x - boid.x) * W_FORMATION
@@ -188,27 +245,47 @@ export function updateBoids(
       }
     }
 
+    if (banded && band) {
+      if (bandCount > 1) {
+        dx += (bandCx - boid.x) * W_BAND_COHESION
+        dy += (bandCy - boid.y) * W_BAND_COHESION
+      }
+      // Soft steer-back instead of the toroidal wrap — a banded boid near the
+      // band edge must turn, never teleport.
+      if (boid.x < band.left) dx += (band.left - boid.x) * W_BAND_CLAMP
+      if (boid.x > band.right) dx += (band.right - boid.x) * W_BAND_CLAMP
+      if (boid.y < band.top) dy += (band.top - boid.y) * W_BAND_CLAMP
+      if (boid.y > band.bottom) dy += (band.bottom - boid.y) * W_BAND_CLAMP
+    }
+
     let vx = boid.vx + dx
     let vy = boid.vy + dy
 
+    const maxSpeed = banded ? BAND_MAX_SPEED : MAX_SPEED
     const speed = Math.sqrt(vx ** 2 + vy ** 2)
-    if (speed > MAX_SPEED) {
-      vx = (vx / speed) * MAX_SPEED
-      vy = (vy / speed) * MAX_SPEED
+    if (speed > maxSpeed) {
+      vx = (vx / speed) * maxSpeed
+      vy = (vy / speed) * maxSpeed
     }
 
     let x = boid.x + vx
     let y = boid.y + vy
 
-    if (x < 0) x += width
-    if (x > width) x -= width
-    if (y < 0) y += height
-    if (y > height) y -= height
+    if (banded) {
+      // Safety clamp only — the steer-back does the real containment.
+      x = clamp(x, 0, width)
+      y = clamp(y, 0, height)
+    } else {
+      if (x < 0) x += width
+      if (x > width) x -= width
+      if (y < 0) y += height
+      if (y > height) y -= height
+    }
 
-    const targetOpacity = 0.2 + (speed / MAX_SPEED) * 0.4
+    const targetOpacity = 0.2 + (speed / maxSpeed) * 0.4
     const newOpacity = boid.opacity + (targetOpacity - boid.opacity) * 0.05
 
-    return { x, y, vx, vy, opacity: newOpacity, group: boid.group ?? 0, wanderAngle }
+    return { x, y, vx, vy, opacity: newOpacity, group: boid.group ?? 0, wanderAngle, mode }
   })
 }
 
@@ -225,11 +302,18 @@ export function useBoids(count: number) {
     cursor: CursorPos,
     width: number,
     height: number,
-    formationTargets?: Array<{ x: number; y: number }>
+    formationTargets?: Array<{ x: number; y: number }>,
+    band?: Band
   ) => {
-    boidsRef.current = updateBoids(boidsRef.current, cursor, width, height, formationTargets)
+    boidsRef.current = updateBoids(boidsRef.current, cursor, width, height, formationTargets, band)
     return boidsRef.current
   }, [])
 
-  return { init, tick, boids: boidsRef }
+  // Scene transitions reassign roles wholesale (vista release: some banded,
+  // the rest fading; return to paper: everyone free again).
+  const setModes = useCallback((assign: (index: number) => BoidMode) => {
+    boidsRef.current = boidsRef.current.map((b, i) => ({ ...b, mode: assign(i) }))
+  }, [])
+
+  return { init, tick, setModes, boids: boidsRef }
 }
