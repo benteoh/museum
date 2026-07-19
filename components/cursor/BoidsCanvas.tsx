@@ -20,11 +20,13 @@ const RENDER_MODE: RenderMode = 'goo'
 // to ~0.33 for the low-res upscale pipeline if the full-res perf trace can't
 // hold the frame budget (the upscale itself contributes softness).
 const GOO_SCALE = 1
-// Pre-threshold blur, CSS px. Bigger = droplets reach further before fusing.
-const GOO_BLUR = 7
+// Pre-threshold blur, CSS px. Bigger = droplets reach further before fusing,
+// but too big culls isolated droplets: blur must stay well under the sprite
+// radius or a lone boid's peak alpha lands below the threshold cutoff.
+const GOO_BLUR = 4.5
 // Soft droplet sprite: larger than the legacy dot so gradients overlap and
 // the threshold has something to fuse.
-const SPRITE_RADIUS = BOID_RADIUS * 2.6
+const SPRITE_RADIUS = BOID_RADIUS * 3.4
 // Velocity squash-and-stretch: fast boids become ink flicks.
 const STRETCH = 0.9
 
@@ -32,20 +34,27 @@ const STRETCH = 0.9
 // At the desk→vista handoff this many boids band into a murmuration over the
 // skyline; the rest fade out. Fractions are of the viewport.
 const MURMURATION_COUNT = 40
-const BAND_FRACTIONS = { top: 0.1, bottom: 0.26, left: 0.18, right: 0.82 }
-// Distant birds: banded boids draw smaller than workshop dust.
-const BANDED_SPRITE_SCALE = 0.55
+// A deliberately tight box: a murmuration reads as ONE deforming body, and
+// 40 boids only fuse under the goo threshold when the band keeps them close.
+const BAND_FRACTIONS = { top: 0.08, bottom: 0.22, left: 0.3, right: 0.7 }
+// Distant birds: banded boids draw smaller than workshop dust (but not so
+// small the goo threshold culls them — they must stay fusable).
+const BANDED_SPRITE_SCALE = 0.7
 
 // One ink tone per scene for the goo pass — the alpha threshold fuses
-// per-colour, so the three group hues collapse to a single ink (mirrors
-// textPrimary on paper, duskText in the dusk scenes). Groups keep depth via
+// per-colour, so the three group hues collapse to a single ink. Paper and
+// vista mirror textPrimary (over the vista the murmuration is a dark
+// silhouette against the bright sky, as real distant starlings are); the
+// desk's stillness beat keeps the warm duskText glint. Groups keep depth via
 // the alpha variance below, which the threshold turns into size variance.
 const INK_TONES: Record<SceneName, string> = {
   paper: '56, 44, 25',
   desk: '230, 220, 196',
-  vista: '230, 220, 196',
+  vista: '56, 44, 25',
 }
-const GROUP_ALPHA = [1, 0.88, 0.76]
+// Wider spread than the legacy palette variance: the threshold converts
+// alpha into droplet size, so this is the flock's size diversity.
+const GROUP_ALPHA = [1, 0.8, 0.62]
 
 // Per-group RGB for the legacy circle renderer, keyed by scene (documented
 // token-mirror exception — see INK_TONES above for the goo equivalent).
@@ -99,7 +108,7 @@ function drawGoo(
     // The threshold kills sub-cutoff alpha, so per-boid liveliness maps to
     // droplet size instead of transparency.
     const base =
-      (mode === 'banded' ? BANDED_SPRITE_SCALE : 1) * (0.75 + boid.opacity * 0.6)
+      (mode === 'banded' ? BANDED_SPRITE_SCALE : 1) * (0.55 + boid.opacity * 0.6)
 
     ctx.save()
     ctx.translate(boid.x, boid.y)
@@ -145,7 +154,7 @@ export function BoidsCanvas() {
   const prevBoidsRef = useRef<Array<{ x: number; y: number; group: number }>>([])
   const spritesRef = useRef<Partial<Record<SceneName, HTMLCanvasElement>>>({})
   const prevSceneRef = useRef<SceneName>('paper')
-  const { init, tick, setModes } = useBoids(BOID_COUNT)
+  const { init, tick, setModes, boids: boidsRef } = useBoids(BOID_COUNT)
   const setPosition = useCursorUpdater()
   const cursorRef = useRef({ x: -1, y: -1 })
 
@@ -206,9 +215,29 @@ export function BoidsCanvas() {
       // murmuration and lets the rest dry up; leaving frees everyone.
       if (scene !== prevSceneRef.current) {
         if (scene === 'vista') {
-          setModes((i) => (i < MURMURATION_COUNT ? 'banded' : 'fading'))
+          // Band the boids already nearest the horizon band — long transits
+          // read as smudges crossing the glass panes, so the birds should
+          // coalesce where they'll live. Vertical distance weighs double:
+          // climbing is the visible part of the journey.
+          const bandCx = vw / 2
+          const bandCy = vh * ((BAND_FRACTIONS.top + BAND_FRACTIONS.bottom) / 2)
+          const chosen = new Set(
+            boidsRef.current
+              .map((b, i) => ({ i, d: Math.hypot(b.x - bandCx, (b.y - bandCy) * 2) }))
+              .sort((a, b) => a.d - b.d)
+              .slice(0, MURMURATION_COUNT)
+              .map((r) => r.i)
+          )
+          setModes((i) => (chosen.has(i) ? 'banded' : 'fading'))
         } else if (prevSceneRef.current === 'vista') {
           setModes(() => 'free')
+          // Dispersal kick: the murmuration returns as loose dust, not as a
+          // fused ink blot sliding over the manuscripts while cohesion decays.
+          boidsRef.current = boidsRef.current.map((b) => ({
+            ...b,
+            vx: b.vx + (Math.random() - 0.5) * 4,
+            vy: b.vy + (Math.random() - 0.5) * 4,
+          }))
         }
         prevSceneRef.current = scene
       }
@@ -259,13 +288,13 @@ export function BoidsCanvas() {
           <defs>
             <filter id="boids-goo">
               <feGaussianBlur in="SourceGraphic" stdDeviation={GOO_BLUR} result="blur" />
-              {/* Alpha threshold: 18a − 7 → cutoff ≈ 0.39, hard by ≈ 0.44.
+              {/* Alpha threshold: 22a − 8 → cutoff ≈ 0.36, hard by ≈ 0.41.
                   The slope keeps a hint of feather so the ink edge stays
                   organic rather than vector-crisp. */}
               <feColorMatrix
                 in="blur"
                 type="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -8"
               />
             </filter>
           </defs>

@@ -19,8 +19,8 @@ const W_FORMATION = 0.002
 // live inside a horizon band over the vista: slower, more cohesive, deaf to
 // the cursor (a visitor's mouse should not scatter birds a kilometre away).
 export const BAND_MAX_SPEED = 1.15
-const W_BAND_CLAMP = 0.01 // soft steer-back per px outside the band — replaces edge wrap
-const W_BAND_COHESION = 0.0035 // extra pull toward the banded centroid so the goo pass fuses the flock
+const W_BAND_CLAMP = 0.025 // soft steer-back per px outside the band — replaces edge wrap; must beat cohesion from stragglers or the flock sags below the band
+const W_BAND_COHESION = 0.008 // extra pull toward the banded centroid so the goo pass fuses the flock
 const FADE_DAMPING = 0.94
 
 // Rock-paper-scissors groups: group g chases (g+1), flees (g-1)

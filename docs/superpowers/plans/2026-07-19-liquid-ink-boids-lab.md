@@ -1,8 +1,8 @@
 # Liquid Ink Boids — Lab Plan
 
 **Date:** 2026-07-19
-**Status:** Lab plan — one combined spike (ink-goo renderer + vista
-murmuration), deliberately disposable until the keep verdict
+**Status:** Spike built and traced 2026-07-19 — **awaiting owner keep/reject
+review** (see "Lab notes — 2026-07-19 run" at the end for evidence)
 **Supersedes:** the placement question in
 `docs/superpowers/specs/2026-07-18-boids-effect-spike-shortlist.md` (see
 "Decision context" below — the shortlist stays as decision evidence)
@@ -299,3 +299,71 @@ Renderer flag in place with both pipelines A/B-able; banded mode unit-tested;
 release tuned per B2; screenshot sets for A2 and B3 plus trace numbers for
 both scenes recorded in lab notes; gate verdict written into this file's
 status line. Every commit green on `pnpm test` / `pnpm build`.
+
+---
+
+## Lab notes — 2026-07-19 run
+
+Built on branch `liquid-ink-lab`. Evidence WebPs in
+`docs/superpowers/labs/liquid-ink/` (1440×900, headless Chromium against the
+dev server; capture + trace scripts alongside).
+
+### What shipped in the spike
+
+- Goo renderer live behind `RENDER_MODE = 'goo'` in `BoidsCanvas.tsx`;
+  legacy circles kept. Pipeline A (full-res canvas + CSS `filter: url(#boids-goo)`)
+  selected — pipeline B's `GOO_SCALE` knob is wired but unused at 1.
+- Banded/fading sim modes in `useBoids.ts`, 6 new unit tests (14 total green).
+- Vista release: nearest-to-band selection (long transits read as smudges
+  crossing the panes — first-40 selection was visibly worse), dispersal kick
+  on vista exit (without it the fused flock slides over the manuscripts as
+  one ink blot while cohesion decays).
+- Stacking: wrapper zIndex 9999 → 1 during vista; `track`/`stackContent` at 2.
+
+### Tuning that the screenshots drove (values are load-bearing)
+
+- `GOO_BLUR` 4.5 / `SPRITE_RADIUS` 3.4×dot / threshold `22a − 8`. First
+  attempt (blur 7, radius 2.6×) **culled every isolated droplet** — blur must
+  stay well under sprite radius or a lone boid's blurred peak alpha lands
+  below the cutoff and only clusters survive.
+- Vista ink = textPrimary dark, not duskText: distant birds read as dark
+  silhouettes against the bright sky; the light glint tone was invisible.
+- `W_BAND_CLAMP` 0.025 > straggler cohesion, or the flock sags below its
+  band and grazes the frame tops.
+
+### A3 trace (4× CPU throttle, headless Chromium + CDP, rAF-sampled over 5s)
+
+| Scene | Static export (prod) | Dev server |
+| --- | ---: | ---: |
+| Paper, flock active | **60.2 fps** | 5.6 fps |
+| Vista, murmuration settled | **60.2 fps** | 42.4 fps |
+| Paper, legacy circles (baseline) | — | 6.4 fps |
+
+Prod holds a locked 60 everywhere; the dev numbers are dev-build overhead
+(goo ≈ circles within ~12% at the same scene). Pipeline A passes; B not
+needed.
+
+### What the owner should judge on the live build
+
+1. Paper scene: droplets merge/neck/split; flicks when disturbed
+   (02/03-paper webps). Density and droplet size are taste calls.
+2. The release beat and the settled murmuration — one deforming body with
+   occasional outliers (04/05-vista webps).
+3. Return to paper: dispersal kick scatters the flock; brief dark motes over
+   the manuscripts read as intended material (07-paper-return webp predates
+   the kick — it shows the fused-blot failure the kick fixes).
+
+### Known rough edges (hardening scope, not spike blockers)
+
+- **Idle ring under goo**: forms slowly (weak `W_FORMATION` by design) and
+  reads loose; retune or replace per the hardening list.
+- **Mobile band**: the viewport-fixed band can overlay the desk still or the
+  stacked frames at the desk/vista boundary; recommend disabling banding
+  below the rail breakpoint (keep the dust) unless the owner wants it tuned.
+- **Scene flapping at the vista's scroll boundaries** re-runs the release;
+  harmless visually after the nearest-selection change but should be
+  debounced in hardening.
+- **Scroll-restoration jumps**: after a large instant jump the Overture's
+  sprung progress re-publishes `desk` for ~1s and can briefly override
+  `vista` (pre-existing publisher race, exposed by headless testing; real
+  touch/wheel scrolling re-publishes continuously and self-corrects).
