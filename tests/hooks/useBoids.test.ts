@@ -1,6 +1,6 @@
 // tests/hooks/useBoids.test.ts
 import { describe, it, expect } from 'vitest'
-import { createBoid, applyBoidRules, updateBoids, type Boid, type Band } from '@/hooks/useBoids'
+import { createBoid, applyBoidRules, updateBoids, type Boid } from '@/hooks/useBoids'
 
 describe('createBoid', () => {
   it('creates a boid within given bounds', () => {
@@ -66,69 +66,5 @@ describe('updateBoids — idle formation', () => {
     const target = { x: 400, y: 300 }
     const updated = updateBoids([boid], { x: -1, y: -1 }, 800, 600, [target])
     expect(updated[0].x).toBeGreaterThan(0)
-  })
-})
-
-describe('updateBoids — banded murmuration mode', () => {
-  const band: Band = { top: 60, bottom: 160, left: 100, right: 700 }
-  const noCursor = { x: -1, y: -1 }
-
-  const bandedBoid = (over: Partial<Boid>): Boid => ({
-    x: 400, y: 110, vx: 0, vy: 0, opacity: 0.4, group: 0, wanderAngle: 0, mode: 'banded', ...over,
-  })
-
-  it('steers a banded boid above the band back down into it', () => {
-    const boid = bandedBoid({ y: 10 })
-    const updated = updateBoids([boid], noCursor, 800, 600, undefined, band)
-    // Steer-back (60 - 10) * 0.01 = 0.5 dominates wander noise (±0.045).
-    expect(updated[0].vy).toBeGreaterThan(0.2)
-  })
-
-  it('clamps a banded boid at the viewport edge instead of wrapping', () => {
-    const boid = bandedBoid({ x: 799.5, vx: 1.15 })
-    const updated = updateBoids([boid], noCursor, 800, 600, undefined, band)
-    expect(updated[0].x).toBeLessThanOrEqual(800)
-    expect(updated[0].x).toBeGreaterThan(700) // wrapped would land near 0
-  })
-
-  it('ignores the cursor while a free boid flees it', () => {
-    const start = { x: 400, y: 110 }
-    const cursor = { x: 395, y: 110 } // just left of the boid — flee pushes right
-    let free: Boid[] = [{ ...start, vx: 0, vy: 0, opacity: 0.4, group: 0, wanderAngle: 0, mode: 'free' }]
-    let banded: Boid[] = [bandedBoid({})]
-    for (let i = 0; i < 30; i++) {
-      free = updateBoids(free, cursor, 800, 600)
-      banded = updateBoids(banded, cursor, 800, 600, undefined, band)
-    }
-    // The free boid is consistently accelerated away; the banded boid only
-    // wanders (a random walk, so assert relative to the fleeing boid rather
-    // than against a fixed bound).
-    expect(free[0].x - start.x).toBeGreaterThan(25)
-    expect(free[0].x - start.x).toBeGreaterThan(Math.abs(banded[0].x - start.x) + 5)
-  })
-
-  it('keeps idle formation targets from acting on banded boids', () => {
-    const target = { x: 700, y: 110 }
-    const boid = bandedBoid({})
-    const updated = updateBoids([boid], noCursor, 800, 600, [target], band)
-    // Free boids get (700-400)*0.002 = 0.6 toward the target; banded must not.
-    expect(Math.abs(updated[0].x - 400)).toBeLessThan(0.5)
-  })
-
-  it('pulls banded boids toward their shared centroid', () => {
-    const a = bandedBoid({ x: 200 })
-    const b = bandedBoid({ x: 600 })
-    const updated = updateBoids([a, b], noCursor, 800, 600, undefined, band)
-    // Centroid sits at 400: (400-200)*0.0035 = 0.7 beats wander noise.
-    expect(updated[0].vx).toBeGreaterThan(0.2)
-    expect(updated[1].vx).toBeLessThan(-0.2)
-  })
-
-  it('coasts and dries up a fading boid', () => {
-    const boid: Boid = { x: 400, y: 300, vx: 2, vy: 0, opacity: 0.5, group: 0, wanderAngle: 0, mode: 'fading' }
-    const updated = updateBoids([boid], noCursor, 800, 600)
-    expect(updated[0].vx).toBeLessThan(2)
-    expect(updated[0].opacity).toBeLessThan(0.5)
-    expect(updated[0].x).toBeGreaterThan(400) // still coasting, not frozen
   })
 })

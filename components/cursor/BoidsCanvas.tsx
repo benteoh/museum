@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import { useBoids, MAX_SPEED, type Band, type Boid } from '@/hooks/useBoids'
+import { useBoids, type Boid } from '@/hooks/useBoids'
 import { useCursorUpdater } from '@/hooks/useCursor'
 import { useSceneStore, type SceneName } from '@/hooks/useScene'
 import * as styles from './BoidsCanvas.css'
@@ -10,16 +10,15 @@ import * as styles from './BoidsCanvas.css'
 const BOID_COUNT = 120
 const BOID_RADIUS = 3
 const IDLE_MS = 3000
+// Mirrors hooks/useBoids.ts's internal MAX_SPEED (not exported) — used only
+// to normalize speed for the squash-and-stretch stretch factor below.
+const MAX_SPEED = 2.8
 
-// ——— Liquid-ink lab flags (A1) ———————————————————————————————————————————
-// 'goo' renders soft ink droplets fused by the SVG goo filter; 'circles' is
-// the legacy renderer, kept switchable until the lab's keep/reject gate.
+// ——— Liquid-ink renderer ————————————————————————————————————————————————
+// 'goo' renders soft ink droplets fused by an SVG goo filter; 'circles' is
+// the legacy renderer, kept switchable for reference.
 type RenderMode = 'circles' | 'goo'
 const RENDER_MODE: RenderMode = 'goo'
-// Goo pipeline A/B: 1 = full-res backing store behind the CSS filter; drop
-// to ~0.33 for the low-res upscale pipeline if the full-res perf trace can't
-// hold the frame budget (the upscale itself contributes softness).
-const GOO_SCALE = 1
 // Pre-threshold blur, CSS px. Bigger = droplets reach further before fusing,
 // but too big culls isolated droplets: blur must stay well under the sprite
 // radius or a lone boid's peak alpha lands below the threshold cutoff.
@@ -30,27 +29,15 @@ const SPRITE_RADIUS = BOID_RADIUS * 3.4
 // Velocity squash-and-stretch: fast boids become ink flicks.
 const STRETCH = 0.9
 
-// ——— Vista release (B2) ——————————————————————————————————————————————————
-// At the desk→vista handoff this many boids band into a murmuration over the
-// skyline; the rest fade out. Fractions are of the viewport.
-const MURMURATION_COUNT = 40
-// A deliberately tight box: a murmuration reads as ONE deforming body, and
-// 40 boids only fuse under the goo threshold when the band keeps them close.
-const BAND_FRACTIONS = { top: 0.08, bottom: 0.22, left: 0.3, right: 0.7 }
-// Distant birds: banded boids draw smaller than workshop dust (but not so
-// small the goo threshold culls them — they must stay fusable).
-const BANDED_SPRITE_SCALE = 0.7
-
 // One ink tone per scene for the goo pass — the alpha threshold fuses
-// per-colour, so the three group hues collapse to a single ink. Paper and
-// vista mirror textPrimary (over the vista the murmuration is a dark
-// silhouette against the bright sky, as real distant starlings are); the
-// desk's stillness beat keeps the warm duskText glint. Groups keep depth via
-// the alpha variance below, which the threshold turns into size variance.
+// per-colour, so the three group hues collapse to a single ink (mirrors
+// textPrimary on paper, the existing dusk glow tone on desk/vista). Groups
+// keep depth via the alpha variance below, which the threshold turns into
+// size variance.
 const INK_TONES: Record<SceneName, string> = {
   paper: '56, 44, 25',
   desk: '230, 220, 196',
-  vista: '56, 44, 25',
+  vista: '230, 220, 196',
 }
 // Wider spread than the legacy palette variance: the threshold converts
 // alpha into droplet size, so this is the flock's size diversity.
@@ -94,30 +81,19 @@ function makeDropletSprite(rgb: string): HTMLCanvasElement {
   return sprite
 }
 
-function drawGoo(
-  ctx: CanvasRenderingContext2D,
-  boids: Boid[],
-  sprite: HTMLCanvasElement
-) {
+function drawGoo(ctx: CanvasRenderingContext2D, boids: Boid[], sprite: HTMLCanvasElement) {
   for (const boid of boids) {
-    const mode = boid.mode ?? 'free'
-    if (mode === 'fading' && boid.opacity < 0.03) continue
-
     const speed = Math.hypot(boid.vx, boid.vy)
     const stretch = 1 + (speed / MAX_SPEED) * STRETCH
     // The threshold kills sub-cutoff alpha, so per-boid liveliness maps to
     // droplet size instead of transparency.
-    const base =
-      (mode === 'banded' ? BANDED_SPRITE_SCALE : 1) * (0.55 + boid.opacity * 0.6)
+    const base = 0.55 + boid.opacity * 0.6
 
     ctx.save()
     ctx.translate(boid.x, boid.y)
     if (speed > 0.05) ctx.rotate(Math.atan2(boid.vy, boid.vx))
     ctx.scale(base * stretch, base / stretch)
-    // Fading boids sink through the alpha cutoff: the droplet shrinks inward
-    // and vanishes — ink drying, no pop.
-    ctx.globalAlpha =
-      mode === 'fading' ? Math.min(1, boid.opacity * 4) : GROUP_ALPHA[boid.group] ?? 1
+    ctx.globalAlpha = GROUP_ALPHA[boid.group] ?? 1
     ctx.drawImage(sprite, -SPRITE_RADIUS, -SPRITE_RADIUS)
     ctx.restore()
   }
@@ -153,8 +129,7 @@ export function BoidsCanvas() {
   const lastMoveRef = useRef<number>(0)
   const prevBoidsRef = useRef<Array<{ x: number; y: number; group: number }>>([])
   const spritesRef = useRef<Partial<Record<SceneName, HTMLCanvasElement>>>({})
-  const prevSceneRef = useRef<SceneName>('paper')
-  const { init, tick, setModes, boids: boidsRef } = useBoids(BOID_COUNT)
+  const { init, tick } = useBoids(BOID_COUNT)
   const setPosition = useCursorUpdater()
   const cursorRef = useRef({ x: -1, y: -1 })
 
@@ -174,21 +149,13 @@ export function BoidsCanvas() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // The sim runs in CSS-pixel viewport coords; the backing store may be
-    // smaller (GOO_SCALE pipeline B) and is bridged with a transform.
-    const backingScale = RENDER_MODE === 'goo' ? GOO_SCALE : 1
-    let vw = window.innerWidth
-    let vh = window.innerHeight
-
     const resize = () => {
-      vw = window.innerWidth
-      vh = window.innerHeight
-      canvas.width = Math.round(vw * backingScale)
-      canvas.height = Math.round(vh * backingScale)
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
     }
 
     resize()
-    init(vw, vh)
+    init(canvas.width, canvas.height)
     lastMoveRef.current = Date.now()
     window.addEventListener('resize', resize)
     window.addEventListener('mousemove', handleMouseMove)
@@ -206,60 +173,21 @@ export function BoidsCanvas() {
       }
       lastFrameRef.current = timestamp
 
-      ctx.setTransform(backingScale, 0, 0, backingScale, 0, 0)
-      ctx.clearRect(0, 0, vw, vh)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       const scene = useSceneStore.getState().scene
 
-      // Vista release: entering the vista bands a subset into the
-      // murmuration and lets the rest dry up; leaving frees everyone.
-      if (scene !== prevSceneRef.current) {
-        if (scene === 'vista') {
-          // Band the boids already nearest the horizon band — long transits
-          // read as smudges crossing the glass panes, so the birds should
-          // coalesce where they'll live. Vertical distance weighs double:
-          // climbing is the visible part of the journey.
-          const bandCx = vw / 2
-          const bandCy = vh * ((BAND_FRACTIONS.top + BAND_FRACTIONS.bottom) / 2)
-          const chosen = new Set(
-            boidsRef.current
-              .map((b, i) => ({ i, d: Math.hypot(b.x - bandCx, (b.y - bandCy) * 2) }))
-              .sort((a, b) => a.d - b.d)
-              .slice(0, MURMURATION_COUNT)
-              .map((r) => r.i)
-          )
-          setModes((i) => (chosen.has(i) ? 'banded' : 'fading'))
-        } else if (prevSceneRef.current === 'vista') {
-          setModes(() => 'free')
-          // Dispersal kick: the murmuration returns as loose dust, not as a
-          // fused ink blot sliding over the manuscripts while cohesion decays.
-          boidsRef.current = boidsRef.current.map((b) => ({
-            ...b,
-            vx: b.vx + (Math.random() - 0.5) * 4,
-            vy: b.vy + (Math.random() - 0.5) * 4,
-          }))
-        }
-        prevSceneRef.current = scene
-      }
-
-      const band: Band | undefined =
-        scene === 'vista'
-          ? {
-              top: vh * BAND_FRACTIONS.top,
-              bottom: vh * BAND_FRACTIONS.bottom,
-              left: vw * BAND_FRACTIONS.left,
-              right: vw * BAND_FRACTIONS.right,
-            }
-          : undefined
-
-      // The idle ring belongs to the workshop; over the vista the
-      // murmuration is the settled behaviour.
-      const isIdle = scene !== 'vista' && Date.now() - lastMoveRef.current > IDLE_MS
+      const isIdle = Date.now() - lastMoveRef.current > IDLE_MS
       const formationTargets = isIdle
-        ? buildCircleTargets(BOID_COUNT, vw / 2, vh / 2, Math.min(vw, vh) * 0.3)
+        ? buildCircleTargets(
+            BOID_COUNT,
+            canvas.width / 2,
+            canvas.height / 2,
+            Math.min(canvas.width, canvas.height) * 0.3
+          )
         : undefined
 
-      const boids = tick(cursorRef.current, vw, vh, formationTargets, band)
+      const boids = tick(cursorRef.current, canvas.width, canvas.height, formationTargets)
 
       if (RENDER_MODE === 'goo') {
         const sprite = (spritesRef.current[scene] ??= makeDropletSprite(INK_TONES[scene]))
@@ -279,7 +207,7 @@ export function BoidsCanvas() {
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [init, tick, setModes, handleMouseMove])
+  }, [init, tick, handleMouseMove])
 
   return (
     <>

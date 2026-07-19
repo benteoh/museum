@@ -1,8 +1,12 @@
 # Liquid Ink Boids — Lab Plan
 
 **Date:** 2026-07-19
-**Status:** Spike built and traced 2026-07-19 — **awaiting owner keep/reject
-review** (see "Lab notes — 2026-07-19 run" at the end for evidence)
+**Status:** **Partial verdict 2026-07-19 — renderer kept, release rejected.**
+Owner: "I love the boids upgrade but the vista release just feels out of
+place." Stage 2 (banded/fading sim modes, murmuration release, scene-
+conditional z-index, vista ink-tone shift) has been reverted; the ink-goo
+renderer from Stage 1 ships as-is. See "Lab notes — 2026-07-19 run" and
+"Verdict — 2026-07-19" at the end.
 **Supersedes:** the placement question in
 `docs/superpowers/specs/2026-07-18-boids-effect-spike-shortlist.md` (see
 "Decision context" below — the shortlist stays as decision evidence)
@@ -367,3 +371,44 @@ needed.
   sprung progress re-publishes `desk` for ~1s and can briefly override
   `vista` (pre-existing publisher race, exposed by headless testing; real
   touch/wheel scrolling re-publishes continuously and self-corrects).
+
+---
+
+## Verdict — 2026-07-19
+
+**Renderer: keep. Release: reject** — "the vista release just feels out of
+place." No further diagnosis requested; the murmuration is cut rather than
+retuned. This was a legitimate outcome the plan called for in advance (see
+"The keep/reject gate" above): the two halves were reviewed together but are
+severable, and the renderer stands alone.
+
+**Reverted** (back to the `master` versions, on top of the kept renderer):
+`hooks/useBoids.ts`, `tests/hooks/useBoids.test.ts`,
+`components/vision/VisionScene.css.ts`. `BoidsCanvas.tsx` and
+`BoidsCanvasWrapper.tsx` were hand-edited back to a goo-only renderer (no
+`Band`/`mode`/scene-conditional z-index) rather than reverted wholesale,
+since the renderer itself is being kept from that file. Test count returned
+to 59 (the 6 banded-mode tests removed with the sim revert); build and tests
+green.
+
+**What ships:** the liquid-ink goo renderer only. Boids read as merging,
+squash-stretched ink droplets everywhere they already existed — paper,
+desk, and vista alike, with the vista keeping its original warm glint tone
+and ordinary ambient presence (`SCENE_PRESENCE.vista` unchanged at 0.45). No
+banding, no scene-driven mode changes, no murmuration.
+
+**Disposition of Stage 2:** not queued for retry. The murmuration's code and
+tuning notes above remain as a historical record (and in the
+`liquid-ink-lab` branch's git history, pre-revert) if a future spike wants a
+different authored vista moment — but per the shortlist's own rule
+("prefer one authored moment over continuous idle motion" cuts both ways:
+an authored moment that doesn't land is cut, not iterated on speculatively).
+
+**Remaining hardening scope** (renderer only, from the rough-edges list
+above): the idle ring under goo still forms slowly and reads loose — worth a
+retune since it's now the only formation behaviour left. The mobile-band and
+scene-flapping items no longer apply (no band, no scene-driven mode swap).
+
+**Next step:** open the PR for the renderer alone (see "Branch / PR" above,
+renderer-only case) — `RENDER_MODE` flag can stay for reference or be
+removed as part of that PR's cleanup, owner's call.

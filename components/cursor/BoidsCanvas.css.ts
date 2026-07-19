@@ -1,8 +1,7 @@
 // components/cursor/BoidsCanvas.css.ts
 import { style } from '@vanilla-extract/css'
 
-// Stacking lives on the wrapper (scene-conditional — the murmuration slips
-// beneath the vista's glass rail), so the canvas itself carries none.
+// Stacking lives on the wrapper, so the canvas itself carries none.
 const base = {
   position: 'fixed',
   inset: 0,

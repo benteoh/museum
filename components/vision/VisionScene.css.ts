@@ -58,9 +58,6 @@ export const grounding = style({
 
 export const track = style({
   position: 'relative',
-  // Above the fixed boids canvas (zIndex 1 during the vista scene): the
-  // murmuration flies behind the glass frames, never over them.
-  zIndex: 2,
   display: 'flex',
   alignItems: 'center',
   gap: '5vw',
@@ -198,8 +195,6 @@ export const stackBackdrop = style({
 
 export const stackContent = style({
   position: 'relative',
-  // Same contract as `track`: frames above the vista-scene boids canvas.
-  zIndex: 2,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
